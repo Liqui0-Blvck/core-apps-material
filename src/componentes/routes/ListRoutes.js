@@ -1,5 +1,5 @@
 
-import Item from '../Item/Item'
+import Item from '../Item/ItemList'
 import Contenedor from '../contenedor/Contenedor'
 import Categorias from '../categoria/Categoria'
 import Proveedor from '../proveedor/Proveedor'

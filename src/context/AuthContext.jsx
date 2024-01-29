@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   
   const [authTokens, setAuthTokens] = useState(() => authTokenLocalStorage)
   const [user, setUser] = useState(()=> userLocalStorage)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [tokenValid, setTokenValid] = useState(false)
 
   const loginUser = async (response) => {
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     
   }
 
-  console.log(tokenValid)
+  console.log("token valido o invalido", tokenValid)
 
   const validToken = async (token) => {
     const response = await fetch('http://127.0.0.1:8000/auth/token/verify/', {
@@ -48,10 +48,13 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({'token': token?.access})
     })
 
+    console.log("pase por aqui primero ValidTOKEN")
+
     console.log(response)
     
     if (response.status === 200){
       setTokenValid(true)
+      setLoading(true)
       return true
     } else if (response.status === 401) {
       const response = await updateToken()
@@ -70,8 +73,6 @@ export const AuthProvider = ({ children }) => {
 
   const updateToken = async () => {
 
-    console.log("me estoy ejecutando")
-
       const response = await fetch('http://127.0.0.1:8000/auth/token/refresh/', {
 
         method:'POST',
@@ -83,6 +84,8 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json()
       
+
+      console.log("Me estoy ejecutando en")
       if (response.status === 200){
           setAuthTokens(data)
           setUser(jwtDecode(data.access))
@@ -90,15 +93,7 @@ export const AuthProvider = ({ children }) => {
           return true
       }else{
         return false
-        //   logoutUser()
-
-        // console.log("algo")
       }
-
-      if(loading){
-          setLoading(false)
-      }
-
     }
 
     useEffect(()=> {
@@ -107,7 +102,7 @@ export const AuthProvider = ({ children }) => {
         
       }
 
-      const fourMinutes = 1000 * 60 * 4
+      const fourMinutes = 1000 * 60 * 4 
 
 
       const interval =  setInterval(()=> {
@@ -117,7 +112,7 @@ export const AuthProvider = ({ children }) => {
       }, fourMinutes)
       return ()=> clearInterval(interval)
 
-    }, [authTokens, loading])
+    }, [loading])
 
 
 
@@ -125,8 +120,7 @@ export const AuthProvider = ({ children }) => {
     user: user,
     loginUser: loginUser,
     authTokens: authTokens,
-    logoutUser: logoutUser, 
-    tokenValid: tokenValid,
+    logoutUser: logoutUser,
     validToken: validToken
   }
 

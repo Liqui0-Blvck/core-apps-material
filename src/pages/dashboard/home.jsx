@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Typography,
   Card,
@@ -26,8 +26,25 @@ import {
   ordersOverviewData,
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import AuthContext from "@/context/AuthContext";
+import { useNavigate } from 'react-router-dom'
 
 export function Home() {
+  const {authTokens, validToken} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  validToken(authTokens)
+    .then((res) => {
+      console.log(res)
+      if (!res) {
+        navigate('/auth/sign-in/')
+      }
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
+
+  
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">

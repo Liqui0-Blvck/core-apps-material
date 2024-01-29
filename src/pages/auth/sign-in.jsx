@@ -10,20 +10,18 @@ import {
 import { useFormik } from "formik/dist";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 export function SignIn() {
   const { loginUser, url } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  
-
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: LoginSchema,
     onSubmit: async (values) => {
       try {
         const response = await fetch('http://127.0.0.1:8000/auth/token/', {
@@ -36,11 +34,11 @@ export function SignIn() {
 
         if (response.status === 200){
           loginUser(response)
-          navigate('/dashboard/home')
+          navigate('/home')
           toast.success('Haz ingresado sesión con exito!')
         } else if (response.status === 401) {
           console.log(error)
-          toast.error('Ese tusuario no esta autorizado o no existe')
+          toast.error('Este usuario no esta autorizado o no existe')
         }
         
       } catch (error) {
@@ -50,7 +48,6 @@ export function SignIn() {
     },
   });
 
-  console.log(formik.values)
   return (
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
@@ -58,7 +55,7 @@ export function SignIn() {
           <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
         </div>
-        <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
+        <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={formik.handleSubmit}>
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
               Your email
@@ -106,11 +103,11 @@ export function SignIn() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-          <Button className="mt-6" fullWidth>
+          <Button className="mt-6" fullWidth type="submit">
             Sign In
           </Button>
 
-          <div className="flex items-center justify-between gap-2 mt-6">
+          {/* <div className="flex items-center justify-between gap-2 mt-6">
             <Checkbox
               label={
                 <Typography
@@ -128,8 +125,8 @@ export function SignIn() {
                 Forgot Password
               </a>
             </Typography>
-          </div>
-          <div className="space-y-4 mt-8">
+          </div> */}
+          {/* <div className="space-y-4 mt-8">
             <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
               <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_1156_824)">
@@ -154,7 +151,7 @@ export function SignIn() {
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>
-          </Typography>
+          </Typography> */}
         </form>
 
       </div>

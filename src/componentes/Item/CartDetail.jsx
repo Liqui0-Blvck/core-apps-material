@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router';
 
 
 export default function CartDetail({ fecha_creacion, foto, nombre, descripcion, titulo}) {
-  const navigate = useNavigate()
 
   return (
     <Card className='w-full h-full mt-10'>

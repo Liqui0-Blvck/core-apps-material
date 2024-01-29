@@ -179,8 +179,6 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, handleDeleteClick } = props;
 
-  console.log(numSelected)
-
   return (
     <Box
       sx={{
@@ -346,7 +344,7 @@ export default function TablaProveedor({ data: datos }) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '90%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
       <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} />
       <Table

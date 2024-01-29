@@ -18,11 +18,24 @@ import {
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "@/data";
+import { useContext } from "react";
+import AuthContext from "@/context/AuthContext";
 
 export function Profile() {
+  const {authTokens, validToken} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  validToken(authTokens)
+    .then((res) => {
+      console.log(res)
+      if (!res) navigate('/auth/sign-in/')
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">

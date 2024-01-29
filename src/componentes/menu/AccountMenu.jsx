@@ -13,6 +13,7 @@ import Logout from '@mui/icons-material/Logout';
 import AuthContext from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export default function AccountMenu() {
   const { logoutUser } = useContext(AuthContext)
@@ -29,7 +30,7 @@ export default function AccountMenu() {
 
   const handleLogout = () => {
     logoutUser()  
-    navigate('/login')
+    navigate('/auth/sign-in')
     toast.success('Sesión cerrada con exito')
   }
   
@@ -85,7 +86,9 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
+          <Link to='/profile' className='flex items-center'>
+            <Avatar /> Profile
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Avatar /> My account

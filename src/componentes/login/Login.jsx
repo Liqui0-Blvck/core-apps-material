@@ -31,7 +31,7 @@ const Login = () => {
 
         if (response.status === 200){
           loginUser(response)
-          navigate('/ ')
+          navigate('/home')
           toast.success('Haz ingresado sesión con exito!')
         } else if (response.status === 401) {
           toast.error('Ese tusuario no esta autorizado o no existe')

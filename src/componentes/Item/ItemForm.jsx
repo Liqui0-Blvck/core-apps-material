@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import toast from 'react-hot-toast'
 import { IoMdClose } from "react-icons/io";
 import { compresor } from '../../services/compresor_imagen'
+import AuthContext from '@/context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const ItemForm = () => {
   const [categoria, setCategoria] = useState([])
@@ -13,6 +15,22 @@ const ItemForm = () => {
   const [data, setData] = useState([])
   const [imagen, setImagen] = useState(null)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
+  const navigate = useNavigate()
+
+
+  const { authTokens, validToken } = useContext(AuthContext)
+  
+  validToken(authTokens)
+  .then((res) => {
+    if (!res){
+      navigate('/auth/sign-in/')
+    } else {
+      setItems(data)
+    }
+  })
+  .catch ((error) => {
+    console.log(error)
+  })
 
 
   const formik = useFormik({
@@ -61,7 +79,7 @@ const ItemForm = () => {
   
   return (
     <MaxWidthWrapper>
-      <div className='flex flex-col items-center h-full my-10' >
+      <div className='flex flex-col items-center h-full mt-10 mb-24' >
 
       <div className='w-full h-full mx-auto justify-center gap-10 grid place-items-center overflow-hidden 
         lg:grid-cols-2'>

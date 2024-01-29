@@ -1,28 +1,30 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import TablaProveedor from './TablaProveedor'
-import { useLoaderData } from 'react-router-dom'
-import AuthContext from '@/context/AuthContext'
+import TablaItem from './TablaItem'
+import { useNavigate } from 'react-router-dom'
+import AuthContext from '../../context/AuthContext'
 
-const Proveedor = () => {
-  const { authTokens, validToken } = useContext(AuthContext) 
-  const [proveedor, setProveedor] = useState([])
+
+const ItemList = () => {
+  const { authTokens, validToken } = useContext(AuthContext)
+  const [items, setItems] = useState([])
+  const navigate = useNavigate()
 
   validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
-    } else {
-    }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
-
+    .then((res) => {
+      if (!res){
+        navigate('/auth/sign-in/')
+      } else {
+        // setItems(data)
+      }
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
 
   useEffect(() => {
-    const getProveedorData = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
+    const getItemData = async () => {
+      const response = await fetch('http://127.0.0.1:8000/api/item/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -32,17 +34,18 @@ const Proveedor = () => {
 
       if (response.ok){
         const data = await response.json()
-        setProveedor(data)
+        setItems(data)
       } else {
         console.log("Error en la petición")
       }
     }
 
-    getProveedorData()
 
+    getItemData()
 
     return () => {}
   }, [])
+
 
   const formatearFecha = useMemo(
     () => (fecha) => {
@@ -60,23 +63,21 @@ const Proveedor = () => {
   )
 
   const datosFormateados = useMemo(() => {
-    return proveedor.map((dato) => ({
+    return items.map((dato) => ({
       ...dato,
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
-  }, [proveedor, formatearFecha])
-
-  console.log(datosFormateados)
+  }, [items, formatearFecha])
 
   return (
-    <div className='px-5'>
+    <MaxWidthWrapper>
       <div className='mt-5 p-2 mb-[45%]'>
-        <div className='flex justify-center mx-auto'>
-          <TablaProveedor data={datosFormateados} />
+        <div className='flex justify-center '>
+          <TablaItem datos={datosFormateados} />
         </div>
       </div>
-    </div>
+    </MaxWidthWrapper>
   )
 }
 
-export default Proveedor
+export default ItemList

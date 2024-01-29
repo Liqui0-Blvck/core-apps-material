@@ -11,10 +11,22 @@ import AuthContext from '../../context/AuthContext'
 
 // eslint-disable-next-line react/prop-types
 const ContenedorForm = () => {
+  const { authTokens, validToken } = useContext(AuthContext)
   const [imagen, setImagen] = useState(null)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const navigate = useNavigate()
-  const { authTokens } = useContext(AuthContext)
+
+  validToken(authTokens)
+  .then((res) => {
+    if (!res){
+      navigate('/auth/sign-in/')
+    } else {
+    }
+  })
+  .catch ((error) => {
+    console.log(error)
+  })
+
 
   const formik = useFormik({
     initialValues: {

@@ -265,8 +265,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaItem({ data: datos}) {
-  const [ data, setData] = useState(datos)
+export default function TablaOrdenDeCompra({ data }) {
   const { authTokens } = useContext(AuthContext)
 
   const [order, setOrder] = useState('desc');
@@ -367,7 +366,7 @@ export default function TablaItem({ data: datos}) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm', overflowY: 'auto' }}
     >
       <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table

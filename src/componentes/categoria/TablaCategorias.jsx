@@ -77,10 +77,10 @@ const headCells = [
     label: 'Descripcion',
   },
   {
-    id: 'id',
+    id: 'fecha_creacion',
     numeric: true,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: 'Fecha Creación'
   }
 ];
 
@@ -236,9 +236,9 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function TablaCategorias({ data: datos }) {
-  const { authTokens } = useContext(AuthContext)
-  const [data, setData] = useState(datos)
 
+  // console.log(algo)
+  const [data, setData] = useState(datos)
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
   const [selected, setSelected] = useState([]);
@@ -341,7 +341,7 @@ export default function TablaCategorias({ data: datos }) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '90%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
       <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick}/>
       <Table

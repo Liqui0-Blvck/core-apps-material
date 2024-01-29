@@ -17,6 +17,7 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
 import "../public/css/tailwind.css";
 import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <ThemeProvider>
           <MaterialTailwindControllerProvider>
+            <Toaster />
             <App />
           </MaterialTailwindControllerProvider>
         </ThemeProvider>

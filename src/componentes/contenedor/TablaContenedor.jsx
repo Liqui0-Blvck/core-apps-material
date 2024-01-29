@@ -265,9 +265,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaContenedor({ data: datos}) {
+export default function TablaContenedor({ data }) {
   const { authTokens } = useContext(AuthContext)
-  const [ data, setData] = useState(datos)
+  // const [data, setData] = useState(datos)
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -368,7 +368,7 @@ export default function TablaContenedor({ data: datos}) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '90%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
       <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table

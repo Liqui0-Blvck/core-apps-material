@@ -260,8 +260,11 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaItem({ data: datos}) {
-  const [ data, setData] = useState(datos)
+export default function TablaItem({ datos: data }) {
+  // console.log(datos)
+  // const [data, setData] = useState(datos)
+
+  // console.log(data)
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
