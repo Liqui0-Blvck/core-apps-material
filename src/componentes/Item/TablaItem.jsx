@@ -260,11 +260,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaItem({ datos: data }) {
-  // console.log(datos)
-  // const [data, setData] = useState(datos)
-
-  // console.log(data)
+export default function TablaItem({ data, setData, token }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -297,6 +293,7 @@ export default function TablaItem({ datos: data }) {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ ids: selected }),
       });

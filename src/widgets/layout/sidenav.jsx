@@ -32,9 +32,11 @@ import { Directions, LISTA_MENU } from "@/routes";
 
 export function Sidenav({ brandImg, brandName, routes }) {
   const [open, setOpen] = useState(true);
+  const [rotate, setRotate] = useState(false)
 
   const handleClick = (name) => {
     setOpen((prevOpen) => ({ ...prevOpen, [name]: !prevOpen[name] }));
+    setRotate(prev => !prev)
   };
 
   const [controller, dispatch] = useMaterialTailwindController();
@@ -48,9 +50,9 @@ export function Sidenav({ brandImg, brandName, routes }) {
 
 
   const renderNestedList = (children) => (
-    <List disablePadding key={children.id}>
+    <List disablePadding className="m-2">
       {children.map((child) => (
-        <ListItem key={child.id} disablePadding>
+        <ListItem key={child.id} disablePadding className="ml-5">
           <Link to={child.path} className='w-full shadow-none'>
             <ListItemText primary={child.name} />
           </Link>
@@ -69,13 +71,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div
         className={`relative`}
       >
-        <Link to="/" className="py-6 px-8 text-center">
-          <Typography
-            variant="h6"
-            color={sidenavType === "dark" ? "white" : "blue-gray"}
-          >
-            {brandName}
-          </Typography>
+        <Link to="/" className="py-6 px-8 text-center flex">
+          <img src="/img/logosnabbit.gif" alt="" className='w-full h-full object-contain'/>
         </Link>
         <IconButton
           variant="text"
@@ -88,14 +85,14 @@ export function Sidenav({ brandImg, brandName, routes }) {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
-      <div className="m-4">
+      <div className="">
         <List
           sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
+              Accesos
             </ListSubheader>
           }
         >
@@ -103,7 +100,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         {
           LISTA_MENU.map((obj) => (
             <>
-              <ListItemButton onClick={() => handleClick(obj.name)} >
+              <ListItemButton onClick={() => {handleClick(obj.name)}} >
                 {
                   obj.name === 'Dashboard'
                    ? (
@@ -114,7 +111,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                    : (
                       <>
                         <ListItemText primary={obj.name} />
-                        <ExpandMore className={open ? 'translate-[360%]': ''}/>
+                        <ExpandMore className={`transform ${open ? 'rotate-0' : 'rotate-180'} transition-transform duration-300 ease-in-out`}/>
                       </>
                     )
                   
@@ -122,7 +119,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 
               </ListItemButton>
 
-              <Collapse in={open[obj.name]} timeout="auto" unmountOnExit>
+              <Collapse in={open[obj.name]} timeout="auto" unmountOnExit >
                 {Directions[obj.name] && renderNestedList(obj.children)}
               </Collapse>
             </>

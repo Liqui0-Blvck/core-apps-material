@@ -10,41 +10,49 @@ const ItemList = () => {
   const [items, setItems] = useState([])
   const navigate = useNavigate()
 
-  validToken(authTokens)
-    .then((res) => {
-      if (!res){
-        navigate('/auth/sign-in/')
-      } else {
-        // setItems(data)
-      }
-    })
-    .catch ((error) => {
-      console.log(error)
-    })
-
   useEffect(() => {
-    const getItemData = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/item/', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization':  `Bearer ${authTokens.access}`
-        }
-      })
+    let isMounted = true
 
-      if (response.ok){
-        const data = await response.json()
-        setItems(data)
-      } else {
-        console.log("Error en la petición")
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            const response = await fetch('http://127.0.0.1:8000/api/item/', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (response.ok){
+              const data = await response.json()
+              setItems(data)
+            } else {
+              console.log("Error en la petición")
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
+
+      fetchData()
+    } else {
+      console.log("no pasa nada aqui no hay token")
     }
 
-
-    getItemData()
-
-    return () => {}
-  }, [])
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
 
 
   const formatearFecha = useMemo(
@@ -69,11 +77,13 @@ const ItemList = () => {
     }))
   }, [items, formatearFecha])
 
+
+
   return (
     <MaxWidthWrapper>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center '>
-          <TablaItem datos={datosFormateados} />
+          <TablaItem data={datosFormateados} setData={setItems}  token={authTokens.access}/>
         </div>
       </div>
     </MaxWidthWrapper>

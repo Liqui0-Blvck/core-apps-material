@@ -10,43 +10,52 @@ const ContenedorDetail = () => {
   const [data, setData] = useState({})
   const { pathname } = useLocation()
 
-  validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
-    } else {
-    }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
-
-
   useEffect(() => {
-    const getContenedorDetail = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.access}`
+    let isMounted = true
+
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            const response = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authTokens.access}`
+              }
+
+            })
+
+            if (response.ok){
+              console.log("se hizo ")
+              const data = await response.json()
+              setData(data)
+            } else {
+              console.log("alguna cosa mal hiciste")
+            }
+          }
+        } catch (error) {
+          console.error(error)
         }
-
-      })
-
-      if (response.ok){
-        console.log("se hizo ")
-        const data = await response.json()
-        setData(data)
-      } else {
-        console.log("alguna cosa mal hiciste")
       }
+
+      fetchData()
+    } else {
+      console.log("no pasa nada aqui no hay token")
     }
 
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
 
-    getContenedorDetail()
-
-    return () => {}
-  }, [])
 
 
   
@@ -64,6 +73,7 @@ const ContenedorDetail = () => {
     },
     []
   )
+
 
   return (
     <MaxWidthWrapper>

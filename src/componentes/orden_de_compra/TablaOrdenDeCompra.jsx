@@ -183,9 +183,24 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected } = props;
+  const { numSelected, handleDeleteClick, selected, handleUpdateClick } = props;
+  const [estado, setEstado] = useState({
+    label: '',
+    estado_oc: null,
+    resultado: false
+  })
 
-  console.log(selected)
+  const handleClickEstado = (label, estado, resultado) => {
+    setEstado({
+      label: label,
+      estado_oc: estado,
+      resultado: resultado
+    })
+
+    handleUpdateClick(estado)
+  }
+
+  console.log(estado)
 
   return (
     <Box
@@ -235,11 +250,37 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <Ln to={`/orden-de-compra/${selected}`}>
-              <IconButton size='md' variant='solid' color='primary'>
-                Detalles
-              </IconButton>
-            </Ln>
+            <>
+              <div className='flex gap-2 items-center'>
+                <h1 className='mr-10'>Acciones</h1>
+                
+                {
+                 estado.label === 'Aprobada' || estado.label === 'Rechazada'
+                  ? (
+                    <IconButton size='md' className='w-20' variant='solid' color='primary' onClick={() => handleClickEstado('Finalizada', 5, true )}>
+                      Finalizada
+                    </IconButton>
+                    )
+                  : (
+                    <>
+                      <IconButton size='md' className='w-20' variant='solid' color='primary' onClick={() => handleClickEstado('Aprobada', 2, true )}>
+                        Aceptar
+                      </IconButton>
+      
+                      <IconButton size='md' className='w-24' variant='solid' color='danger' onClick={() => handleClickEstado('Rechazada', 3, true )}>
+                        Rechazar
+                      </IconButton>
+                    </>
+                    ) 
+                }
+                
+                <Ln to={`/orden-de-compra/${selected}`}>
+                  <IconButton size='md' variant='solid' color='primary'>
+                    Detalles
+                  </IconButton>
+                </Ln>
+              </div>
+            </>
             )
           : null
       }
@@ -265,9 +306,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaOrdenDeCompra({ data }) {
-  const { authTokens } = useContext(AuthContext)
-
+export default function TablaOrdenDeCompra({ data, setData, token, setRefresh }) {
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('id');
   const [selected, setSelected] = useState([]);
@@ -289,6 +328,25 @@ export default function TablaOrdenDeCompra({ data }) {
     setSelected([]);
   };
 
+  const handleUpdateClick = async (estado) => {
+
+    console.log(estado)
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-update/${selected}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ estado_oc: estado })
+      })
+      if (response.ok) {
+        setRefresh(true)
+      }
+    } catch (error) {
+      console.log("algo mal estas haciendo")
+    }
+  }
+
   const handleDeleteClick = async () => {
     try {
       console.log("Eliminar elementos seleccionados:", selected);
@@ -297,8 +355,7 @@ export default function TablaOrdenDeCompra({ data }) {
       const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/${selected}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.access}`
+          'authorization': `Bearer ${token}`
         },
       });
 
@@ -368,7 +425,11 @@ export default function TablaOrdenDeCompra({ data }) {
       variant="outlined"
       sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm', overflowY: 'auto' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
+      <EnhancedTableToolbar 
+        numSelected={selected.length} 
+        handleDeleteClick={handleDeleteClick} 
+        selected={selected} 
+        handleUpdateClick={handleUpdateClick}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow

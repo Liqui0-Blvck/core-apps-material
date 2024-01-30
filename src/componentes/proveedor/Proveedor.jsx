@@ -8,41 +8,51 @@ const Proveedor = () => {
   const { authTokens, validToken } = useContext(AuthContext) 
   const [proveedor, setProveedor] = useState([])
 
-  validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
-    } else {
-    }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
-
-
   useEffect(() => {
-    const getProveedorData = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization':  `Bearer ${authTokens.access}`
-        }
-      })
+    let isMounted = true
 
-      if (response.ok){
-        const data = await response.json()
-        setProveedor(data)
-      } else {
-        console.log("Error en la petición")
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            const response = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (response.ok){
+              const data = await response.json()
+              setProveedor(data)
+            } else {
+              console.log("Error en la petición")
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
+
+      fetchData()
+    } else {
+      console.log("no pasa nada aqui no hay token")
     }
 
-    getProveedorData()
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
 
 
-    return () => {}
-  }, [])
 
   const formatearFecha = useMemo(
     () => (fecha) => {
@@ -72,7 +82,7 @@ const Proveedor = () => {
     <div className='px-5'>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center mx-auto'>
-          <TablaProveedor data={datosFormateados} />
+          <TablaProveedor data={datosFormateados} setData={setProveedor} token={authTokens.access}/>
         </div>
       </div>
     </div>

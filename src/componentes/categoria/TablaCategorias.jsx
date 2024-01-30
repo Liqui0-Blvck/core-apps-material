@@ -169,7 +169,6 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, handleDeleteClick } = props;
 
-  console.log(numSelected)
 
   return (
     <Box
@@ -235,10 +234,8 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaCategorias({ data: datos }) {
+export default function TablaCategorias({ data, setCategoria, token }) {
 
-  // console.log(algo)
-  const [data, setData] = useState(datos)
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
   const [selected, setSelected] = useState([]);
@@ -269,7 +266,7 @@ export default function TablaCategorias({ data: datos }) {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.access}`
+          'authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ids: selected})
       });
@@ -278,7 +275,7 @@ export default function TablaCategorias({ data: datos }) {
         toast.success('Categoria eliminado con exito')
 
         const newData = data.filter(item => !selected.includes(item.id));
-        setData(newData);
+        setCategoria(newData);
 
         setSelected([]);
       } else {
@@ -312,7 +309,6 @@ export default function TablaCategorias({ data: datos }) {
     setSelected(newSelected);
   };
 
-  console.log(selected)
 
   const handleChangePage = (newPage) => {
     setPage(newPage);

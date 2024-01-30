@@ -16,10 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [authTokens, setAuthTokens] = useState(() => authTokenLocalStorage)
   const [user, setUser] = useState(()=> userLocalStorage)
   const [loading, setLoading] = useState(false)
-  const [tokenValid, setTokenValid] = useState(false)
 
   const loginUser = async (response) => {
-    console.log(response)
 
       const data = await response.json()
 
@@ -37,7 +35,6 @@ export const AuthProvider = ({ children }) => {
     
   }
 
-  console.log("token valido o invalido", tokenValid)
 
   const validToken = async (token) => {
     const response = await fetch('http://127.0.0.1:8000/auth/token/verify/', {
@@ -48,27 +45,17 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({'token': token?.access})
     })
 
-    console.log("pase por aqui primero ValidTOKEN")
-
     console.log(response)
     
     if (response.status === 200){
-      setTokenValid(true)
-      setLoading(true)
       return true
     } else if (response.status === 401) {
-      const response = await updateToken()
-      if (!response){
-       return false
-      }
-    } 
+      return await updateToken()
+      } 
     else {
       return false
     }
   }
-
-
-
 
 
   const updateToken = async () => {
@@ -96,23 +83,27 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    useEffect(()=> {
-
-      if(loading){
-        
-      }
-
-      const fourMinutes = 1000 * 60 * 4 
-
-
-      const interval =  setInterval(()=> {
-          if(authTokens){
-            updateToken()
+    useEffect(() => {
+      const fourMinutes = 1000 * 60 * 4;
+      const interval = setInterval(async () => {
+        try {
+          if (authTokens) {
+            setLoading(true);
+            const isTokenValid = await validToken(authTokens);
+            if (!isTokenValid) {
+              await updateToken();
+            }
           }
-      }, fourMinutes)
-      return ()=> clearInterval(interval)
-
-    }, [loading])
+        } catch (error) {
+          console.error("Error al verificar o actualizar el token:", error);
+        } finally {
+          setLoading(false);
+        }
+      }, fourMinutes);
+    
+      return () => clearInterval(interval);
+    }, [authTokens, validToken, updateToken]);
+    
 
 
 

@@ -243,8 +243,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaProveedor({ data: datos }) {
-  const [data, setData] = useState(datos)
+export default function TablaProveedor({ data, setData, token}) {
 
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -276,6 +275,7 @@ export default function TablaProveedor({ data: datos }) {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': `Bearer ${token}`
         },
       });
 

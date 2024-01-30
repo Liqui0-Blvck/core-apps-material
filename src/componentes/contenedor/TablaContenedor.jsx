@@ -265,9 +265,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaContenedor({ data }) {
-  const { authTokens } = useContext(AuthContext)
-  // const [data, setData] = useState(datos)
+export default function TablaContenedor({ data, setData, token  }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -290,7 +288,7 @@ export default function TablaContenedor({ data }) {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.access}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ ids: selected})
       });

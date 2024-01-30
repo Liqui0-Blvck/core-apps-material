@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 
 export function SignIn() {
-  const { loginUser, url } = useContext(AuthContext);
+  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const formik = useFormik({

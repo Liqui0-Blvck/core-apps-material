@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import MaxWidthWrapper from '../MaxWidthWrapper'
+import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
-import OrdenCompraFormulario from './OrdenCompraFormulario'
 import toast from 'react-hot-toast'
+import FormHeader from './FormHeader'
 
-const CrearOrden = () => {
-  const { authTokens } = useContext(AuthContext)
+
+const OrdenDeCompraForm = () => {
+  const { authTokens, validToken } = useContext(AuthContext)
   const navigate = useNavigate()
   const [isActive, setIsActive] = useState(false)
 
@@ -47,42 +48,85 @@ const CrearOrden = () => {
   const [proveedor, setProveedor] = useState([])
   const [ordenCompra, setOrdenCompra] = useState(null)
 
-  const [itemProveedor, setItemProveedor] = useState([])
+  const [items, setItems] = useState([])
+
 
   useEffect(() => {
-    const getProveedor = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+    let isMounted = true
 
-      if (response.status === 200){
-        setProveedores(await response.json())
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+
+            // peticion a proveedor
+            const responseProveedor = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseProveedor.status === 200){
+              const data = await responseProveedor.json()
+              setProveedores(data)
+            } else {
+              console.log("Error en la peticion")
+            }
+
+            const responseItem = await fetch('http://127.0.0.1:8000/api/item/', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseItem.ok){
+              const data = await responseItem.json()
+              setItems(data)
+            } else {
+              console.log("Error en la petición")
+            }
+
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
+
+      fetchData()
+    } else {
+      console.log("no pasa nada aqui no hay token")
     }
-    getProveedor()
-    
-    return () => {}
+
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const getItems = async () => {
+      
+    } 
+
+    getItems()
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  useEffect(() => {
-    const getItemProveedor = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/item-por-proveedor/${proveedor}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      const data = await response.json()
-      if (response.status === 200){
-        setItemProveedor(data)
-      }
-    }
-
-    getItemProveedor()
-  }, [proveedor])
 
   const handleAgregarItem = () => {
     // Agregar un nuevo ítem a la lista de ítems
@@ -166,30 +210,29 @@ const CrearOrden = () => {
   };
 
 
-  console.log(ordenCompraData)
-
   return (
     <MaxWidthWrapper>
-      <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 my-20'>
-        <OrdenCompraFormulario 
+      <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
+        <FormHeader 
           handleSubmit={handleSubmitOrdenCompra} 
           handleChange={handleInputChange} 
           proveedores={proveedores}
           proveedor={proveedor}
+          setProveedor={setProveedor}
         />
         <div id='form-list' className='mt-10'>
           <ItemOrdenForm 
-            rows={rows}
-            setRows={setRows}
-            handleSubmit={handleSubmitOrdenCompra} 
-            itemProveedor={itemProveedor} 
-            handleChange={handleInputChangeItem}
-            handleAgregarItem={handleAgregarItem}
-          />
+              rows={rows}
+              setRows={setRows}
+              handleSubmit={handleSubmitOrdenCompra} 
+              itemProveedor={items} 
+              handleChange={handleInputChangeItem}
+              handleAgregarItem={handleAgregarItem}
+            />
         </div>
       </div>
     </MaxWidthWrapper>
   );
 }
 
-export default CrearOrden;
+export default OrdenDeCompraForm

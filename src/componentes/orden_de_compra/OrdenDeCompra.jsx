@@ -8,43 +8,61 @@ import { useNavigate } from 'react-router-dom'
 const OrdenDeCompra = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [ordenDeCompra, setOrdenDeCompra] = useState([])
+  const [refresh, setRefresh] = useState(false)
   const navigate = useNavigate()
 
-  validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
-    } else {
-    }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
+  console.log(refresh)
 
   useEffect(() => {
-    const getOrdenesDeCompraData = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization':  `Bearer ${authTokens.access}`
-        }
-      })
+    let isMounted = true
 
-      if (response.ok){
-        console.log(response)
-        const data = await response.json()
-        setOrdenDeCompra(data)
-      } else {
-        console.log("Error en la petición")
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (response.ok){
+              console.log(response)
+              const data = await response.json()
+              setOrdenDeCompra(data)
+            } else {
+              console.log("Error en la petición")
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
+
+      fetchData()
+
+      if (refresh){
+        fetchData()
+      }
+    } else {
+      console.log("no pasa nada aqui no hay token")
     }
 
-    getOrdenesDeCompraData()
+    return () => {
+      isMounted = false
+      setRefresh(false)
+    }
+  }, [authTokens, refresh])
 
-
-    return () => {}
-  }, [])
 
   const formatearFecha = useMemo(
     () => (fecha) => {
@@ -68,13 +86,12 @@ const OrdenDeCompra = () => {
     }))
   }, [ordenDeCompra, formatearFecha])
 
-  console.log(datosFormateados)
 
   return (
     <div className='px-5'>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center'>
-          <TablaOrdenDeCompra data={datosFormateados} />
+          <TablaOrdenDeCompra data={datosFormateados} setData={setOrdenDeCompra} token={authTokens.access} setRefresh={setRefresh}/>
         </div>
       </div>
     </div>

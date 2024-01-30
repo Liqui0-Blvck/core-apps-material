@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useFormik } from 'formik'
 import MaxWidthWrapper from '../MaxWidthWrapper'
@@ -7,10 +7,58 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { Divider } from '@mui/material'
 import { CategoriaSchema } from '../../services/Validator'
+import AuthContext from '@/context/AuthContext'
 
 const CategoriaForm = () => {
-  const [data, setData] = useState([])
+  const { authTokens, validToken } = useContext(AuthContext)
+  const [categoria, setCategoria] = useState([])
   const navigate = useNavigate()
+
+  useEffect(() => {
+    let isMounted = true
+
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            // Aqui se manejará las peticiones a las cosas que querramos obtener
+
+            const responseCategoria = await fetch(`http://localhost:8000/api/categoria/`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseCategoria.ok){
+              const data = await responseCategoria.json()
+              setCategoria(data)
+            } else {
+              console.log("Error en la peticion")
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      fetchData()
+    } else {
+      console.log("no pasa nada aqui no hay token")
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
 
 
   const formik = useFormik({
@@ -23,7 +71,8 @@ const CategoriaForm = () => {
       const response = await fetch('http://localhost:8000/api/categoria/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'authorization': `Bearer ${authTokens.access}`
         },
         body: JSON.stringify({ ...values })
       })
@@ -37,12 +86,6 @@ const CategoriaForm = () => {
     }
   })
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/categoria')
-      .then((res) => {
-        setData(res.data)
-      })
-  }, [])
 
   
 
@@ -57,7 +100,7 @@ const CategoriaForm = () => {
           <h1 className='text-center'>Categorias creadas</h1>
           <Divider />
           {
-            data.map((cat) => (
+            categoria.map((cat) => (
               <div key={cat.id} className='h-14 w-full bg-gray-300 flex justify-center items-center rounded-md'>
                 <span className='font-semibold tracking-wide'>{cat.nombre}</span>
               </div>

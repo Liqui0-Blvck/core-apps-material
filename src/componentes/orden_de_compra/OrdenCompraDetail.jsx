@@ -4,9 +4,7 @@ import { useLoaderData } from 'react-router'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 
 const OrdenCompraDetail = () => {
-  const { data } = useLoaderData()
 
-  console.log(data)
 
   const formatearFecha = useMemo(
     () => (fecha) => {

@@ -3,47 +3,54 @@ import MaxWidthWrapper from '../MaxWidthWrapper'
 import TransitionsModal from '../Modal'
 import TablaCategorias from './TablaCategorias'
 import AuthContext from '@/context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const Categoria = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [categorias, setCategorias] = useState([])
-
-  validToken(authTokens)
-    .then((res) => {
-      if (!res){
-        navigate('/auth/sign-in/')
-      } else {
-        console.log("algo raro paso")
-      }
-    })
-    .catch ((error) => {
-      console.log(error)
-    })
+  const navigate = useNavigate()
 
 
   useEffect(() => {
-    const getCategoriaData = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/categoria`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `Bearer ${authTokens.access}`
-        },
-        
-      })
-
-      if (response.ok){
-        const data = await response.json()
-        setCategorias(data)
-      } else {
-        console.log("Error en la petición")
+    let isMounted = true; 
+  
+    const fetchData = async () => {
+      try {
+        const isTokenValid = await validToken(authTokens);
+  
+        if (!isMounted) return; 
+        if (!isTokenValid) {
+          navigate('/auth/sign-in/');
+        } else {
+ 
+          const response = await fetch('http://127.0.0.1:8000/api/categoria/', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization':  `Bearer ${authTokens.access}`
+            }
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            setCategorias(data);
+          } else {
+            console.log("Error en la petición");
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
-    }
+    };
+  
+    fetchData();
+  
+    return () => {
+      isMounted = false; 
+    };
+  }, [authTokens, navigate, validToken]);
 
-    getCategoriaData()
 
-    return () => {}
-  }, [])
   
 
   const formatearFecha = useMemo(
@@ -68,14 +75,12 @@ const Categoria = () => {
     }))
   }, [categorias, formatearFecha])
 
-  console.log("categoria formateada", datosFormateados)
-
-
+  
   return (
     <MaxWidthWrapper>
       <h1 className='mt-10' />
       <div className='flex justify-center'>
-        <TablaCategorias data={datosFormateados}/>
+        <TablaCategorias data={datosFormateados} setData={setCategorias} token={authTokens.access}/>
       </div>
     </MaxWidthWrapper>
   )

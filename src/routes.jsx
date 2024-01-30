@@ -27,14 +27,13 @@ import TablaCategorias from "./componentes/categoria/TablaCategorias";
 import ProveedorForm from "./componentes/proveedor/ProveedorForm";
 import TablaOrdenDeCompra from "./componentes/orden_de_compra/TablaOrdenDeCompra";
 // import OrdenCompraForm from "./componentes/orden_de_compra/OrdenCompraForm";
-import CrearOrden from "./componentes/orden_de_compra/CrearOrden";
 import ItemList from "./componentes/Item/ItemList";
-import PrivatedRoute from "./componentes/routes/PrivatedRoute";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
 import Categoria from "./componentes/categoria/Categoria";
 import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
+import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 // import { Outlet } from "./componentes/Item/ItemList";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
@@ -291,7 +290,7 @@ export const routes = [
       {
         name: 'proveedores',
         path: '/orden-registro',
-        element: <CrearOrden />
+        element: <OrdenCompraForm />
       }
     ],
   },

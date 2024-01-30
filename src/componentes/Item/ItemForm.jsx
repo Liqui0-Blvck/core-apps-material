@@ -20,17 +20,50 @@ const ItemForm = () => {
 
   const { authTokens, validToken } = useContext(AuthContext)
   
-  validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
+  useEffect(() => {
+    let isMounted = true
+
+    if (authTokens){
+      console.log("si hay token")
+      const fetchData = async () => {
+        try {
+          const isValidToken = await validToken(authTokens)
+  
+          if (!isMounted) return 
+  
+          if (!isValidToken) {
+            navigate('/auth/sign-in/');
+          } else {
+            const responseCategoria = await fetch(`http://localhost:8000/api/categoria/`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseCategoria.ok){
+              const data = await responseCategoria.json()
+              setCategoria(data)
+            } else {
+              console.log("Error en la peticion")
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      fetchData()
     } else {
-      setItems(data)
+      console.log("no pasa nada aqui no hay token")
     }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
+
+    return () => {
+      isMounted = false
+    }
+  }, [authTokens])
+
 
 
   const formik = useFormik({
@@ -38,26 +71,31 @@ const ItemForm = () => {
       nombre: '',
       descripcion: '',
       categoria: '',
-      foto: null  // Cambiado a null en lugar de una cadena vacía
+      foto: null // Cambiado a null en lugar de una cadena vacía
     },
     onSubmit: async (values) => {
+      console.log(values);
+  
+      // Crear un FormData para enviar el archivo correctamente
+      const formData = new FormData();
+      formData.append('nombre', values.nombre);
+      formData.append('descripcion', values.descripcion);
+      formData.append('categoria', values.categoria);
+      formData.append('foto', values.foto);
+  
       try {
-        const formData = new FormData();
-        formData.append('nombre', values.nombre);
-        formData.append('descripcion', values.descripcion);
-        formData.append('categoria', values.categoria);
-        formData.append('foto', values.imagen);
-
         const response = await fetch('http://localhost:8000/api/item/', {
           method: 'POST',
-          body: formData,
+          headers: {
+            'authorization': `Bearer ${authTokens.access}`
+          },
+          body: formData, // Usa el FormData directamente para enviar el archivo
         });
-
+  
         if (response.ok) {
           toast.success('Item añadido correctamente!');
-          formik.setValues(formik.initialValues)
-          setNombreCategoria('')
-
+          formik.setValues(formik.initialValues);
+          setNombreCategoria('');
         } else {
           toast.error('Error al añadir el item');
         }
@@ -67,14 +105,6 @@ const ItemForm = () => {
     },
   });
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/categoria')
-      .then((res) => {
-        setCategoria(res.data)
-      })
-  }, [])
-
-  console.log("imagen procesada y reducida", imagen, "en bytes")
 
   
   return (
@@ -142,18 +172,16 @@ const ItemForm = () => {
             <h1 className='font-semibold'>{filename}</h1>
           <input
             type='file'
-            name='imagen'
+            name='foto'
             accept='image/*'
             onChange={async (e) => {
               
               if (e.currentTarget.files){
-                console.log(e.currentTarget.files[0])
                 const compresor_result = await compresor(e.currentTarget.files[0], 0.5)
                 if (compresor_result){
                   const file = new File([compresor_result], e.target.files[0].name, { type: 'image/webp'})
-                  console.log(file)
                   setImagen(file)
-                  formik.setFieldValue('imagen', file)
+                  formik.setFieldValue('foto', file)
                   setFilename('Foto seleccionada')
                 }
               }

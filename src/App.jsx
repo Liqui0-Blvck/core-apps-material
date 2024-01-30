@@ -12,7 +12,7 @@ function App() {
       <Route path="/*" element={<Dashboard />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
-      {/* <Route path='' element={<Navigate to='/dashboard/home' /> ? authTokens : <Navigate to="/auth/sign-in" replace />}/> */}
+      {/* <Route path='' element={<Navigate to="/auth/sign-in" replace />}/> */}
     </Routes>
   );
 }
