@@ -31,7 +31,6 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
 
   const handleChangeRow = (id, fieldName, value) => {
 
-    console.log(id)
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === id ? { ...row, [fieldName]: value } : row))
     );

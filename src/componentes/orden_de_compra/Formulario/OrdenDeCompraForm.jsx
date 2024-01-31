@@ -209,6 +209,8 @@ const OrdenDeCompraForm = () => {
     });
   };
 
+  console.log(itemOrden)
+
 
   return (
     <MaxWidthWrapper>

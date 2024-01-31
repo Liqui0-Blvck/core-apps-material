@@ -211,12 +211,9 @@ const OrdenDeCompraFormEditar = ({ path }) => {
       [name]: value
     });
 
-    setRows
   };
 
-  console.log(ordenCompraData)
-  console.log(rows)
-  console.log(ordenCompraData.id)
+ console.log(itemOrden)
 
 
   return (
