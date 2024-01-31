@@ -20,21 +20,15 @@ import { ListItemButton, ListItemText } from '@mui/material'
 import { Link } from 'react-router-dom'
 import Contenedor from "./componentes/contenedor/Contenedor";
 import ContenedorDetail from "./componentes/contenedor/ContenedorDetail";
-import TablaProveedor from "./componentes/proveedor/TablaProveedor";
 import ContenedorForm from "./componentes/contenedor/ContenedorForm";
 import CategoriaForm from "./componentes/categoria/CategoriaForm";
-import TablaCategorias from "./componentes/categoria/TablaCategorias";
 import ProveedorForm from "./componentes/proveedor/ProveedorForm";
-import TablaOrdenDeCompra from "./componentes/orden_de_compra/TablaOrdenDeCompra";
-// import OrdenCompraForm from "./componentes/orden_de_compra/OrdenCompraForm";
 import ItemList from "./componentes/Item/ItemList";
-import { useContext } from "react";
-import AuthContext from "./context/AuthContext";
 import Categoria from "./componentes/categoria/Categoria";
 import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
-// import { Outlet } from "./componentes/Item/ItemList";
+import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
   return (
@@ -162,7 +156,7 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Ordenes de compra',
-        path: '/orden-de-compra'
+        path: '/orden-compra'
       },
       {
         name: 'Crear Orden de compra',
@@ -283,14 +277,20 @@ export const routes = [
       // OBJETOS ORDEN DE COMPRA  
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "orden-de-compra",
-        path: "/orden-de-compra",
+        name: "orden-compra",
+        path: "/orden-compra",
         element: <OrdenDeCompra  />,
       },
       {
         name: 'proveedores',
         path: '/orden-registro',
         element: <OrdenCompraForm />
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "orden-compra",
+        path: "/orden-compra/:id",
+        element: <OrdenCompraDetail  />,
       }
     ],
   },

@@ -2,17 +2,30 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import { Toaster } from "react-hot-toast";
 import Item from "./componentes/Item/ItemList";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AuthContext from "./context/AuthContext";
 
+const PrivateRoute = ({ element, ...props }) => {
+  const { authTokens } = useContext(AuthContext);
+
+  return authTokens ? (
+    React.cloneElement(element, props)
+  ) : (
+    <Navigate to="/auth/sign-in" replace />
+  );
+};
+
 function App() {
-  const { authTokens } = useContext(AuthContext)
   return (
     <Routes>
-      <Route path="/*" element={<Dashboard />} />
+      {/* Rutas protegidas */}
+      <Route path="/*" element={<PrivateRoute element={<Dashboard />} />} />
+
+      {/* Rutas de autenticación */}
       <Route path="/auth/*" element={<Auth />} />
-      <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
-      {/* <Route path='' element={<Navigate to="/auth/sign-in" replace />}/> */}
+
+      {/* Redirige cualquier ruta no válida o no autenticada */}
+      <Route path="*" element={<Navigate to="/auth/sign-in" replace />} />
     </Routes>
   );
 }

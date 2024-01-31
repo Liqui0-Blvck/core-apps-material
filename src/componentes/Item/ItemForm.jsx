@@ -109,13 +109,13 @@ const ItemForm = () => {
   
   return (
     <MaxWidthWrapper>
-      <div className='flex flex-col items-center h-full mt-10 mb-24' >
+      <div className='flex flex-col items-center h-full' >
 
-      <div className='w-full h-full mx-auto justify-center gap-10 grid place-items-center overflow-hidden 
-        lg:grid-cols-2'>
+      <div className='w-full h-full mx-auto justify-center gap-10 grid items-center overflow-hidden 
+        md:grid-cols-2 lg:grid-cols-2'>
         <div className='border-[1px] border-gray-300 rounded-md flex flex-col w-full h-96 overflow-hidden gap-2 justify-center
           lg:w-80'>
-          <div className='border-[1px] border-gray-200 mx-auto w-72 h-48 mt-2 relative rounded-md
+          <div className='border-[1px] border-gray-200 mx-auto h-48 mt-2 relative rounded-md
             lg:w-72'>
             {
               imagen
@@ -134,7 +134,7 @@ const ItemForm = () => {
                   </>
                   )
                 : (
-                    <img src='src\assets\default.webp' alt='' className='w-full h-full object-cover rounded-md'/>
+                    <img src='img\default.webp' alt='' className='w-full h-full object-cover rounded-md'/>
                   )
             }
           </div>

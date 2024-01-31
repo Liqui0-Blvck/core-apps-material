@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Typography,
   Card,
@@ -33,37 +33,25 @@ export function Home() {
   const {authTokens, validToken} = useContext(AuthContext)
   const navigate = useNavigate()
 
-  console.log(authTokens)
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          }
-        } catch (error) {
-          console.error(error)
+  const fetchData = async () => {
+    try {
+      if (authTokens) {
+        const isValidToken = await validToken(authTokens);
+        if (!isValidToken) {
+          navigate('/auth/sign-in/');
         }
       }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
+  if (authTokens) {
+    console.log("si hay token");
+    fetchData();
+  } else {
+    console.log("no pasa nada aquí no hay token");
+  }
   
   return (
     <div className="mt-12">

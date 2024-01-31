@@ -78,6 +78,8 @@ const ItemList = () => {
   }, [items, formatearFecha])
 
 
+  console.log(datosFormateados)
+
 
   return (
     <MaxWidthWrapper>

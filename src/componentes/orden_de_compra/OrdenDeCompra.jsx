@@ -11,8 +11,6 @@ const OrdenDeCompra = () => {
   const [refresh, setRefresh] = useState(false)
   const navigate = useNavigate()
 
-  console.log(refresh)
-
   useEffect(() => {
     let isMounted = true
 

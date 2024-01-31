@@ -62,7 +62,7 @@ export default function CartDetail({ fecha_creacion, estado, nombre, solicitado,
                   </div>
                   <div className='flex flex-col gap-2'>
                     {
-                      items.map((item) => (
+                      items && items.map((item) => (
                         <div className='w-[90%] mx-auto rounded-md h-8 bg-slate-400 flex items-center justify-center '>
                           <span className='text-white'
                             onClick={() => navigate(`/item/${item.id}`)}

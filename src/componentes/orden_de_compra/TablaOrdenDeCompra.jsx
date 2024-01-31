@@ -183,12 +183,13 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected, handleUpdateClick } = props;
-  const [estado, setEstado] = useState({
-    label: '',
-    estado_oc: null,
-    resultado: false
-  })
+    const { numSelected, handleDeleteClick, selected, handleUpdateClick, data } = props;
+    const datos = data.filter(item => selected.includes(item.id));
+    const [estado, setEstado] = useState({
+      label: '',
+      estado_oc: null,
+      resultado: false
+    })
 
   const handleClickEstado = (label, estado, resultado) => {
     setEstado({
@@ -248,42 +249,60 @@ function EnhancedTableToolbar(props) {
       }
 
       {
-        numSelected <= 1 && numSelected > 0 
-          ? (
-            <>
-              <div className='flex gap-2 items-center'>
-                <h1 className='mr-10'>Acciones</h1>
-                
-                {
-                 estado.label === 'Aprobada' || estado.label === 'Rechazada'
-                  ? (
-                    <IconButton size='md' className='w-20' variant='solid' color='primary' onClick={() => handleClickEstado('Finalizada', 5, true )}>
-                      Finalizada
-                    </IconButton>
-                    )
-                  : (
-                    <>
-                      <IconButton size='md' className='w-20' variant='solid' color='primary' onClick={() => handleClickEstado('Aprobada', 2, true )}>
-                        Aceptar
-                      </IconButton>
-      
-                      <IconButton size='md' className='w-24' variant='solid' color='danger' onClick={() => handleClickEstado('Rechazada', 3, true )}>
-                        Rechazar
-                      </IconButton>
-                    </>
-                    ) 
-                }
-                
-                <Ln to={`/orden-de-compra/${selected}`}>
-                  <IconButton size='md' variant='solid' color='primary'>
-                    Detalles
-                  </IconButton>
-                </Ln>
-              </div>
-            </>
+      numSelected <= 1 && numSelected > 0 ? (
+        <div className='flex gap-2 items-center'>
+          <h1 className='mr-10'>Acciones</h1>
+          
+
+          {datos[0].estado_oc_label === 'Aprobada' || datos[0].estado_oc_label === 'Rechazada' || datos[0].estado_oc_label === 'Finalizado' ? (
+            datos[0].estado_oc_label === 'Aprobada' && (
+              <>
+                <IconButton
+                  size='md'
+                  className='w-20'
+                  variant='solid'
+                  color='primary'
+                  onClick={() => handleClickEstado('Finalizada', 5, true)}
+                >
+                  Finalizada
+                </IconButton>
+              </>
             )
-          : null
-      }
+          ) : (
+            <>
+              {numSelected === 1 && (
+                <>
+                  <IconButton
+                    size='md'
+                    className='w-20'
+                    variant='solid'
+                    color='primary'
+                    onClick={() => handleClickEstado('Aprobada', 2, true)}
+                  >
+                    Aceptar
+                  </IconButton>
+
+                  <IconButton
+                    size='md'
+                    className='w-24'
+                    variant='solid'
+                    color='danger'
+                    onClick={() => handleClickEstado('Rechazada', 3, true)}
+                  >
+                    Rechazar
+                  </IconButton>
+                </>
+              )}
+            </>
+          )}
+
+          <Ln to={`/orden-compra/${selected}`}>
+            <IconButton size='md' variant='solid' color='primary'>
+              Detalles
+            </IconButton>
+          </Ln>
+        </div>
+      ) : null}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -330,7 +349,6 @@ export default function TablaOrdenDeCompra({ data, setData, token, setRefresh })
 
   const handleUpdateClick = async (estado) => {
 
-    console.log(estado)
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-update/${selected}`, {
         method: 'PUT',
@@ -429,7 +447,9 @@ export default function TablaOrdenDeCompra({ data, setData, token, setRefresh })
         numSelected={selected.length} 
         handleDeleteClick={handleDeleteClick} 
         selected={selected} 
-        handleUpdateClick={handleUpdateClick}/>
+        handleUpdateClick={handleUpdateClick}
+        data={data}
+        />
       <Table
         aria-labelledby="tableTitle"
         hoverRow

@@ -72,6 +72,7 @@ const ItemDetail = () => {
     []
   )
 
+  console.log(data)
   return (
     <MaxWidthWrapper>
       <div className='my-14'>
@@ -80,7 +81,9 @@ const ItemDetail = () => {
           foto={data.foto} 
           nombre={data.nombre}
           descripcion={data.descripcion}
-          fecha_creacion={formatearFecha(data.fecha_creacion)}/>
+          fecha_creacion={formatearFecha(data.fecha_creacion)}
+          proveedores={data.proveedores}
+          />
       </div>
     </MaxWidthWrapper>
   )
