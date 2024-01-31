@@ -5,9 +5,10 @@ import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
 import FormHeader from './FormHeader'
+import { useFormik } from 'formik'
 
 
-const OrdenDeCompraForm = () => {
+const OrdenDeCompraFormEditar = ({ path }) => {
   const { authTokens, validToken } = useContext(AuthContext)
   const navigate = useNavigate()
   const [isActive, setIsActive] = useState(false)
@@ -24,6 +25,13 @@ const OrdenDeCompraForm = () => {
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
   );
+
+  const [proveedores, setProveedores] = useState([])
+  const [proveedor, setProveedor] = useState([])
+
+  const [items, setItems] = useState([])
+  const [ordenCompraID, setOrdenCompraID] = useState(null)
+
 
   const [ordenCompraData, setOrdenCompraData] = useState({
     "nombre": "",
@@ -44,11 +52,7 @@ const OrdenDeCompraForm = () => {
     "orden_de_compra": null
   })
 
-  const [proveedores, setProveedores] = useState([])
-  const [proveedor, setProveedor] = useState([])
-  const [ordenCompra, setOrdenCompra] = useState(null)
-
-  const [items, setItems] = useState([])
+ 
 
 
   useEffect(() => {
@@ -97,6 +101,24 @@ const OrdenDeCompraForm = () => {
               console.log("Error en la petición")
             }
 
+            const responseOrden = await fetch(`http://127.0.0.1:8000/api${path}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseOrden.ok){
+              const data = await responseOrden.json()
+              setOrdenCompraData(data)
+              setRows(data.items)
+            } else {
+              console.log("Error en la petición")
+            }
+
+            
+
           }
         } catch (error) {
           console.error(error)
@@ -112,20 +134,6 @@ const OrdenDeCompraForm = () => {
       isMounted = false
     }
   }, [authTokens])
-
-  useEffect(() => {
-    let isMounted = true
-
-    const getItems = async () => {
-      
-    } 
-
-    getItems()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
 
   const handleAgregarItem = () => {
@@ -146,8 +154,8 @@ const OrdenDeCompraForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
-        method: 'POST',
+      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-editar/${ordenCompraData.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authTokens.access}`
@@ -166,15 +174,6 @@ const OrdenDeCompraForm = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setOrdenCompraData({
-          "nombre": "",
-          "numero_oc": "",
-          "fecha_orden": null,
-          "estado_oc": null,
-          "email_envia_oc": "",
-          "numero_cotizacion": "",
-          "proveedor": null,
-        });
         setRows(initialRows);
 
         setIsActive(true);
@@ -182,7 +181,7 @@ const OrdenDeCompraForm = () => {
         setItemOrden({
           orden_de_compra: data.id,
         });
-        setOrdenCompra(data.id);
+        setOrdenCompraID(data.id);
       } else {
         console.log("Error al crear la orden de compra");
       }
@@ -194,6 +193,8 @@ const OrdenDeCompraForm = () => {
   const handleInputChange = ({ target }) => {
     const { name, value } = target;
 
+    console.log(`estoy en ${name} y mi valor es ${value}`,)
+
     setOrdenCompraData({
       ...ordenCompraData,
       [name]: value,
@@ -203,11 +204,19 @@ const OrdenDeCompraForm = () => {
   const handleInputChangeItem = ({ target }) => {
     const {name, value} = target;
 
+    console.log(`Estoy en nombre ${name} y mi valor es ${value}`)
+
     setItemOrden({
       ...itemOrden,
       [name]: value
     });
+
+    setRows
   };
+
+  console.log(ordenCompraData)
+  console.log(rows)
+  console.log(ordenCompraData.id)
 
 
   return (
@@ -219,20 +228,22 @@ const OrdenDeCompraForm = () => {
           proveedores={proveedores}
           proveedor={proveedor}
           setProveedor={setProveedor}
+          ordenCompra={ordenCompraData}
         />
         <div id='form-list' className='mt-10'>
-          <ItemOrdenForm 
-          rows={rows}
-          setRows={setRows}
-          handleSubmit={handleSubmitOrdenCompra} 
-          itemProveedor={items} 
-          handleChange={handleInputChangeItem}
-          handleAgregarItem={handleAgregarItem}
-        />
+          <ItemOrdenForm
+            ordenCompra={ordenCompraData}
+            rows={rows}
+            setRows={setRows}
+            handleSubmit={handleSubmitOrdenCompra} 
+            itemProveedor={items} 
+            handleChange={handleInputChangeItem}
+            handleAgregarItem={handleAgregarItem}
+          />
         </div>
       </div>
     </MaxWidthWrapper>
   );
 }
 
-export default OrdenDeCompraForm
+export default OrdenDeCompraFormEditar

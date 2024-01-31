@@ -5,13 +5,30 @@ import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
 import FormHeader from './FormHeader'
+import { useFormik } from 'formik'
 
 
-const OrdenDeCompraForm = () => {
+const OrdenDeCompraFormMuestra = ({ path }) => {
   const { authTokens, validToken } = useContext(AuthContext)
   const navigate = useNavigate()
+  const [ordenCompra, setOrdenCompra] = useState({})
+  const [editMode, setEditMode] = useState(false);
+  const [editedOrdenCompra, setEditedOrdenCompra] = useState({ ...ordenCompra });
+
+  const [editedRow, setEditedRow] = useState(
+    {
+      id: '',
+      item: 0,
+      unidad_de_compra: 0,
+      costo_por_unidad: 0,
+      fecha_llegada: '',
+      observaciones: '',
+    }
+  );
   const [isActive, setIsActive] = useState(false)
 
+  
+    
   const initialRows = [
     {
       item: "",
@@ -21,9 +38,16 @@ const OrdenDeCompraForm = () => {
       observaciones: "",
     },
   ];
+  const [proveedores, setProveedores] = useState([])
+  const [proveedor, setProveedor] = useState([])
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
-  );
+    );
+
+  const [items, setItems] = useState([])
+
+  
+
 
   const [ordenCompraData, setOrdenCompraData] = useState({
     "nombre": "",
@@ -44,11 +68,7 @@ const OrdenDeCompraForm = () => {
     "orden_de_compra": null
   })
 
-  const [proveedores, setProveedores] = useState([])
-  const [proveedor, setProveedor] = useState([])
-  const [ordenCompra, setOrdenCompra] = useState(null)
-
-  const [items, setItems] = useState([])
+ 
 
 
   useEffect(() => {
@@ -97,6 +117,24 @@ const OrdenDeCompraForm = () => {
               console.log("Error en la petición")
             }
 
+            const responseOrden = await fetch(`http://127.0.0.1:8000/api${path}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization':  `Bearer ${authTokens.access}`
+              }
+            })
+
+            if (responseOrden.ok){
+              const data = await responseOrden.json()
+              setOrdenCompra(data)
+              setRows(data.items)
+            } else {
+              console.log("Error en la petición")
+            }
+
+            
+
           }
         } catch (error) {
           console.error(error)
@@ -112,20 +150,6 @@ const OrdenDeCompraForm = () => {
       isMounted = false
     }
   }, [authTokens])
-
-  useEffect(() => {
-    let isMounted = true
-
-    const getItems = async () => {
-      
-    } 
-
-    getItems()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
 
   const handleAgregarItem = () => {
@@ -166,17 +190,7 @@ const OrdenDeCompraForm = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setOrdenCompraData({
-          "nombre": "",
-          "numero_oc": "",
-          "fecha_orden": null,
-          "estado_oc": null,
-          "email_envia_oc": "",
-          "numero_cotizacion": "",
-          "proveedor": null,
-        });
         setRows(initialRows);
-
         setIsActive(true);
         setProveedor(data.proveedor);
         setItemOrden({
@@ -198,6 +212,8 @@ const OrdenDeCompraForm = () => {
       ...ordenCompraData,
       [name]: value,
     });
+
+    setEditedOrdenCompra((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleInputChangeItem = ({ target }) => {
@@ -209,6 +225,10 @@ const OrdenDeCompraForm = () => {
     });
   };
 
+  console.log(ordenCompraData)
+  console.log(editedRow)
+  console.log(rows)
+
 
   return (
     <MaxWidthWrapper>
@@ -219,20 +239,32 @@ const OrdenDeCompraForm = () => {
           proveedores={proveedores}
           proveedor={proveedor}
           setProveedor={setProveedor}
+          ordenCompra={ordenCompra}
+          editedOrdenCompra={editedOrdenCompra}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          editedRow={editedRow}
+          setEditedRow={setEditedRow}
         />
         <div id='form-list' className='mt-10'>
-          <ItemOrdenForm 
-          rows={rows}
-          setRows={setRows}
-          handleSubmit={handleSubmitOrdenCompra} 
-          itemProveedor={items} 
-          handleChange={handleInputChangeItem}
-          handleAgregarItem={handleAgregarItem}
-        />
+          <ItemOrdenForm
+            editedRow={editedRow}
+            setEditedRow={setEditedRow}
+            editedOrdenCompra={editedOrdenCompra}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            ordenCompra={ordenCompra}
+            rows={rows}
+            setRows={setRows}
+            handleSubmit={handleSubmitOrdenCompra} 
+            itemProveedor={items} 
+            handleChange={handleInputChangeItem}
+            handleAgregarItem={handleAgregarItem}
+          />
         </div>
       </div>
     </MaxWidthWrapper>
   );
 }
 
-export default OrdenDeCompraForm
+export default OrdenDeCompraFormMuestra

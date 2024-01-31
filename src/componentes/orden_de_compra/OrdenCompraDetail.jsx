@@ -3,14 +3,13 @@ import { useMemo } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
 import { useLocation } from 'react-router-dom'
-import CartDetail from './CartDetail'
+import OrdenDeCompraFormEditar from './FormularioEditar/OrdenDeCompraFormEditar'
+import OrdenDeCompraFormMuestra from './FormularioMuestra/OrdenDeCompraFormMuestra'
 
 const OrdenCompraDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
   const [data, setData] = useState({})
-
-  console.log(pathname)
 
 
   useEffect(() => {
@@ -75,19 +74,23 @@ const OrdenCompraDetail = () => {
     []
   )
 
-  console.log(data)
+  console.log(data.estado_oc_label)
 
   return (
     <MaxWidthWrapper>
-      <CartDetail
-        titulo='Orden de Compra'
-        estado={data.estado_oc_label} 
-        nombre={data.nombre}
-        items={data.items}
-        proveedor={data.proveedor_nombre}
-        // solicitado={data.solicitado_por}
-        numero_ct={data.numero_cotizacion}
-        fecha_creacion={formatearFecha(data.fecha_creacion)}/>
+      {
+        data.estado_oc_label === 'Creada'
+          ? (
+            <>
+              <OrdenDeCompraFormEditar path={pathname} />
+            </>
+            )
+          : (
+            <>
+              <OrdenDeCompraFormMuestra path={pathname}/>
+            </>
+          )
+      }
     </MaxWidthWrapper>
   )
 }
