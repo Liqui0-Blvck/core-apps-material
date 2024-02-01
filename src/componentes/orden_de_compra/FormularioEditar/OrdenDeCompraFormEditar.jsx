@@ -163,6 +163,7 @@ const OrdenDeCompraFormEditar = ({ path }) => {
         body: JSON.stringify({
           ...ordenCompraData,
           items: rows.map((row) => ({
+            id: row.id,
             item: row.item,
             unidad_de_compra: row.unidad_de_compra,
             costo_por_unidad: row.costo_por_unidad,
@@ -213,7 +214,7 @@ const OrdenDeCompraFormEditar = ({ path }) => {
 
   };
 
- console.log(itemOrden)
+ console.log(rows)
 
 
   return (
@@ -222,7 +223,7 @@ const OrdenDeCompraFormEditar = ({ path }) => {
         <FormHeader 
           handleSubmit={handleSubmitOrdenCompra} 
           handleChange={handleInputChange} 
-          proveedores={proveedores}
+          proveedores={proveedores} 
           proveedor={proveedor}
           setProveedor={setProveedor}
           ordenCompra={ordenCompraData}

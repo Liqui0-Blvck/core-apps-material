@@ -59,23 +59,6 @@ const OrdenCompraDetail = () => {
   console.log(data)
 
 
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false
-      })
-    },
-    []
-  )
-
-  console.log(data.estado_oc_label)
-
   return (
     <MaxWidthWrapper>
       {

@@ -113,20 +113,6 @@ const OrdenDeCompraForm = () => {
     }
   }, [authTokens])
 
-  useEffect(() => {
-    let isMounted = true
-
-    const getItems = async () => {
-      
-    } 
-
-    getItems()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
-
 
   const handleAgregarItem = () => {
     // Agregar un nuevo ítem a la lista de ítems
@@ -211,7 +197,7 @@ const OrdenDeCompraForm = () => {
 
   console.log(itemOrden)
 
-
+  console.log(proveedor)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
