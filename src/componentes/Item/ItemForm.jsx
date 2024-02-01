@@ -8,6 +8,7 @@ import { IoMdClose } from "react-icons/io";
 import { compresor } from '../../services/compresor_imagen'
 import AuthContext from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { Box, Skeleton } from '@mui/material'
 
 const ItemForm = () => {
   const [categoria, setCategoria] = useState([])
@@ -16,15 +17,17 @@ const ItemForm = () => {
   const [imagen, setImagen] = useState(null)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
 
   const { authTokens, validToken } = useContext(AuthContext)
   
   useEffect(() => {
     let isMounted = true
+    
 
     if (authTokens){
-      console.log("si hay token")
+      setLoading(true)
       const fetchData = async () => {
         try {
           const isValidToken = await validToken(authTokens)
@@ -55,6 +58,7 @@ const ItemForm = () => {
       }
 
       fetchData()
+      setLoading(false)
     } else {
       console.log("no pasa nada aqui no hay token")
     }
@@ -96,6 +100,7 @@ const ItemForm = () => {
           toast.success('Item añadido correctamente!');
           formik.setValues(formik.initialValues);
           setNombreCategoria('');
+          navigate('/item/')
         } else {
           toast.error('Error al añadir el item');
         }
@@ -104,6 +109,17 @@ const ItemForm = () => {
       }
     },
   });
+
+
+  if (loading){
+    return (
+        <Box sx={{ width: 300 }}>
+        <Skeleton />
+        <Skeleton animation="wave" />
+        <Skeleton animation={false} />
+      </Box>
+    )
+  }
 
 
   
@@ -164,7 +180,7 @@ const ItemForm = () => {
         </div>
     
 
-        <form className='grid grid-cols-3 items-center w-full h-72' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+        <form className='grid grid-cols-3 items-center w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
           <label htmlFor='imagen' className='text-start'>Imagen:</label>
           <div 
             className='border-[2px] h-10 border-dashed border-blue-400 rounded-md p-2 mt-1 col-span-2 flex items-center justify-center cursor-pointer'

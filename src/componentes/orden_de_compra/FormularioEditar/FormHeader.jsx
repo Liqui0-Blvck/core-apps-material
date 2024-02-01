@@ -1,30 +1,26 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import { ESTADO_OC } from '../../../const/constantes'
+import React, { useEffect, useMemo, useState } from 'react'
 
 const FormHeader = ({ 
     handleSubmit, 
     handleChange, 
     proveedores, 
     proveedor, 
-    setProveedor, 
-    ordenCompra, 
-    editedOrdenCompra, 
-    editMode, 
-    setEditMode,
+    setProveedor,
+    ordenCompra
  }) => {
   
 
   const [sucursales, setSucursales] = useState([])
   const [sucursal, setSucursal] = useState([])
   const [sucursalSeleccionado, setSucursalSeleccionado] = useState([])
+  const [proveedorSeleccionado, setProveedorSeleccionado] = useState({})
 
   useEffect(() => {
     let isMounted = true
-
-    if (proveedor){
+    if (ordenCompra){
       const getSucursales = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${ordenCompra.proveedor}/sucursales`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -38,7 +34,7 @@ const FormHeader = ({
       }
 
       const getSucursal = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales/${sucursal}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${ordenCompra.proveedor}/sucursales/${sucursal}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -54,6 +50,7 @@ const FormHeader = ({
 
       getSucursales()
       getSucursal()
+      
     } else {
       console.log("Aun no hay proveedor")
     }
@@ -65,6 +62,21 @@ const FormHeader = ({
 
 
   }, [proveedor])
+
+  console.log(proveedor)
+
+
+
+  const formatearFecha = useMemo(
+    () => (fecha) => {
+      return new Date(fecha).toLocaleString('es-ES', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      })
+    },
+    []
+  )
 
   return (
     <div className='mb-5 overflow-hidden'>
@@ -81,8 +93,7 @@ const FormHeader = ({
             <input 
               type="text" 
               name='nombre'
-              value={editMode ? editedOrdenCompra.nombre : ordenCompra.nombre}
-              placeholder={ordenCompra.nombre}
+              value={ordenCompra && ordenCompra.nombre}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}/>
           </div>
@@ -92,8 +103,7 @@ const FormHeader = ({
             <input 
               type="text" 
               name='numero_cotizacion' 
-              value={editMode ? editedOrdenCompra.numero_cotizacion :ordenCompra.numero_cotizacion}
-              placeholder={ordenCompra.numero_cotizacion}
+              value={ordenCompra && ordenCompra.numero_cotizacion}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}/>
           </div>
@@ -102,7 +112,7 @@ const FormHeader = ({
             <label htmlFor="proveedor">Proveedor: </label>
             <select 
               name="proveedor"
-              value={editMode ? editedOrdenCompra.proveedor : ordenCompra.proveedor}
+              // value={proveedorSeleccionado.id}
               onChange={(e) => {
                 setProveedor(e.target.value)
                 handleChange(e)
@@ -126,9 +136,9 @@ const FormHeader = ({
           <div className='row-start-4 w-full flex gap-10 justify-between items-center'>
             <label htmlFor="fecha_orden" className='text-start'>Fecha Orden: </label>
             <input 
-              type="date"
+              type="text"
               name='fecha_orden' 
-              value={ordenCompra.nombre}
+              value={formatearFecha(ordenCompra.fecha_creacion)}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}/>
           </div>
@@ -138,7 +148,7 @@ const FormHeader = ({
             <input 
               type="text" 
               name='numero_oc' 
-              value={editMode ? editedOrdenCompra.numero_oc : ordenCompra.numero_oc}
+              value={ordenCompra.numero_oc}
               placeholder={ordenCompra.numero_oc}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}/>
@@ -148,6 +158,7 @@ const FormHeader = ({
             <label  className='text-start'>Sucursal: </label>
             <select
               onChange={(e) => setSucursal(e.target.value)}
+              value={sucursal}
               name='sucursal'
               className='md:px-2.5 h-10'
             >
@@ -172,7 +183,7 @@ const FormHeader = ({
           <div className='lg:row-start-3 lg:w-[80%] flex items-center gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Proveedor: </label>
               <input 
-                value=''
+                // value={ordenCompra.proveedor.nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -180,15 +191,15 @@ const FormHeader = ({
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Contacto: </label>
               <input 
-                value=''
+                // value={ordenCompra.proveedor.contacto}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
           <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between'>
-            <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
+            <label htmlFor="nombre" className='text-start'>Correo: </label>
               <input 
-                value=''
+                // value={ordenCompra.proveedor.correo}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -202,17 +213,25 @@ const FormHeader = ({
           </div>
           
           <div className='lg:row-start-3 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Direccion: </label>
+            <label htmlFor="nombre" className='text-start'>Nombre: </label>
+              <input 
+                value={sucursalSeleccionado.nombre}
+                className='p-2 border-[1px] border-gray-300 rounded-md'
+                disabled/>
+          </div>
+
+          <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
+            <label htmlFor="nombre" className='text-start'>Dirección: </label>
               <input 
                 value={sucursalSeleccionado.direccion}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
-          <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Numero: </label>
+          <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between items-center'>
+            <label htmlFor="nombre" className='text-start'>Region: </label>
               <input 
-                value={sucursalSeleccionado.numero}
+                value={sucursalSeleccionado.region_nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>

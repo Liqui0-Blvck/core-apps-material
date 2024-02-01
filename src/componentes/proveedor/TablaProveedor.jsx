@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState } from 'react'
 import PropTypes from 'prop-types';
 import Box from '@mui/joy/Box';
 import Table from '@mui/joy/Table';
@@ -18,9 +18,9 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
-
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -62,35 +62,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: 'id',
+    numeric: true,
+    disablePadding: true,
+    label: 'ID',
+  },
+  {
     id: 'nombre',
     numeric: false,
     disablePadding: true,
     label: 'Nombre',
   },
   {
-    id: 'rut',
-    numeric: false,
+    id: 'region_nombre',
+    numeric: true,
     disablePadding: false,
-    label: 'Rut',
+    label: 'Region',
   },
   {
-    id: 'correo',
+    id: 'provincia_nombre',
     numeric: false,
     disablePadding: false,
-    label: 'Correo',
+    label: 'Provincia',
   },
+
   {
-    id: 'contacto',
+    id: 'comuna_nombre',
     numeric: false,
     disablePadding: false,
-    label: 'Contacto',
-  },
-  
-  {
+    label: 'Comuna',
+  },{
     id: 'fecha_creacion',
     numeric: false,
     disablePadding: false,
-    label: 'Fecha Creacion',
+    label: 'Fecha_creacion',
   }
 ];
 
@@ -177,15 +182,15 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick } = props;
+  const { numSelected, handleDeleteClick, selected } = props;
 
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
         py: 1,
+        gap: 2,
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
@@ -206,25 +211,37 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Proveedores
+          Items
         </Typography>
       )}
 
       {
         numSelected === 0
-        ? (
-          <Ln to={`/proveedor-registro`}>
-            <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in  '>
-              <span className='font-semibold'>Agregar Proveedor</span>
-            </div>
-          </Ln>
-          )
-        : null
+          ? (
+            <Ln to={`/proveedor-registro/`}>
+              <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-autp'>
+                <span className='font-semibold text-center'>Agregar Proveeedor</span>
+              </div>
+            </Ln>
+            )
+          : null
+      }
+
+      {
+        numSelected <= 1 && numSelected > 0 
+          ? (
+            <Ln to={`/proveedor/${selected}`}>
+              <IconButton size='md' variant='solid' color='primary'>
+                Detalles
+              </IconButton>
+            </Ln>
+            )
+          : null
       }
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton size="sm" color="danger" variant="solid " onClick={handleDeleteClick}>
+          <IconButton size="sm" color="danger" variant="solid" onClick={handleDeleteClick}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -243,10 +260,10 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaProveedor({ data, setData, token}) {
+export default function TablaProveedor({ data, setData, token }) {
 
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('fecha_creacion');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -269,33 +286,34 @@ export default function TablaProveedor({ data, setData, token}) {
   const handleDeleteClick = async () => {
     try {
       console.log("Eliminar elementos seleccionados:", selected);
+
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'authorization': `Bearer ${token}`
         },
+        body: JSON.stringify({ ids: selected }),
       });
 
       if (response.ok){
-        toast.success('Proveedor eliminado con exito')
-
-        const newData = data.filter(item => !selected.includes(item.id));
-        setData(newData);
-
-        setSelected([]);
+        toast.success('Item eliminado con exito')
       } else {
         toast.error('No se ha podido eliminar')
       }
+
+      const newData = data.filter(item => !selected.includes(item.id));
+      setData(newData);
+
+      setSelected([]);
+  
     } catch (error) {
-      toast.error("No se ha podido eliminar", error);
+      console.error("Error al eliminar elementos:", error);
 
     }
   };
-  
-  
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -344,9 +362,9 @@ export default function TablaProveedor({ data, setData, token}) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} />
+      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -355,13 +373,16 @@ export default function TablaProveedor({ data, setData, token}) {
           '--TableCell-selectedBackground': (theme) =>
             theme.vars.palette.success.softBg,
           '& thead th:nth-child(1)': {
-            width: '40px',
+            width: '30px',
           },
           '& thead th:nth-child(2)': {
             width: '30%',
           },
           '& tr > *:nth-child(n+3)': { textAlign: 'right',
           width: '100%'
+          },
+          '& tfoot > td': {
+            width: '100%'
           }
         }}
       >
@@ -378,7 +399,8 @@ export default function TablaProveedor({ data, setData, token}) {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
               const isItemSelected = isSelected(row.id);
-              const labelId = `enhanced-table-checkbox-${index}`; 
+              const labelId = `enhanced-table-checkbox-${index}`;
+
               return (
                 <tr
                   onClick={(event) => handleClick(event, row.id)}
@@ -386,7 +408,6 @@ export default function TablaProveedor({ data, setData, token}) {
                   aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.id}
-                  // selected={isItemSelected}
                   style={
                     isItemSelected
                       ? {
@@ -410,11 +431,12 @@ export default function TablaProveedor({ data, setData, token}) {
                     />
                   </th>
                   <th id={labelId} scope="row">
-                    {row.nombre}
+                    {row.id}
                   </th>
-                  <td>{row.rut}</td>
-                  <td>{row.correo}</td>
-                  <td>{row.contacto}</td>
+                  <td>{row.nombre}</td>
+                  <td>{row.region_nombre}</td>
+                  <td>{row.provincia_nombre}</td>
+                  <td>{row.comuna_nombre}</td>
                   <td>{row.fecha_creacion}</td>
                 </tr>
               );
@@ -426,20 +448,21 @@ export default function TablaProveedor({ data, setData, token}) {
                 '--TableRow-hoverBackground': 'transparent',
               }}
             >
-              <td colSpan={6} aria-hidden />
+              <td colSpan={8} aria-hidden />
             </tr>
           )}
         </tbody>
-        <tfoot>
+        <tfoot >
           <tr>
-            <td colSpan={6}>
+            <td colSpan={8}>
               <Box
                 sx={{
+                  width: '100%',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 2,
                   justifyContent: 'flex-end',
-                }}
+                }}  
               >
                 <FormControl orientation="horizontal" size="sm">
                   <FormLabel>Rows per page:</FormLabel>

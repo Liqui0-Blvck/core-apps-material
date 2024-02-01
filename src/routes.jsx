@@ -29,6 +29,7 @@ import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
+import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
   return (
@@ -268,6 +269,12 @@ export const routes = [
         name: "proveedores",
         path: "/proveedores",
         element: <Proveedor   />,
+      },
+      ,
+      {
+        name: 'proveedor-detalle',
+        path: '/proveedor/:id',
+        element: <ProveedorDetail />
       },
       {
         name: 'proveedores',

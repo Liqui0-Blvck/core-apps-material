@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
 import AuthContext from '../../../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
@@ -8,10 +8,12 @@ import FormHeader from './FormHeader'
 import { useFormik } from 'formik'
 
 
-const OrdenDeCompraFormEditar = ({ path }) => {
+const OrdenDeCompraFormEditar = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const navigate = useNavigate()
   const [isActive, setIsActive] = useState(false)
+
+  const { pathname } = useLocation()
 
   const initialRows = [
     {
@@ -42,7 +44,7 @@ const OrdenDeCompraFormEditar = ({ path }) => {
     "numero_cotizacion": "",
     "proveedor": null
   })
-
+ 
   const [itemOrden, setItemOrden] = useState({
     "unidad_de_compra": null,
     "costo_por_unidad": null,
@@ -101,7 +103,7 @@ const OrdenDeCompraFormEditar = ({ path }) => {
               console.log("Error en la petición")
             }
 
-            const responseOrden = await fetch(`http://127.0.0.1:8000/api${path}`, {
+            const responseOrden = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -176,13 +178,13 @@ const OrdenDeCompraFormEditar = ({ path }) => {
       const data = await response.json();
       if (response.ok) {
         setRows(initialRows);
-
         setIsActive(true);
         setProveedor(data.proveedor);
         setItemOrden({
           orden_de_compra: data.id,
         });
         setOrdenCompraID(data.id);
+        navigate(`/orden-compra/`)
       } else {
         console.log("Error al crear la orden de compra");
       }
@@ -214,7 +216,6 @@ const OrdenDeCompraFormEditar = ({ path }) => {
 
   };
 
- console.log(rows)
 
 
   return (

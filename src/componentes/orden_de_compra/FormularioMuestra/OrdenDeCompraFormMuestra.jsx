@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import AuthContext from '../../../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
@@ -8,28 +8,14 @@ import FormHeader from './FormHeader'
 import { useFormik } from 'formik'
 
 
-const OrdenDeCompraFormMuestra = ({ path }) => {
+const OrdenDeCompraFormMuestra = ({ data }) => {
   const { authTokens, validToken } = useContext(AuthContext)
   const navigate = useNavigate()
   const [ordenCompra, setOrdenCompra] = useState({})
-  const [editMode, setEditMode] = useState(false);
-  const [editedOrdenCompra, setEditedOrdenCompra] = useState({ ...ordenCompra });
+  const { pathname } = useLocation()
+ 
 
-  const [editedRow, setEditedRow] = useState(
-    {
-      id: '',
-      item: 0,
-      unidad_de_compra: 0,
-      costo_por_unidad: 0,
-      fecha_llegada: '',
-      observaciones: '',
-    }
-  );
-  const [isActive, setIsActive] = useState(false)
-
-  
-    
-  const initialRows = [
+ const initialRows = [
     {
       item: "",
       unidad_de_compra: 0,
@@ -117,7 +103,7 @@ const OrdenDeCompraFormMuestra = ({ path }) => {
               console.log("Error en la petición")
             }
 
-            const responseOrden = await fetch(`http://127.0.0.1:8000/api${path}`, {
+            const responseOrden = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -127,13 +113,11 @@ const OrdenDeCompraFormMuestra = ({ path }) => {
 
             if (responseOrden.ok){
               const data = await responseOrden.json()
-              setOrdenCompra(data)
+              setOrdenCompraData(data)
               setRows(data.items)
             } else {
               console.log("Error en la petición")
             }
-
-            
 
           }
         } catch (error) {
@@ -225,11 +209,6 @@ const OrdenDeCompraFormMuestra = ({ path }) => {
     });
   };
 
-  console.log(ordenCompraData)
-  console.log(editedRow)
-  console.log(rows)
-
-
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
@@ -239,21 +218,11 @@ const OrdenDeCompraFormMuestra = ({ path }) => {
           proveedores={proveedores}
           proveedor={proveedor}
           setProveedor={setProveedor}
-          ordenCompra={ordenCompra}
-          editedOrdenCompra={editedOrdenCompra}
-          editMode={editMode}
-          setEditMode={setEditMode}
-          editedRow={editedRow}
-          setEditedRow={setEditedRow}
+          ordenCompra={ordenCompraData}
         />
         <div id='form-list' className='mt-10'>
           <ItemOrdenForm
-            editedRow={editedRow}
-            setEditedRow={setEditedRow}
-            editedOrdenCompra={editedOrdenCompra}
-            editMode={editMode}
-            setEditMode={setEditMode}
-            ordenCompra={ordenCompra}
+            ordenCompra={ordenCompraData}
             rows={rows}
             setRows={setRows}
             handleSubmit={handleSubmitOrdenCompra} 

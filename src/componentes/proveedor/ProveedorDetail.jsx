@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useMemo } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom'
+import CartDetail from './CartDetail'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
-import { useLocation } from 'react-router-dom'
-import OrdenDeCompraFormEditar from './FormularioEditar/OrdenDeCompraFormEditar'
-import OrdenDeCompraFormMuestra from './FormularioMuestra/OrdenDeCompraFormMuestra'
 
-const OrdenCompraDetail = () => {
+
+const ProveedorDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
   const [data, setData] = useState({})
@@ -56,27 +55,39 @@ const OrdenCompraDetail = () => {
     }
   }, [authTokens])
 
-  console.log(data)
 
+  
+  const formatearFecha = useMemo(
+    () => (fecha) => {
+      return new Date(fecha).toLocaleString('es-ES', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false
+      })
+    },
+    []
+  )
 
+  console.log("estoy mostrandome en la consola navegador", data)
   return (
     <MaxWidthWrapper>
-      {
-        data.estado_oc_label === 'Creada'
-          ? (
-            <>
-              <OrdenDeCompraFormEditar data={data}/>
-            </>
-            )
-          : (
-            <>
-              <OrdenDeCompraFormMuestra data={data}/>
-            </>
-          )
-      }
+      <div className='my-14'>
+        <CartDetail
+          titulo='Proveedor'
+          foto={data.foto} 
+          nombre={data.nombre}
+          comuna={data.comuna_nombre}
+          direccion={data.direccion}
+          fecha_creacion={formatearFecha(data.fecha_creacion)}
+          sucursales={data.sucursales}
+          />
+      </div>
     </MaxWidthWrapper>
   )
 }
 
-export default OrdenCompraDetail
-
+export default ProveedorDetail

@@ -16,8 +16,6 @@ import toast from 'react-hot-toast';
 
 
 const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows}) => {
-  const [editMode, setEditMode] = useState(false)
-  
 
   return (
     <div className='py-12 px-3'>

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
-import { ESTADO_OC } from '../../../const/constantes'
+
 
 const FormHeader = ({ 
     handleSubmit, 
@@ -129,7 +129,7 @@ const FormHeader = ({
               type="text"
               name='fecha_orden'
               disabled
-              value={ordenCompra.fecha_orden?.slice(0, -10)}
+              value={ordenCompra.fecha_orden}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}/>
           </div>

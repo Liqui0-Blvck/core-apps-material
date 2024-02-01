@@ -64,7 +64,7 @@ const OrdenDeCompra = () => {
 
   const formatearFecha = useMemo(
     () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
+      return new Date(fecha).toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',
@@ -83,7 +83,7 @@ const OrdenDeCompra = () => {
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
   }, [ordenDeCompra, formatearFecha])
-
+  
 
   return (
     <div className='px-5'>

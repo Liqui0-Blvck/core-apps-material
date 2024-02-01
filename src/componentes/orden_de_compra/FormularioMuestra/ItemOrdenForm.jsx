@@ -5,9 +5,6 @@ const ItemOrdenForm = ({ handleSubmit, itemProveedor, handleChange, rows, setRow
   return (
     <div className='mb-10'>
       <BasicTable
-        editedOrdenCompra={editedOrdenCompra}
-        editMode={editMode}
-        setEditMode={setEditMode}
         ordenCompra={ordenCompra}
         editedRow={editedRow}
         setEditedRow={setEditedRow}

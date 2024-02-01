@@ -32,7 +32,7 @@ const OrdenDeCompraForm = () => {
     "estado_oc": null,
     "email_envia_oc": "",
     "numero_cotizacion": "",
-    "proveedor": null
+    "proveedor": null,
   })
 
   const [itemOrden, setItemOrden] = useState({
@@ -169,6 +169,7 @@ const OrdenDeCompraForm = () => {
           orden_de_compra: data.id,
         });
         setOrdenCompra(data.id);
+        navigate('/orden-compra/')
       } else {
         console.log("Error al crear la orden de compra");
       }
@@ -195,9 +196,6 @@ const OrdenDeCompraForm = () => {
     });
   };
 
-  console.log(itemOrden)
-
-  console.log(proveedor)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>

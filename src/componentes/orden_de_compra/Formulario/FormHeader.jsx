@@ -56,8 +56,8 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
 
   }, [proveedor])
     
-  
-
+  const proveedorSeleccionado = proveedores.filter(pro => pro.id === Number(proveedor))
+   
   return (
     <div className='mb-5 overflow-hidden'>
       <form className='w-full full flex xl:flex-row lg:flex-row md:flex-row flex-col border' onSubmit={handleSubmit}>
@@ -156,7 +156,7 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
           <div className='lg:row-start-3 lg:w-[80%] flex items-center gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Proveedor: </label>
               <input 
-                value=''
+                // value={proveedorSeleccionado && proveedorSeleccionado[0].nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -164,15 +164,15 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Contacto: </label>
               <input 
-                value=''
+                // value={proveedorSeleccionado && proveedorSeleccionado[0].contacto}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
           <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between'>
-            <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
+            <label htmlFor="nombre" className='text-start'>Correo: </label>
               <input 
-                value=''
+                // value={proveedorSeleccionado && proveedorSeleccionado[0].correo}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -186,17 +186,25 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
           </div>
           
           <div className='lg:row-start-3 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Direccion: </label>
+            <label htmlFor="nombre" className='text-start'>Nombre: </label>
+              <input 
+                value={sucursalSeleccionado.nombre}
+                className='p-2 border-[1px] border-gray-300 rounded-md'
+                disabled/>
+          </div>
+
+          <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
+            <label htmlFor="nombre" className='text-start'>Dirección: </label>
               <input 
                 value={sucursalSeleccionado.direccion}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
-          <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Numero: </label>
+          <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between items-center'>
+            <label htmlFor="nombre" className='text-start'>Region: </label>
               <input 
-                value={sucursalSeleccionado.numero}
+                value={sucursalSeleccionado.region_nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>

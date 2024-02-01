@@ -11,6 +11,9 @@ import Button from '@mui/material/Button';
 import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { data } from 'autoprefixer';
+import DatePicker from "react-multi-date-picker"
+
 
 
 
@@ -18,6 +21,9 @@ import toast from 'react-hot-toast';
 const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, handleAgregarItem }) => {
   const navigate = useNavigate()
 
+
+  const fecha_llega = rows.map(fecha => fecha.fecha_llegada)
+  console.log(fecha_llega)
 
   const agregarFila = () => {
       const nuevaFila = { id: rows.length, item: '', unidad_de_compra: 0, costo_por_unidad: 0, fecha_llegada: '', observaciones: '' };
@@ -29,7 +35,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
     setRows((prevRows) => prevRows.filter((row) => row.id !== id));
   };
 
-  const handleChangeRow = (id, fieldName, value) => {
+  const handleChangeRow = (id_row,id, fieldName, value) => {
 
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === id ? { ...row, [fieldName]: value } : row))
@@ -64,7 +70,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       name="item"
                       placeholder={row.item}
                       onChange={(e) => {
-                        handleChangeRow(row.id, "item", e.target.value)
+                        handleChangeRow(index, row.id, "item", e.target.value)
                         handleChange(e)
                       }
                       }
@@ -85,7 +91,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       name="unidad_de_compra"
                       className="p-2 border-[1px] border-gray-300 rounded-md w-14"
                       onChange={(e) => {
-                        handleChangeRow(row.id, "unidad_de_compra", e.target.value)
+                        handleChangeRow(index, row.id, "unidad_de_compra", e.target.value)
                         handleChange(e)
                       }
                         
@@ -99,7 +105,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       name="costo_por_unidad"
                       className="p-2 border-[1px] border-gray-300 rounded-md w-28"
                       onChange={(e) => {
-                        handleChangeRow(row.id, "costo_por_unidad", e.target.value)
+                        handleChangeRow(index, row.id, "costo_por_unidad", e.target.value)
                         handleChange(e)
                       }
                         
@@ -113,19 +119,22 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       name="fecha_llegada"
                       className="p-2 border-[1px] border-gray-300 rounded-md"
                       onChange={(e) => {
-                        handleChangeRow(row.id, "fecha_llegada", e.target.value)
+                        handleChangeRow(index, row.id, "fecha_llegada", e.target.value)
                         handleChange(e)
                       }
                       }
                       value={row.fecha_llegada}
                     />
+
+                  
+
                   </TableCell>
                   <TableCell align="right">
                     <textarea
                       name="observaciones"
                       className="p-2 border-[1px] border-gray-300 rounded-md"
                       onChange={(e) => {
-                        handleChangeRow(row.id, "observaciones", e.target.value)
+                        handleChangeRow(index, row.id, "observaciones", e.target.value)
                         handleChange(e)
                         }
                       }
@@ -133,7 +142,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                     />
                   </TableCell>
                   <TableCell align="right" style={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center'}}>
-                    <Button onClick={() => eliminarFila(index)} variant="outlined" color="secondary">
+                    <Button onClick={() => eliminarFila(row.id)} variant="outlined" color="secondary">
                       Eliminar
                     </Button>
                   </TableCell>
@@ -148,7 +157,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
           className='absolute px-4 py-2 right-0 
             -bottom-20 bg-[#2732FF] rounded-md
             text-white'>
-          Crear Orden de Compra
+          Actualizar Orden de Compra
         </button>
       </form>
     </div>
