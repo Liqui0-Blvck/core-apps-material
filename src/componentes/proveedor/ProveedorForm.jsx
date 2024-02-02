@@ -120,16 +120,28 @@ const ProveedorForm = () => {
       comuna: null,
       region: null,
       provincia: null,
+      foto: null
     },
     onSubmit: async values => {
+
+      const formData = new FormData();
+      formData.append('nombre', values.nombre);
+      formData.append('rut', values.rut);  
+      formData.append('correo', values.correo);  
+      formData.append('foto', values.foto);
+      formData.append('contacto', values.contacto);
+      formData.append('direccion', values.direccion);
+      formData.append('comuna', values.comuna);
+      formData.append('region', values.region);
+      formData.append('provincia', values.provincia);
 
       const response = await fetch('http://localhost:8000/api/proveedor/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          
           'authorization': `Bearer ${authTokens.access}`
         },
-        body: JSON.stringify({ ...values })
+        body: formData
       })
 
       if (response.ok) {
@@ -141,6 +153,8 @@ const ProveedorForm = () => {
 
     }
   })
+
+  console.log(formikProveedor.values)
 
 
   return (

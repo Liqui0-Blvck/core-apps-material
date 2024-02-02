@@ -71,7 +71,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div
         className={`relative`}
       >
-        <Link to="/" className="py-6 px-8 text-center flex">
+        <Link to="/app/home" className="py-6 px-8 text-center flex">
           <img src="/img/logosnabbit.gif" alt="" className='w-full h-full object-contain'/>
         </Link>
         <IconButton

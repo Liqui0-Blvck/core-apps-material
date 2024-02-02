@@ -21,6 +21,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
+import { Skeleton } from '@mui/material';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -260,7 +261,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaProveedor({ data, setData, token }) {
+export default function TablaProveedor({ data, setData, token, loading }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -433,11 +434,19 @@ export default function TablaProveedor({ data, setData, token }) {
                   <th id={labelId} scope="row">
                     {row.id}
                   </th>
-                  <td>{row.nombre}</td>
-                  <td>{row.region_nombre}</td>
-                  <td>{row.provincia_nombre}</td>
-                  <td>{row.comuna_nombre}</td>
-                  <td>{row.fecha_creacion}</td>
+                  {loading ? (
+                      <td colSpan="5">
+                        <Skeleton className='w-full'/>
+                      </td>
+                    ) : (
+                      <>
+                        <td>{row.nombre}</td>
+                        <td>{row.descripcion}</td>
+                        <td>{row.nombre_categoria}</td>
+                        <td>{row.stock_bodega }</td>
+                        <td>{row.fecha_creacion}</td>
+                      </>
+                    )}
                 </tr>
               );
             })}

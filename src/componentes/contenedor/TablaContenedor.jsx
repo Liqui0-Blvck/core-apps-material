@@ -265,7 +265,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaContenedor({ data, setData, token  }) {
+export default function TablaContenedor({ data, setData, token, loading }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -433,14 +433,19 @@ export default function TablaContenedor({ data, setData, token  }) {
                         sx={{ verticalAlign: 'top' }}
                       />
                     </th>
-                    <th id={labelId} scope="row">
-                      {row.id}
-                    </th>
-                    <td>{row.nombre}</td>
-                    <td>{row.codigo}</td>
-                    <td>{row.dimensiones}</td>
-                    <td>{row.color}</td>
-                    <td>{row.fecha_creacion}</td>
+                    {loading ? (
+                      <td colSpan="5">
+                        <Skeleton className='w-full'/>
+                      </td>
+                    ) : (
+                      <>
+                        <td>{row.nombre}</td>
+                        <td>{row.descripcion}</td>
+                        <td>{row.nombre_categoria}</td>
+                        <td>{row.stock_bodega }</td>
+                        <td>{row.fecha_creacion}</td>
+                      </>
+                    )}
                   </tr>
               );
             })}

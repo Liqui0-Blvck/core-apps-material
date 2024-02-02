@@ -76,15 +76,15 @@ const ContenedorForm = () => {
 
       <div className='w-full h-full mx-auto justify-center gap-10 grid place-items-center overflow-hidden 
         lg:grid-cols-2'>
-        <div className='border-[1px] border-gray-300 rounded-md flex flex-col w-full h-full overflow-hidden gap-2 justify-center
-          lg:w-80'>
+        <div className='border-[1px] border-gray-300 rounded-md flex flex-col w-full h-full overflow-hidden gap-2 
+          lg:w-96'>
           <div className='border-[1px] border-gray-200 mx-auto w-72 h-48 mt-2 relative rounded-md
-            lg:w-72'>
+            lg:w-[90%]'>
             {
               imagen
                 ? (
                   <>
-                    <div className='absolute h-7 w-7 bg-red-800 rounded-full flex justify-center items-center -right-2 -top-2 cursor-pointer'>
+                    <div className='absolute h-7 w-7 bg-red-800 rounded-full flex justify-center items-center -right-2 -top-2 cursor-pointer z-20'>
                       <IoMdClose 
                         className='absolute text-2xl text-white'
                         onClick={() => {
@@ -97,7 +97,7 @@ const ContenedorForm = () => {
                   </>
                   )
                 : (
-                    <img src='src\assets\default.webp' alt='' className='w-full h-full object-cover rounded-md'/>
+                    <img src='\img\default.webp' alt='' className='w-full h-full object-cover rounded-md'/>
                   )
             }
           </div>
@@ -141,7 +141,7 @@ const ContenedorForm = () => {
 
         </div>
 
-        <form className='grid grid-cols-4 gap-4 items-center w-[90%] h-full' onSubmit={formik.handleSubmit}>
+        <form className='grid grid-cols-4 gap-4 items-center w-full h-full' onSubmit={formik.handleSubmit}>
           <label htmlFor='imagen' className='text-start'>Imagen:</label>
             <div 
               className='border-[2px] h-10 border-dashed border-blue-400 rounded-md p-2 mt-1 flex items-center justify-center cursor-pointer col-span-3'

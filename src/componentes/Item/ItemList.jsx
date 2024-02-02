@@ -8,6 +8,8 @@ import AuthContext from '../../context/AuthContext'
 const ItemList = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,7 +42,12 @@ const ItemList = () => {
             }
           }
         } catch (error) {
-          console.error(error)
+          setError('Error en la petición');
+            console.log('Error en la petición');
+        } finally {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500)
         }
       }
 
@@ -78,14 +85,12 @@ const ItemList = () => {
   }, [items, formatearFecha])
 
 
-  console.log(datosFormateados)
-
 
   return (
     <MaxWidthWrapper>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center '>
-          <TablaItem data={datosFormateados} setData={setItems}  token={authTokens.access}/>
+          <TablaItem data={datosFormateados} setData={setItems}  token={authTokens.access} loading={loading}/>
         </div>
       </div>
     </MaxWidthWrapper>

@@ -103,7 +103,7 @@ export const Directions = {
 export const LISTA_MENU = [
   {
     name: 'Dashboard',
-    path: '/home',
+    path: '/app/home',
   },
   {
     name: 'Registros',
@@ -111,16 +111,16 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Registrar Item',
-        path: '/item-registro'
+        path: '/app/item-registro'
       },
       {
         name: 'Registrar Categoria',
-        path: '/categoria-registro'
+        path: '/app/categoria-registro'
       },
 
       {
         name: 'Registrar Proveedor',
-        path: '/proveedor-registro'
+        path: '/app/proveedor-registro'
       }
     ]
   },
@@ -130,24 +130,24 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Item',
-        path: '/item'
+        path: '/app/item'
       },
       {
         name: 'Contenedores',
-        path: '/contenedores'
+        path: '/app/contenedores'
       },
       {
         name: 'Categorias',
-        path: '/categorias'
+        path: '/app/categorias'
       },
       
       {
         name: 'Proveedores',
-        path: '/proveedores'
+        path: '/app/proveedores'
       },
       {
         name: 'Crear Contenedor',
-        path: '/contenedor-registro'
+        path: '/app/contenedor-registro'
       }
     ]
   },
@@ -157,11 +157,11 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Ordenes de compra',
-        path: '/orden-compra'
+        path: '/app/orden-compra'
       },
       {
         name: 'Crear Orden de compra',
-        path: '/orden-registro'
+        path: '/app/orden-registro'
       }
     ]
   },
@@ -171,11 +171,11 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Inventarios',
-        path: '/orden-de-compra'
+        path: '/app/orden-de-compra'
       },
       {
         name: 'Crear Inventario',
-        path: '/orden-registro'
+        path: '/app/orden-registro'
       }
     ]
   }

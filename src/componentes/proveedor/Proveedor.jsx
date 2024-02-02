@@ -7,6 +7,8 @@ import AuthContext from '@/context/AuthContext'
 const Proveedor = () => {
   const { authTokens, validToken } = useContext(AuthContext) 
   const [proveedor, setProveedor] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true
@@ -38,7 +40,12 @@ const Proveedor = () => {
             }
           }
         } catch (error) {
-          console.error(error)
+          setError('Error en la petición');
+            console.log('Error en la petición');
+        } finally {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500)
         }
       }
 
@@ -82,7 +89,7 @@ const Proveedor = () => {
     <div className='px-5'>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center mx-auto'>
-          <TablaProveedor data={datosFormateados} setData={setProveedor} token={authTokens.access}/>
+          <TablaProveedor data={datosFormateados} setData={setProveedor} token={authTokens.access} loading={loading}/>
         </div>
       </div>
     </div>

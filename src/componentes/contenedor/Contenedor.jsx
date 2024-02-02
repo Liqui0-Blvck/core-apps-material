@@ -7,6 +7,8 @@ import AuthContext from '@/context/AuthContext'
 const Contenedor = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [contenedor, setContenedor] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true
@@ -38,7 +40,12 @@ const Contenedor = () => {
             }
           }
         } catch (error) {
-          console.error(error)
+          setError('Error en la petición');
+            console.log('Error en la petición');
+        } finally {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500)
         }
       }
 
@@ -80,7 +87,7 @@ const Contenedor = () => {
     <MaxWidthWrapper>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center'>
-          <TablaContenedor data={datosFormateados} setData={setContenedor} token={authTokens.access}/>
+          <TablaContenedor data={datosFormateados} setData={setContenedor} token={authTokens.access} loading={loading}/>
         </div>
       </div>
     </MaxWidthWrapper>
