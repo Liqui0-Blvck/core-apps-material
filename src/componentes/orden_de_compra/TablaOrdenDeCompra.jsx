@@ -239,7 +239,7 @@ function EnhancedTableToolbar(props) {
      {
         numSelected === 0
         ? (
-          <Ln to={`/orden-registro`}>
+          <Ln to={`/app/orden-registro`}>
             <div className='w-52 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in  '>
               <span className='font-semibold'>Agregar Orden de compra</span>
             </div>
@@ -296,7 +296,7 @@ function EnhancedTableToolbar(props) {
             </>
           )}
 
-          <Ln to={`/orden-compra/${selected}`}>
+          <Ln to={`/app/orden-compra/${selected}`}>
             <IconButton size='md' variant='solid' color='primary'>
               Detalles
             </IconButton>

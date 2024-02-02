@@ -4,7 +4,7 @@ import CardContent from '@mui/joy/CardContent';
 
 
 
-export default function CartDetail({ fecha_creacion, foto, nombre, comuna, direccion,  titulo, sucursales}) {
+export default function CartDetail({ fecha_creacion, foto, nombre, comuna, direccion,  titulo, sucursales }) {
 
   return (
     <Card className='w-full h-full mt-10'>
@@ -64,7 +64,7 @@ export default function CartDetail({ fecha_creacion, foto, nombre, comuna, direc
               <div className='border-[1px] border-gray-300 rounded m-2 h-72 p-2'>
                 <div className='border-[1px] border-gray-200 h-full '>
                   <div className='flex justify-center items-center'>
-                    <h1 className='text-xl font-semibold'>Proveedores</h1>
+                    <h1 className='text-xl font-semibold'>Sucursales</h1>
                   </div>
                   <div className='mt-2 flex items-center p-2'>
                     {

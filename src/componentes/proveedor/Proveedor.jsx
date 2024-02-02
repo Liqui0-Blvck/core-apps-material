@@ -83,7 +83,6 @@ const Proveedor = () => {
     }))
   }, [proveedor, formatearFecha])
 
-  console.log(datosFormateados)
 
   return (
     <div className='px-5'>

@@ -23,6 +23,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast';
 import { Link as Ln }from 'react-router-dom'
 import AuthContext from '../../context/AuthContext';
+import { Skeleton } from 'antd';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -221,7 +222,7 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <Ln to={`/contenedor/${selected}`}>
+            <Ln to={`/app/contenedor/${selected}`}>
               <IconButton size='md' variant='solid' color='primary'>
                 Detalles
               </IconButton>
@@ -233,8 +234,8 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/contenedor-registro`}>
-              <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  '>
+            <Ln to={`/app/contenedor-registro`}>
+              <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex justify-center items-center  '>
                 <span className='font-semibold'>Agregar Contenedor</span>
               </div>
             </Ln>
@@ -409,7 +410,7 @@ export default function TablaContenedor({ data, setData, token, loading }) {
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    className='col-span-7'
+                    className='col-span-6'
                     // selected={isItemSelected}
                     style={
                       isItemSelected
@@ -434,7 +435,7 @@ export default function TablaContenedor({ data, setData, token, loading }) {
                       />
                     </th>
                     {loading ? (
-                      <td colSpan="5">
+                      <td colSpan="6">
                         <Skeleton className='w-full'/>
                       </td>
                     ) : (

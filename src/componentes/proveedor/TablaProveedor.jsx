@@ -219,7 +219,7 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/proveedor-registro/`}>
+            <Ln to={`/app/proveedor-registro/`}>
               <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-autp'>
                 <span className='font-semibold text-center'>Agregar Proveeedor</span>
               </div>
@@ -231,7 +231,7 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <Ln to={`/proveedor/${selected}`}>
+            <Ln to={`/app/proveedor/${selected}`}>
               <IconButton size='md' variant='solid' color='primary'>
                 Detalles
               </IconButton>
@@ -428,7 +428,7 @@ export default function TablaProveedor({ data, setData, token, loading }) {
                           'aria-labelledby': labelId,
                         },
                       }}
-                      sx={{ verticalAlign: 'top' }}
+                      sx={{ verticalAlign: 'top', }}
                     />
                   </th>
                   <th id={labelId} scope="row">
@@ -441,9 +441,9 @@ export default function TablaProveedor({ data, setData, token, loading }) {
                     ) : (
                       <>
                         <td>{row.nombre}</td>
-                        <td>{row.descripcion}</td>
-                        <td>{row.nombre_categoria}</td>
-                        <td>{row.stock_bodega }</td>
+                        <td>{row.region_nombre}</td>
+                        <td>{row.provincia_nombre}</td>
+                        <td>{row.comuna_nombre }</td>
                         <td>{row.fecha_creacion}</td>
                       </>
                     )}

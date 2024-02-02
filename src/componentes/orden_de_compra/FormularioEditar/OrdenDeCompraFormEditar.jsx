@@ -103,7 +103,7 @@ const OrdenDeCompraFormEditar = () => {
               console.log("Error en la petición")
             }
 
-            const responseOrden = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
+            const responseOrden = await fetch(`http://127.0.0.1:8000/api${pathname.slice(4)}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

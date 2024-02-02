@@ -12,6 +12,8 @@ const OrdenCompraDetail = () => {
   const [data, setData] = useState({})
 
 
+  console.log(pathname.slice(4))
+
   useEffect(() => {
     let isMounted = true
 
@@ -26,7 +28,7 @@ const OrdenCompraDetail = () => {
           if (!isValidToken) {
             navigate('/auth/sign-in/');
           } else {
-            const response = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api${pathname.slice(4)}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

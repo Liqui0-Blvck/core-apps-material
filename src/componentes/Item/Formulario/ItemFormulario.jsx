@@ -1,29 +1,10 @@
 import { compresor } from '@/services/compresor_imagen'
 import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
-import { Select } from 'antd';
 
-const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, setProvinciaID }) => {
+const ItemFormulario = ({ formik }) => {
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
-
-  const handleRegion = ({ target }) => {
-    const { value } = target
-    setRegionID(value)
-  }
-
-
-  
-  console.log(region)
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
     <form className='grid grid-cols-6 items-center gap-10 w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
@@ -121,65 +102,57 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
 
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
+      {/* <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
         <label htmlFor="region">Region: </label>
-        <Select
-          showSearch
-          placeholder="Selecciona una región"
-          optionFilterProp="children"
-          className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {setRegionID(value), formik.setFieldValue('region', value)} }
-          onSearch={onSearch}
-          name='region'
-          filterOption={filterOption}
-          options={region && region.map(item => ({
-            value: item.region_id,
-            label: item.region_nombre
-          }))}
-        />
-      </div>
+          <select
+          name="region"
+          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-3'
+          // eslint-disable-next-line no-unused-expressions
+          onChange={(e) => { formik.handleChange(e); handleRegion(e) }}>
+          <option value="">Seleccione una categoria</option>
+          {
+            region && region.map((region) => (
+              <option key={region.region_id} value={region.region_id}>{region.region_nombre}</option>
+            ))
+          }
+        </select>
+      </div> */}
 
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
+      {/* <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
         <label htmlFor="provincia">Provincia: </label>
-        <Select
-          showSearch
-          placeholder="Selecciona una provincia"
-          optionFilterProp="children"
-          className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {setProvinciaID(value), formik.setFieldValue('provincia', value)}}
-          onSearch={onSearch}
-          name='provincia'
-          defaultActiveFirstOption={false}
-          filterOption={filterOption}
-          options={provincia && provincia.map(item => ({
-            value: item.provincia_id,
-            label: item.provincia_nombre
-          }))}
-        />
-      </div>
+          <select
+          name="provincia"
+          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'
+          // eslint-disable-next-line no-unused-expressions
+          onChange={(e) => { formik.handleChange(e); setProvinciaID(e.target.value) }}>
+          <option value="">Seleccione una categoria</option>
+          {
+            provincia && provincia.map((provincia) => (
+              <option key={provincia.provincia_id} value={provincia.provincia_id}>{provincia.provincia_nombre}</option>
+            ))
+          }
+        </select>
+      </div> */}
 
-      <div className='grid grid-cols-2 col-span-2 items-center'>
+      {/* <div className='grid grid-cols-2 col-span-2 items-center'>
         <label htmlFor="comuna">Comuna: </label>
-        <Select
-          showSearch
-          placeholder="Selecciona una provincia"
-          optionFilterProp="children"
-          className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {formik.setFieldValue('comuna', value)}}
-          name='comuna'
-          onSearch={onSearch}
-          filterOption={filterOption}
-          options={comuna && comuna.map(item => ({
-            value: item.comuna_id,
-            label: item.comuna_nombre
-          }))}
-        />
-        
-      </div>
+        <select
+          name="comuna"
+          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'
+          // eslint-disable-next-line no-unused-expressions
+          onChange={(e) => formik.handleChange(e)}>
+          <option value="">Seleccione una categoria</option>
+          {
+            comuna && comuna.map((comuna) => (
+              <option key={comuna.comuna_id} value={comuna.comuna_id}>{comuna.comuna_nombre}</option>
+            ))
+          }
+        </select>        
+      </div> */}
 
         <button type='submit' className='row-start-4 col-start-4 col-span-3  p-2 bg-blue-200 rounded-md mt-5 w-full'>Agregar</button>
     </form>
   )
 }
 
-export default ProveedorFormulario
+export default ItemFormulario

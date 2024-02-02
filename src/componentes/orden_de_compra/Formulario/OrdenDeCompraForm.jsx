@@ -169,7 +169,7 @@ const OrdenDeCompraForm = () => {
           orden_de_compra: data.id,
         });
         setOrdenCompra(data.id);
-        navigate('/orden-compra/')
+        navigate('/app/orden-compra/')
       } else {
         console.log("Error al crear la orden de compra");
       }
