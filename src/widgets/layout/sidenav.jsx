@@ -52,7 +52,10 @@ export function Sidenav({ brandImg, brandName, routes }) {
   const renderNestedList = (children) => (
     <List disablePadding className="m-2">
       {children.map((child) => (
-        <ListItem key={child.id} disablePadding className="ml-5">
+        <ListItem key={child.id} disablePadding className="ml-5" onClick={() => {
+          setOpenSidenav(dispatch, false)
+          setOpen(false)
+        }}>
           <Link to={child.path} className='w-full shadow-none'>
             <ListItemText primary={child.name} />
           </Link>
@@ -71,7 +74,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div
         className={`relative`}
       >
-        <Link to="/app/home" className="py-6 px-8 text-center flex">
+        <Link to="/app/home" className="py-6 px-8 text-center flex" onClick={() => setOpenSidenav(dispatch, false)}>
           <img src="/img/logosnabbit.gif" alt="" className='w-full h-full object-contain'/>
         </Link>
         <IconButton

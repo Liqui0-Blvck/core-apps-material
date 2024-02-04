@@ -33,26 +33,35 @@ export function Home() {
   const {authTokens, validToken} = useContext(AuthContext)
   const navigate = useNavigate()
 
-  const fetchData = async () => {
-    try {
-      if (authTokens) {
-        const isValidToken = await validToken(authTokens);
-        if (!isValidToken) {
-          navigate('/auth/sign-in/');
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const [isInitialRender, setIsInitialRender] = useState(true);
 
-  if (authTokens) {
-    console.log("si hay token");
-    fetchData();
-  } else {
-    console.log("no pasa nada aquí no hay token");
-  }
-  
+  // useEffect(() => {
+  //   if (isInitialRender) {
+  //     setIsInitialRender(false);
+  //     return;
+  //   }
+
+  //   const checkToken = async () => {
+  //     if (authTokens) {
+  //       console.log("Sí hay token");
+  //     } else {
+  //       console.log("No hay token");
+  //       // Realizar la comprobación del token después de un breve tiempo
+  //       setTimeout(async () => {
+  //         if (authTokens) {
+  //           console.log("Sí hay token (segundo intento)");
+  //         } else {
+  //           console.log("No hay token después del segundo intento");
+  //           // Después del segundo intento sin token, redirigir a la página de inicio de sesión
+  //           navigate('/auth/sign-in/');
+  //         }
+  //       }, 1000); // Ajusta el tiempo según tus necesidades
+  //     }
+  //   };
+
+  //   checkToken();
+  // }, [authTokens, isInitialRender]);
+
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">

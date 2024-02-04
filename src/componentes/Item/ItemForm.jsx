@@ -1,87 +1,34 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
+import { useContext } from 'react'
 import { useFormik } from 'formik'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import toast from 'react-hot-toast'
-import { IoMdClose } from "react-icons/io";
-import { compresor } from '../../services/compresor_imagen'
 import AuthContext from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { Box, Skeleton } from '@mui/material'
+import { Backdrop, Box, CircularProgress, Skeleton } from '@mui/material'
 import ItemFormulario from './Formulario/ItemFormulario'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { ComponenteSchema } from '@/services/Validator'
+import ModalForm from './Formulario/ModalForm'
 
 const ItemForm = () => {
-  const [categoria, setCategoria] = useState([])
-  const [nombreCategoria, setNombreCategoria] = useState('')
-  const [data, setData] = useState([])
-  const [imagen, setImagen] = useState(null)
-  const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-
-
   const { authTokens, validToken } = useContext(AuthContext)
+  const { data: categoria, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    'http://127.0.0.1:8000/api/categoria/'
+    )
+  const navigate = useNavigate()
   
-  useEffect(() => {
-    let isMounted = true
-    
-
-    if (authTokens){
-      setLoading(true)
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-            const responseCategoria = await fetch(`http://localhost:8000/api/categoria/`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseCategoria.ok){
-              const data = await responseCategoria.json()
-              setCategoria(data)
-            } else {
-              console.log("Error en la peticion")
-            }
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-      setLoading(false)
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
-
-
   const formik = useFormik({
     initialValues: {
       nombre: '',
       descripcion: '',
       categoria: '',
-      foto: null,
-      unidad_medida: '',
-      valor_unidad_medida: ''
+      foto: '',
     },
+    validationSchema: ComponenteSchema,
     onSubmit: async (values) => {
-      console.log(values);
   
       // Crear un FormData para enviar el archivo correctamente
       const formData = new FormData();
@@ -102,7 +49,6 @@ const ItemForm = () => {
         if (response.ok) {
           toast.success('Item añadido correctamente!');
           formik.setValues(formik.initialValues);
-          setNombreCategoria('');
           navigate('/item/')
         } else {
           toast.error('Error al añadir el item');
@@ -112,23 +58,23 @@ const ItemForm = () => {
       }
     },
   });
-
-
-  if (loading){
-    return (
-        <Box sx={{ width: 300 }}>
-        <Skeleton />
-        <Skeleton animation="wave" />
-        <Skeleton animation={false} />
-      </Box>
-    )
-  }
-
-
+  
+  // if (loading) {
+  //   return (
+  //     <Backdrop open={loading} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, color: '#fff' }}>
+  //       <CircularProgress color="inherit" />
+  //     </Backdrop>
+  //   );
+  // }
   
   return (
     <MaxWidthWrapper>
-      <ItemFormulario formik={formik}/>
+      <div className='relative'>
+        <div className='flex justify-end'>
+          <ModalForm className='bg-gray-500'/>
+        </div>
+        <ItemFormulario formik={formik} categoria={categoria}/>
+      </div>
     </MaxWidthWrapper>
   )
 }

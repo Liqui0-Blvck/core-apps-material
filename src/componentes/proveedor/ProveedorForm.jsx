@@ -120,7 +120,7 @@ const ProveedorForm = () => {
       comuna: null,
       region: null,
       provincia: null,
-      foto: null
+      foto: ''
     },
     onSubmit: async values => {
 

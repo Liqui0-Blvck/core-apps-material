@@ -68,9 +68,6 @@ const Login = () => {
               name='username'
               className={`w-full p-2 ${formik.errors.username && formik.touched.username ? 'border-[1px] border-red-600' : 'border-[1px] border-gray-400'} col-span-3 rounded-md`}
             />
-            {/* {formik.errors.username && formik.touched.username && (
-              <p className='text-red-700 col-start-2 col-span-3 w-full'>{formik.errors.username}</p>
-            )} */}
           </div>
           <div className='grid grid-cols-4 place-items-center gap-2'>
             <label htmlFor='' className='w-20'>
@@ -83,9 +80,6 @@ const Login = () => {
               name='password'
               className={`w-full p-2 ${formik.errors.password && formik.touched.password ? 'border-[2px] border-red-600' : 'border-[1px] border-gray-400'} col-span-3 rounded-md`}
             />
-            {/* {formik.errors.password && formik.touched.password && (
-              <p className='text-red-700 col-start-2 col-span-3 w-full'>{formik.errors.password}</p>
-            )} */}
           </div>
           <button
             type='submit'

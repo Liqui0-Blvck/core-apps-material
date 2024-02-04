@@ -111,16 +111,15 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Registrar Item',
-        path: '/app/item-registro'
+        path: '/app/registro-item'
       },
-      {
-        name: 'Registrar Categoria',
-        path: '/app/categoria-registro'
-      },
-
+      // {
+      //   name: 'Registrar Categoria',
+      //   path: '/app/registro-categoria'
+      // },
       {
         name: 'Registrar Proveedor',
-        path: '/app/proveedor-registro'
+        path: '/app/registro-proveedor'
       }
     ]
   },
@@ -147,7 +146,7 @@ export const LISTA_MENU = [
       },
       {
         name: 'Crear Contenedor',
-        path: '/app/contenedor-registro'
+        path: '/app/registro-contenedor'
       }
     ]
   },
@@ -161,7 +160,7 @@ export const LISTA_MENU = [
       },
       {
         name: 'Crear Orden de compra',
-        path: '/app/orden-registro'
+        path: '/app/registro-orden-compra'
       }
     ]
   },
@@ -171,11 +170,11 @@ export const LISTA_MENU = [
     children: [
       {
         name: 'Inventarios',
-        path: '/app/orden-de-compra'
+        path: '/app/inventarios'
       },
       {
         name: 'Crear Inventario',
-        path: '/app/orden-registro'
+        path: '/app/registro-inventario'
       }
     ]
   }
@@ -216,7 +215,7 @@ export const routes = [
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "item registro",
-        path: "/item-registro",
+        path: "/registro-item",
         element: <ItemForm />,
       },
       {
@@ -241,7 +240,7 @@ export const routes = [
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "contenedor",
-        path: "/contenedor-registro",
+        path: "/registro-contenedor",
         element: <ContenedorForm />,
       },
       {
@@ -257,45 +256,45 @@ export const routes = [
         path: "/categorias",
         element: <Categoria />,
       },
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "categoria",
-        path: "/categoria-registro",
-        element: <CategoriaForm  />,
-      },
+      // {
+      //   icon: <InformationCircleIcon {...icon} />,
+      //   name: "categoria",
+      //   path: "/registro-categoria",
+      //   element: <CategoriaForm  />,
+      // },
       // OBJETOS DE PROVEEDORES
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "proveedores",
+        name: "Proveedores",
         path: "/proveedores",
         element: <Proveedor   />,
       },
       ,
       {
-        name: 'proveedor-detalle',
+        name: 'Detalle Proveedor',
         path: '/proveedor/:id',
         element: <ProveedorDetail />
       },
       {
-        name: 'proveedores',
-        path: '/proveedor-registro',
+        name: 'Registro Proveedor',
+        path: '/registro-proveedor',
         element: <ProveedorForm />
       },
       // OBJETOS ORDEN DE COMPRA  
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "orden-compra",
+        name: "Ordenes de Compra",
         path: "/orden-compra",
         element: <OrdenDeCompra  />,
       },
       {
-        name: 'proveedores',
-        path: '/orden-registro',
+        name: 'Crear Orden de Compra',
+        path: '/registro-orden',
         element: <OrdenCompraForm />
       },
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "orden-compra",
+        name: "Detalle Orden de Compra",
         path: "/orden-compra/:id",
         element: <OrdenCompraDetail  />,
       }

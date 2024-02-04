@@ -32,8 +32,10 @@ export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [layout, page] = pathname.split("/").filter((el) => el);
   const [deviceType, setDeviceType] = useState(getDeviceType());
+
+  console.log("aqui estoy", )
 
   function getDeviceType() {
     const width = window.innerWidth;
@@ -91,11 +93,11 @@ export function DashboardNavbar() {
               color="blue-gray"
               className="font-normal"
             >
-              {page}
+              {page.split('-').join(" ")}
             </Typography>
           </Breadcrumbs>
           <Typography variant="h6" color="blue-gray">
-            {page}
+            {page.split('-').join(" ")}
           </Typography>
         </div>
         <div className="flex items-center">
@@ -111,19 +113,7 @@ export function DashboardNavbar() {
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
           <AccountMenu className=' text-xs'/>
-          {
-            deviceType !== 'mobile'
-              ? (
-                <IconButton
-                  variant="text"
-                  color="blue-gray"
-                  onClick={() => setOpenConfigurator(dispatch, true)}
-                >
-                  <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500  md:block" />
-                </IconButton>
-                )
-              : null
-          }
+
         </div>
       </div>
     </Navbar>

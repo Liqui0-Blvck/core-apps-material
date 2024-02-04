@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
 import { useFormik } from 'formik'
-import MaxWidthWrapper from '../MaxWidthWrapper'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { Divider } from '@mui/material'
 import { CategoriaSchema } from '../../services/Validator'
 import AuthContext from '@/context/AuthContext'
+import { Input } from 'antd'
 
-const CategoriaForm = () => {
+const { TextArea } = Input
+
+const CategoriaForm = ({ modalClose }) => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [categoria, setCategoria] = useState([])
   const navigate = useNavigate()
@@ -79,69 +79,66 @@ const CategoriaForm = () => {
 
       if (response.ok) {
         toast.success('Categoria agregada con exito!')
-        navigate('/categorias')
+        modalClose(false)
+        navigate('/app/categorias')
       } else {
         toast.error('Error en')
       }
     }
   })
 
-
-  
-
-
   return (
-    <MaxWidthWrapper>
-      <h1 className='mt-10'/>
-      <div className='flex flex-col items-center h-full mt-14' >
-
-      <div className='w-full h-[100%] mx-auto justify-center grid lg:grid-cols-2 place-items-center overflow-hidden'>
-        <div className='border-[1px] border-gray-300 rounded-md flex flex-col w-[80%] h-96 overflow-hidden gap-4 overflow-y-scroll p-5'>
-          <h1 className='text-center'>Categorias creadas</h1>
-          <Divider />
-          {
-            categoria.map((cat) => (
-              <div key={cat.id} className='h-14 w-full bg-gray-300 flex justify-center items-center rounded-md'>
-                <span className='font-semibold tracking-wide'>{cat.nombre}</span>
-              </div>
-            ))
-          }
-        </div>
-
-        <form className='grid grid-cols-3 items-center w-96 h-72' onSubmit={formik.handleSubmit}>
-          <label htmlFor='nombre' className='text-center'>Nombre:</label>
+  <div className='items-center h-full' >
+    <form className='grid grid-rows-3 grid-cols-2 gap-2 w-full h-72' onSubmit={formik.handleSubmit}>
+      <div className='flex items-center col-span-2 w-full gap-5 '>
+        <label htmlFor='nombre' className='text-center w-28'>Nombre:</label>
+        
+        <div className='flex flex-col w-full'>
           <input
             type="text"
             name='nombre'
             onChange={formik.handleChange}
             value={formik.values.nombre}
-            className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+            className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2 w-full'/>
           {
             formik.errors.nombre && formik.touched.nombre && (
-              <p className='text-red-600 col-start-2 col-span-2'>{formik.errors.nombre}</p>
+              <p className='text-red-600 text-center'>{formik.errors.nombre}</p>
             )
           }
-            
+        </div>
+      </div>
+        
 
-          <label htmlFor='Descripcion' className='text-center'>Descripcion: </label>
-          <textarea
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.descripcion}
+      <div className='flex row-start-2 col-span-2 gap-5'>
+        <label htmlFor='Descripcion' className='text-center w-28'>Descripcion: </label>
+        <TextArea
+            rows={7} 
             name='descripcion'
-            className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
-            {
-              formik.errors.descripcion && formik.touched.descripcion && (
-                <p className='text-red-600 col-start-2 col-span-2'>{formik.errors.descripcion}</p>
-              )
-            }
-          <button type='submit' className='p-2 bg-blue-200 rounded-md mt-5 col-start-2 col-span-2'>Agregar</button>
+            className='col-span-2'
+            placeholder="Largo máximo 50"
+            maxLength={101} 
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            />
 
-        </form>
+            {formik.touched.descripcion && formik.errors.descripcion && (
+              <div className='col-span-2 text-center text-sm text-red-900'>{formik.errors.descripcion}</div>
+            )}
+      </div>
+      
+      <div className='h-10 row-start-3 col-start-2 w-full'>
+        <button 
+          type='submit' 
+          className='w-full h-full rounded-md 
+            mt-5 col-start-2 col-span-2
+            border border-blue-600 hover:bg-blue-gray-100 transition
+            ease-in text-blue-800
+
+        '>Agregar</button>
       </div>
 
-    </div>
-    </MaxWidthWrapper>
+    </form>
+  </div>
   )
 }
 

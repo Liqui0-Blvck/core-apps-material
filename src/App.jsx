@@ -15,7 +15,7 @@ const PrivateRoute = ({ element, ...props }) => {
   return authTokens ? (
     React.cloneElement(element, props)
   ) : (
-    <Navigate to="/app" replace />
+    <Navigate to="/auth/sign-in/" replace />
   );
 };
 

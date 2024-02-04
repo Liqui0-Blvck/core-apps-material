@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
 
       if (response.status === 200){
         setAuthTokens(data)
-        setUser(jwtDecode(data.access))
         localStorage.setItem('authTokens', JSON.stringify(data))
+        setUser(jwtDecode(data.access))
       }
   }
 
@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null)
     setUser(null)
     localStorage.removeItem('authTokens')
-    
   }
 
 

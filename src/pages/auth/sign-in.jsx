@@ -29,12 +29,12 @@ export function SignIn() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...values})
+        body: JSON.stringify(values)
         })
 
         if (response.status === 200){
           loginUser(response)
-          navigate('/home')
+          navigate('/app/home/')
           toast.success('Haz ingresado sesión con exito!')
         } else if (response.status === 401) {
           console.log(error)

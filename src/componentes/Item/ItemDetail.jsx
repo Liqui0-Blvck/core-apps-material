@@ -1,60 +1,20 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom'
+import { useContext, useMemo, useState,} from 'react'
+import { useLocation } from 'react-router-dom'
 import CartDetail from './CartDetail'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 
 const ItemDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
-  const [data, setData] = useState({})
-
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-            const response = await fetch(`http://127.0.0.1:8000/api${pathname.slice(4)}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (response.ok){
-              const data = await response.json()
-              setData(data)
-            } else {
-              console.log("Error en la petición")
-            }
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
+  const [editMode, setEditMode] = useState(false)
+  const { data, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/${pathname.slice(5)}`
+    )
 
   
   const formatearFecha = useMemo(
@@ -71,18 +31,27 @@ const ItemDetail = () => {
     },
     []
   )
-  
+
+  console.log(editMode)
+
   return (
     <MaxWidthWrapper>
       <div className='my-14'>
-        <CartDetail
-          titulo='Item'
-          foto={data.foto} 
-          nombre={data.nombre}
-          descripcion={data.descripcion}
-          fecha_creacion={formatearFecha(data.fecha_creacion)}
-          proveedores={data.proveedores}
-          />
+        {
+          data && (
+            <CartDetail
+              titulo='Item'
+              foto={data.foto} 
+              nombre={data.nombre}
+              descripcion={data.descripcion}
+              fecha_creacion={formatearFecha(data.fecha_creacion)}
+              proveedores={data.proveedores}
+              editMode={setEditMode}
+              editable={editMode}
+              token={authTokens}
+              />
+          )
+        }
       </div>
     </MaxWidthWrapper>
   )
