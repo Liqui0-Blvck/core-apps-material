@@ -3,61 +3,19 @@ import { useLocation } from 'react-router-dom'
 import CartDetail from './CartDetail'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { urlNumeros } from '@/services/url_number'
 
 
 const ContenedorDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
-  const [data, setData] = useState({})
   const { pathname } = useLocation()
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-            const response = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authTokens.access}`
-              }
-
-            })
-
-            if (response.ok){
-              console.log("se hizo ")
-              const data = await response.json()
-              setData(data)
-            } else {
-              console.log("alguna cosa mal hiciste")
-            }
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
-
-
+  const id = urlNumeros(pathname)
+  const { data, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://localhost:8000/api/contenedor/${id}/`
+  )
   
   const formatearFecha = useMemo(
     () => (fecha) => {
@@ -68,7 +26,6 @@ const ContenedorDetail = () => {
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
-        hour12: false
       })
     },
     []
@@ -77,14 +34,22 @@ const ContenedorDetail = () => {
 
   return (
     <MaxWidthWrapper>
-      <CartDetail
-        foto={data.foto} 
-        nombre={data.nombre} 
-        codigo={data.codigo}
-        color={data.color}
-        dimensiones={data.dimensiones}
-        estado={data.estado}
-        fecha_creacion={formatearFecha(data.fecha_creacion)}/>
+      {
+        data && (
+          <CartDetail
+            titulo='Contenedor'
+            foto={data.foto} 
+            nombre={data.nombre} 
+            codigo={data.codigo}
+            color={data.color}
+            items={data.items}
+            fecha_modificacion={formatearFecha(data.fecha_creacion)}
+            dimensiones={data.dimensiones}
+            estado={data.estado}
+            tipo={data.tipo}
+            fecha_creacion={formatearFecha(data.fecha_creacion)}/>
+        )
+      }
     </MaxWidthWrapper>
   )
 }

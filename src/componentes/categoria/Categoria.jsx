@@ -4,52 +4,15 @@ import TransitionsModal from '../Modal'
 import TablaCategorias from './TablaCategorias'
 import AuthContext from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 const Categoria = () => {
   const { authTokens, validToken } = useContext(AuthContext)
-  const [categorias, setCategorias] = useState([])
-  const navigate = useNavigate()
-
-
-  useEffect(() => {
-    let isMounted = true; 
-  
-    const fetchData = async () => {
-      try {
-        const isTokenValid = await validToken(authTokens);
-  
-        if (!isMounted) return; 
-        if (!isTokenValid) {
-          navigate('/auth/sign-in/');
-        } else {
- 
-          const response = await fetch('http://127.0.0.1:8000/api/categoria/', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'authorization':  `Bearer ${authTokens.access}`
-            }
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            setCategorias(data);
-          } else {
-            console.log("Error en la petición");
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-    fetchData();
-  
-    return () => {
-      isMounted = false; 
-    };
-  }, [authTokens, navigate, validToken]);
-
+  const { data: categorias, setData, loading, setRefresh } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/categoria/`
+  )
 
   
 
@@ -69,7 +32,7 @@ const Categoria = () => {
   )
 
   const datosFormateados = useMemo(() => {
-    return categorias.map((dato) => ({
+    return categorias && categorias.map((dato) => ({
       ...dato,
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
@@ -79,7 +42,11 @@ const Categoria = () => {
   return (
     <MaxWidthWrapper>
       <div className='flex justify-center'>
-        <TablaCategorias data={datosFormateados} setData={setCategorias} token={authTokens.access}/>
+        {
+          categorias && (
+            <TablaCategorias data={datosFormateados} setData={setData} token={authTokens.access} setRefresh={setRefresh}/>
+          )
+        }
       </div>
     </MaxWidthWrapper>
   )

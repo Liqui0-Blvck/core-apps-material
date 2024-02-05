@@ -45,12 +45,11 @@ export const useAuthenticatedFetch = (token, validate, url) => {
         console.log(error)
       }
     }
+    fetchData()
 
     if (refresh) {
       fetchData()
     }
-
-    fetchData()
 
     setTimeout(() => {
       setLoading(false)
@@ -58,13 +57,15 @@ export const useAuthenticatedFetch = (token, validate, url) => {
 
     return () => {
       isMounted = false
+      setRefresh(false)
     }
-  }, [url])
+  }, [url, refresh])
 
   return {
     loading,
     error,
     data,
+    setData,
     setRefresh
   }
 }

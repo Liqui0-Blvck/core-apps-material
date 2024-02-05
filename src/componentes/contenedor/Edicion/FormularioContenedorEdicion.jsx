@@ -5,7 +5,7 @@ import { IoMdClose } from 'react-icons/io'
 import { Input, Select } from 'antd'
 import { useFormik } from 'formik'
 import AuthContext from '@/context/AuthContext'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
 import { urlNumeros } from '@/services/url_number'
@@ -16,6 +16,7 @@ const FormularioContenedorEdicion = () => {
   const [filename, setFilename] = useState('')
   const [imagen, setImagen] = useState(null)
   const id = urlNumeros(pathname)
+  const navigate = useNavigate()
 
   const { data: contenedor } = useAuthenticatedFetch(
     authTokens,
@@ -54,12 +55,10 @@ const FormularioContenedorEdicion = () => {
           if (response.ok) {  
             toast.success('Contenedor añadido correctamente!');
             formik.setValues(formik.initialValues)
+            navigate('/app/contenedores/')
             setImagen(null)
             setNombreCategoria('')
 
-            setTimeout(() => {
-              navigate('/app/contenedores')
-            }, 2000)
 
           } else {
             toast.error('Error al añadir el contenedor');
@@ -83,13 +82,9 @@ const FormularioContenedorEdicion = () => {
           if (response.ok) {  
             toast.success('Contenedor añadido correctamente!');
             formik.setValues(formik.initialValues)
+            navigate('/app/contenedores/')
             setImagen(null)
             setNombreCategoria('')
-
-            setTimeout(() => {
-              navigate('/app/contenedores')
-            }, 2000)
-
           } else {
             toast.error('Error al añadir el contenedor');
           }
@@ -126,7 +121,6 @@ const FormularioContenedorEdicion = () => {
       isMounted = false
     }
   }, [contenedor])
-
 
 
   return (

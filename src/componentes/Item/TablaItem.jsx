@@ -238,7 +238,7 @@ function EnhancedTableToolbar(props) {
                 </IconButton>
               </Ln>
 
-              <Ln to={`/app/edicion-registro/${selected}`}>
+              <Ln to={`/app/edicion-item/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Editar
                 </IconButton>

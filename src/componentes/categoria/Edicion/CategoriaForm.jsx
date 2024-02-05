@@ -3,16 +3,21 @@ import { useState, useEffect, useContext } from 'react'
 import { useFormik } from 'formik'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { CategoriaSchema } from '../../services/Validator'
+import { CategoriaSchema } from '../../../services/Validator'
 import AuthContext from '@/context/AuthContext'
 import { Input } from 'antd'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 const { TextArea } = Input
 
-const CategoriaForm = ({ modalClose }) => {
+const CategoriaEditableForm = ({ modalClose, id, refresh }) => {
   const { authTokens, validToken } = useContext(AuthContext)
-  const [categoria, setCategoria] = useState([])
-  const navigate = useNavigate()
+  const { data, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/categoria/${id}`
+  )
+
 
   const formik = useFormik({
     initialValues: {
@@ -21,8 +26,8 @@ const CategoriaForm = ({ modalClose }) => {
     },
     validationSchema: CategoriaSchema,
     onSubmit: async values => {
-      const response = await fetch('http://localhost:8000/api/categoria/', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:8000/api/categoria/${id}/`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'authorization': `Bearer ${authTokens.access}`
@@ -33,12 +38,27 @@ const CategoriaForm = ({ modalClose }) => {
       if (response.ok) {
         toast.success('Categoria agregada con exito!')
         modalClose(false)
-        navigate('/app/categorias')
+        refresh(true)
       } else {
         toast.error('Error en')
       }
     }
   })
+
+  useEffect(() => {
+    let isMounted = true
+
+    if (data && isMounted){
+      formik.setValues({
+        nombre: data.nombre,
+        descripcion: data.descripcion
+      })
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [data])
 
   return (
   <div className='items-center h-full' >
@@ -71,6 +91,7 @@ const CategoriaForm = ({ modalClose }) => {
             placeholder="Largo máximo 50"
             maxLength={101} 
             onChange={formik.handleChange}
+            value={formik.values.descripcion}
             onBlur={formik.handleBlur}
             />
 
@@ -95,4 +116,4 @@ const CategoriaForm = ({ modalClose }) => {
   )
 }
 
-export default CategoriaForm
+export default CategoriaEditableForm

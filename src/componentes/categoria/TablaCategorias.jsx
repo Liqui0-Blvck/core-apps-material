@@ -20,8 +20,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
-import AuthContext from '../../context/AuthContext'
-import { Link as Ln } from 'react-router-dom'
+import ModalCategoria from './ModalCategoria';
+import ModalCategoriaEditable from './Edicion/ModalCategoriaEditable';
 
 
 
@@ -64,6 +64,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  {
+    id: 'id',
+    numeric: false,
+    disablePadding: true,
+    label: 'ID',
+  },
   {
     id: 'nombre',
     numeric: false,
@@ -167,7 +173,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick } = props;
+  const { numSelected, handleDeleteClick, selected, setRefresh } = props;
 
 
   return (
@@ -204,18 +210,29 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
         ? (
-          <Ln to={`/categoria-registro`}>
-            <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in  '>
-              <span className='font-semibold'>Agregar Categoria</span>
-            </div>
-          </Ln>
+          <div className='w-56 flex items-center justify-center p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in '>
+            <ModalCategoria className='bg-gray-500'/>
+          </div>
           )
         : null
       }
 
+      {
+        numSelected <= 1 && numSelected > 0 
+          ? (
+            <>
+            <div className='w-56 flex items-center justify-center p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in '>
+              <ModalCategoriaEditable id={selected} refresh={setRefresh}/>
+            </div>
+              
+            </>
+            )
+          : null
+      }
+
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton size="sm" color="danger" variant="solid " onClick={handleDeleteClick}>
+          <IconButton size="sm" color="danger" variant="solid" onClick={handleDeleteClick}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -234,7 +251,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaCategorias({ data, setCategoria, token }) {
+export default function TablaCategorias({ data, setData, token, setRefresh }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -275,8 +292,7 @@ export default function TablaCategorias({ data, setCategoria, token }) {
         toast.success('Categoria eliminado con exito')
 
         const newData = data.filter(item => !selected.includes(item.id));
-        setCategoria(newData);
-
+        setData(newData);
         setSelected([]);
       } else {
         toast.error('No se ha podido eliminar')
@@ -339,7 +355,11 @@ export default function TablaCategorias({ data, setCategoria, token }) {
       variant="outlined"
       sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick}/>
+      <EnhancedTableToolbar 
+        numSelected={selected.length} 
+        handleDeleteClick={handleDeleteClick}
+        selected={selected}
+        setRefresh={setRefresh}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -371,7 +391,8 @@ export default function TablaCategorias({ data, setCategoria, token }) {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => {
               const isItemSelected = isSelected(row.id);
-              const labelId = `enhanced-table-checkbox-${index}`; 
+              const labelId = `enhanced-table-checkbox-${index}`;
+
               return (
                 <tr
                   onClick={(event) => handleClick(event, row.id)}
@@ -379,7 +400,6 @@ export default function TablaCategorias({ data, setCategoria, token }) {
                   aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.id}
-                  // selected={isItemSelected}
                   style={
                     isItemSelected
                       ? {
@@ -403,8 +423,9 @@ export default function TablaCategorias({ data, setCategoria, token }) {
                     />
                   </th>
                   <th id={labelId} scope="row">
-                    {row.nombre}
+                    {row.id}
                   </th>
+                  <td>{row.nombre}</td>
                   <td>{row.descripcion}</td>
                   <td>{row.fecha_creacion}</td>
                 </tr>
@@ -417,7 +438,7 @@ export default function TablaCategorias({ data, setCategoria, token }) {
                 '--TableRow-hoverBackground': 'transparent',
               }}
             >
-              <td colSpan={6} aria-hidden />
+              <td colSpan={4} aria-hidden />
             </tr>
           )}
         </tbody>

@@ -22,8 +22,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast';
 import { Link as Ln }from 'react-router-dom'
-import AuthContext from '../../context/AuthContext';
-import { Skeleton } from 'antd';
+import { Skeleton } from '@mui/material';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -222,11 +221,19 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <Ln to={`/app/contenedor/${selected}`}>
-              <IconButton size='md' variant='solid' color='primary'>
-                Detalles
-              </IconButton>
-            </Ln>
+            <>
+              <Ln to={`/app/contenedor/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Detalles
+                </IconButton>
+              </Ln>
+
+              <Ln to={`/app/edicion-contenedor/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Editar
+                </IconButton>
+              </Ln>
+            </>
           )
           : null
       }
@@ -440,10 +447,11 @@ export default function TablaContenedor({ data, setData, token, loading }) {
                       </td>
                     ) : (
                       <>
+                        <td>{row.id}</td>
                         <td>{row.nombre}</td>
-                        <td>{row.descripcion}</td>
-                        <td>{row.nombre_categoria}</td>
-                        <td>{row.stock_bodega }</td>
+                        <td>{row.codigo}</td>
+                        <td>{row.dimensiones }</td>
+                        <td>{row.color}</td>
                         <td>{row.fecha_creacion}</td>
                       </>
                     )}

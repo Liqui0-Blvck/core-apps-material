@@ -9,7 +9,7 @@ import OrdenDeCompra from '../orden_de_compra/OrdenDeCompra'
 import ItemForm from '../Item/ItemForm'
 import ContenedorForm from '../contenedor/ContenedorForm'
 import ProveedorForm from '../proveedor/ProveedorForm'
-import CategoriaForm from '../categoria/CategoriaForm'
+import CategoriaForm from '../categoria/Edicion/CategoriaForm'
 import OrdenCompraForm from '../orden_de_compra/Formulario/OrdenDeCompraForm'
 
 import ItemDetail from '../Item/ItemDetail'

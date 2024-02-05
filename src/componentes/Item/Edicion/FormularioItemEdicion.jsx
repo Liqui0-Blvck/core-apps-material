@@ -8,15 +8,16 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import AuthContext from '@/context/AuthContext';
 import { ComponenteSchema } from '@/services/Validator';
 import toast from 'react-hot-toast';
+import { urlNumeros } from '@/services/url_number';
 
 const { TextArea } = Input;
 
 const FormularioEdicion = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
-  const [filename, setFilename] = useState('')
+  const [filename, setFilename] = useState('No hay imagen seleccionada')
   const [imagen, setImagen] = useState(null)
-
+  const id = urlNumeros(pathname)
 
   const { data: categoria, loading } = useAuthenticatedFetch(
     authTokens,
@@ -27,7 +28,7 @@ const FormularioEdicion = () => {
   const { data: item } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/${pathname.slice(-2)}`
+    `http://127.0.0.1:8000/api/item/${id}`
     )
 
   const navigate = useNavigate()
@@ -41,37 +42,81 @@ const FormularioEdicion = () => {
     },
     validationSchema: ComponenteSchema,
     onSubmit: async (values) => {
-  
-      // Crear un FormData para enviar el archivo correctamente
-      const formData = new FormData();
-      formData.append('nombre', values.nombre);
-      formData.append('descripcion', values.descripcion);
-      formData.append('categoria', values.categoria);
-      formData.append('foto', values.foto);
-  
       try {
-        const response = await fetch(`http://localhost:8000/api/item/${pathname.slice(-2)}/`, {
-          method: 'PUT',
-          headers: {
-            'authorization': `Bearer ${authTokens.access}`
-          },
-          body: formData,
-        });
-  
-        if (response.ok) {
-          toast.success('Item añadido correctamente!');
-          formik.setValues(formik.initialValues);
-          navigate('/app/item/')
-        } else {
-          toast.error('Error al añadir el item');
-        }
-      } catch (error) {
-        toast.error('Error al procesar la solicitud');
+        if (values.foto instanceof File){
+          const formData = new FormData();
+            formData.append('nombre', values.nombre);
+            formData.append('descripcion', values.descripcion);
+            formData.append('categoria', values.categoria);
+            formData.append('foto', values.foto);
+        
+            try {
+              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
+                method: 'PUT',
+                headers: {
+                  'authorization': `Bearer ${authTokens.access}`
+                },
+                body: formData,
+              });
+        
+              if (response.ok) {
+                toast.success('Item añadido correctamente!');
+                formik.setValues(formik.initialValues);
+                navigate('/app/item/')
+              } else {
+                toast.error('Error al añadir el item');
+              }
+            } catch (error) {
+              toast.error('Error al procesar la solicitud');
+            }
+          } else {
+            const formData = new FormData();
+            formData.append('nombre', values.nombre);
+            formData.append('descripcion', values.descripcion);
+            formData.append('categoria', values.categoria)
+        
+            try {
+              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
+                method: 'PUT',
+                headers: {
+                  'authorization': `Bearer ${authTokens.access}`
+                },
+                body: formData,
+              });
+        
+              if (response.ok) {
+                toast.success('Item añadido correctamente!');
+                formik.setValues(formik.initialValues);
+                navigate('/app/item/')
+              } else {
+                toast.error('Error al añadir el item');
+              }
+            } catch (error) {
+              toast.error('Error al procesar la solicitud');
+            }
+          }
+        } catch (error) {
       }
     },
   });
 
-  c  
+  useEffect(() => {
+    let isMounted = true
+
+    if (item && isMounted){
+      formik.setValues({
+        nombre: item.nombre,
+        descripcion: item.descripcion,
+        categoria: item.categoria,
+        foto: item.foto,
+      })
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [item])
+
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -80,7 +125,8 @@ const FormularioEdicion = () => {
   const filterOption = (
     input,
     option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+
 
   return (
     <div className='my-16'>

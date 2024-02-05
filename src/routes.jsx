@@ -21,7 +21,7 @@ import { Form, Link } from 'react-router-dom'
 import Contenedor from "./componentes/contenedor/Contenedor";
 import ContenedorDetail from "./componentes/contenedor/ContenedorDetail";
 import ContenedorForm from "./componentes/contenedor/ContenedorForm";
-import CategoriaForm from "./componentes/categoria/CategoriaForm";
+import CategoriaForm from "./componentes/categoria/Edicion/CategoriaForm";
 import ProveedorForm from "./componentes/proveedor/ProveedorForm";
 import ItemList from "./componentes/Item/ItemList";
 import Categoria from "./componentes/categoria/Categoria";
@@ -30,7 +30,7 @@ import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
-import FormularioEdicion from "./componentes/Item/Edicion/FormularioEdicion";
+import FormularioItemEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
 import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
@@ -229,8 +229,8 @@ export const routes = [
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "item",
-        path: "/edicion-registro/:id",
-        element: <FormularioEdicion />,
+        path: "/edicion-item/:id",
+        element: <FormularioItemEdicion />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -254,7 +254,7 @@ export const routes = [
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "contenedor",
-        path: "/contenedor/:id",
+        path: "/edicion-contenedor/:id",
         element: <FormularioContenedorEdicion   />,
       },
       {
