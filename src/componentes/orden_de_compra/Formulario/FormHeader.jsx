@@ -12,7 +12,7 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
   useEffect(() => {
     let isMounted = true
 
-    if (proveedor){
+    if (proveedor && isMounted){
       const getSucursales = async () => {
         const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales`, {
           method: 'GET',
@@ -131,7 +131,7 @@ const FormHeader = ({ handleSubmit, handleChange, proveedores, proveedor, isActi
           <div className='row-start-5 w-full flex gap-10 justify-between '>
             <label  className='text-start'>Sucursal: </label>
             <select
-              onChange={(e) => setSucursal(e.target.value)}
+              onChange={(e) => {setSucursal(e.target.value), handleChange(e)}}
               name='sucursal'
               className='md:px-2.5 h-10'
             >

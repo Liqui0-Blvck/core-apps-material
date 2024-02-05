@@ -26,13 +26,14 @@ const OrdenDeCompraForm = () => {
   );
 
   const [ordenCompraData, setOrdenCompraData] = useState({
-    "nombre": "",
-    "numero_oc": "",
-    "fecha_orden": null,
-    "estado_oc": null,
-    "email_envia_oc": "",
-    "numero_cotizacion": "",
-    "proveedor": null,
+    nombre: "",
+    numero_oc: "",
+    fecha_orden: null,
+    estado_oc: null,
+    email_envia_oc: "",
+    numero_cotizacion: "",
+    proveedor: null,
+    sucursal: ''
   })
 
   const [itemOrden, setItemOrden] = useState({
@@ -50,6 +51,9 @@ const OrdenDeCompraForm = () => {
 
   const [items, setItems] = useState([])
 
+
+  console.log(ordenCompraData)
+  
 
   useEffect(() => {
     let isMounted = true

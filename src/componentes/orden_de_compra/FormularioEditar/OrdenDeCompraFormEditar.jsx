@@ -156,7 +156,7 @@ const OrdenDeCompraFormEditar = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-editar/${ordenCompraData.id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-editar/${ordenCompraData.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ const OrdenDeCompraFormEditar = () => {
           orden_de_compra: data.id,
         });
         setOrdenCompraID(data.id);
-        navigate(`/orden-compra/`)
+        navigate(`/app/orden-compra/`)
       } else {
         console.log("Error al crear la orden de compra");
       }

@@ -21,7 +21,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
 
 
   const fecha_llega = rows.map(fecha => fecha.fecha_llegada)
-  console.log(fecha_llega)
+
 
   const agregarFila = () => {
       const nuevaFila = { id: rows.length, item: '', unidad_de_compra: 0, costo_por_unidad: 0, fecha_llegada: '', observaciones: '' };
