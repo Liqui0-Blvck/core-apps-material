@@ -303,7 +303,7 @@ export const routes = [
       },
       {
         name: 'Crear Orden de Compra',
-        path: '/registro-orden',
+        path: '/registro-orden-compra',
         element: <OrdenCompraForm />
       },
       {

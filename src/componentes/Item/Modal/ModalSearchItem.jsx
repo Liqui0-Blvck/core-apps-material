@@ -63,7 +63,7 @@ export default function ModalSearchItem() {
         <Fade in={open}>
           <Box className='absolute mx-auto w-40% md:w-[50%] top-20 lg:w-[60%] bg-white px-8 py-10 rounded-md '>
             <form className='grid grid-cols-4 place-items-center relative'>
-              <Search className='text-blue-400 absolute top-3.5 left-2 bottom-0'/>
+              <SearchIcon className='text-blue-400 absolute top-3.5 left-2 bottom-0'/>
               <Input
                 label='search' 
                 type="text" 

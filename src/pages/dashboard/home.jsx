@@ -27,62 +27,42 @@ import {
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 import AuthContext from "@/context/AuthContext";
-import { useNavigate } from 'react-router-dom'
+import { useAuthenticatedFetch } from "@/hooks/useAuthenticatedFetch";
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
 
 export function Home() {
   const {authTokens, validToken} = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { data: items, loading} = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/item/`
+  )
 
-  // const [isInitialRender, setIsInitialRender] = useState(true);
+  const { data: ordenes } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/orden-compra/`
+  )
 
-  // useEffect(() => {
-  //   if (isInitialRender) {
-  //     setIsInitialRender(false);
-  //     return;
-  //   }
 
-  //   const checkToken = async () => {
-  //     if (authTokens) {
-  //       console.log("Sí hay token");
-  //     } else {
-  //       console.log("No hay token");
-  //       // Realizar la comprobación del token después de un breve tiempo
-  //       setTimeout(async () => {
-  //         if (authTokens) {
-  //           console.log("Sí hay token (segundo intento)");
-  //         } else {
-  //           console.log("No hay token después del segundo intento");
-  //           // Después del segundo intento sin token, redirigir a la página de inicio de sesión
-  //           navigate('/auth/sign-in/');
-  //         }
-  //       }, 1000); // Ajusta el tiempo según tus necesidades
-  //     }
-  //   };
+  console.log(ordenes)
+  const ordenes_filtered = ordenes && ordenes.filter(orden => orden.estado_oc_label === 'Creada')
 
-  //   checkToken();
-  // }, [authTokens, isInitialRender]);
 
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-        {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
           <StatisticsCard
-            key={title}
-            {...rest}
-            title={title}
-            icon={React.createElement(icon, {
-              className: "w-6 h-6 text-white",
-            })}
-            footer={
-              <Typography className="font-normal text-blue-gray-600">
-                <strong className={footer.color}>{footer.value}</strong>
-                &nbsp;{footer.label}
-              </Typography>
-            }
+            title='Stock items'
+            value={items && items.length}
           />
-        ))}
+
+          <StatisticsCard
+            title='Ordenes Aceptadas'
+            value={ordenes_filtered && ordenes_filtered.length}
+          />
       </div>
-      <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
+      {/* <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
         {statisticsChartsData.map((props) => (
           <StatisticsChart
             key={props.title}
@@ -98,8 +78,8 @@ export function Home() {
             }
           />
         ))}
-      </div>
-      <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
+      </div> */}
+      {/* <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
           <CardHeader
             floated={false}
@@ -284,7 +264,7 @@ export function Home() {
             )}
           </CardBody>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -34,11 +34,13 @@ export function SignIn() {
 
         if (response.status === 200){
           loginUser(response)
-          navigate('/app/home/')
-          toast.success('Haz ingresado sesión con exito!')
+          toast.success('Tu registro fue realizado con exito!')
+          setTimeout(() => {
+            navigate('/app/home')
+          }, 1500)
         } else if (response.status === 401) {
           console.log(error)
-          toast.error('Este usuario no esta autorizado o no existe')
+          toast.error('Hubo un error en la creación del usuario, volver a intentar!')
         }
         
       } catch (error) {

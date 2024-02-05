@@ -6,24 +6,39 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 export function SignUp() {
+  const navigate = useNavigate()
   
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
       password2: "",
-      email: "",
-      first_name: "",
-      last_name: ""
+      email: ""
     },
-
     onSubmit: async (values) => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/auth/registro/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify  (values)
+        })
 
+
+        if (response.ok){
+          navigate('/auth/sign-in')
+        } else {
+          console.log("Todo mal compadre todo mal")
+        }
+      } catch (error) {
+        
+      }
     }
   })
 
@@ -41,13 +56,15 @@ export function SignUp() {
           <Typography variant="h2" className="font-bold mb-4">Join Us Today</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to register.</Typography>
         </div>
-        <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
+        <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={formik.handleSubmit}>
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
               Tu nombre
             </Typography>
             <Input
               size="lg"
+              name="username"
+              onChange={formik.handleChange}
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
@@ -61,6 +78,8 @@ export function SignUp() {
               </Typography>
               <Input
                 size="lg"
+                name="email"
+                onChange={formik.handleChange}
                 placeholder="name@mail.com"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
@@ -76,6 +95,8 @@ export function SignUp() {
 
               <Input
                 size="lg"
+                name="password"
+                onChange={formik.handleChange}
                 placeholder="*********"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
@@ -89,6 +110,8 @@ export function SignUp() {
               </Typography>
               <Input
                 size="lg"
+                name="password2"
+                onChange={formik.handleChange}
                 placeholder="*********"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
@@ -114,7 +137,7 @@ export function SignUp() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-          <Button className="mt-6" fullWidth>
+          <Button className="mt-6" fullWidth type="submit">
             Register Now
           </Button>
 
@@ -144,6 +167,10 @@ export function SignUp() {
             Already have an account?
             <Link to="/auth/sign-in" className="text-gray-900 ml-1">Sign in</Link>
           </Typography> */}
+          <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
+            Already have an account?
+            <Link to="/auth/sign-in" className="text-gray-900 ml-1">Sign in</Link>
+          </Typography> 
         </form>
 
       </div>
