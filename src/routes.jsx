@@ -17,7 +17,7 @@ const icon = {
 
 
 import { ListItemButton, ListItemText } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Form, Link } from 'react-router-dom'
 import Contenedor from "./componentes/contenedor/Contenedor";
 import ContenedorDetail from "./componentes/contenedor/ContenedorDetail";
 import ContenedorForm from "./componentes/contenedor/ContenedorForm";
@@ -30,6 +30,8 @@ import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
+import FormularioEdicion from "./componentes/Item/Edicion/FormularioEdicion";
+import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
   return (
@@ -227,6 +229,12 @@ export const routes = [
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "item",
+        path: "/edicion-registro/:id",
+        element: <FormularioEdicion />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "item",
         path: "/item/:id",
         element: <ItemDetail />,
       },
@@ -242,6 +250,12 @@ export const routes = [
         name: "contenedor",
         path: "/registro-contenedor",
         element: <ContenedorForm />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "contenedor",
+        path: "/contenedor/:id",
+        element: <FormularioContenedorEdicion   />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,

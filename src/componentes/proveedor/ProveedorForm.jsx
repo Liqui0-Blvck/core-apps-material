@@ -25,7 +25,6 @@ const ProveedorForm = () => {
     let isMounted = true
 
     if (authTokens){
-      console.log("si hay token")
       const fetchData = async () => {
         try {
           const isValidToken = await validToken(authTokens)
@@ -154,22 +153,19 @@ const ProveedorForm = () => {
     }
   })
 
-  console.log(formikProveedor.values)
-
 
   return (
     <MaxWidthWrapper>
-      <h1 className='mt-10' />
-      <div className='flex flex-col items-center h-full mt-14' >
+      <div className='flex flex-col items-center h-full' >
         <div className='w-full h-full mx-auto justify-center place-items-center overflow-hidden'>
-         <h1 className='mb-10 text-center font-semibold text-2xl'>Proveedor</h1>
-        <ProveedorFormulario 
-          formik={formikProveedor} 
-          region={region} 
-          provincia={provincia} 
-          comuna={comuna}
-          setRegionID={setRegionID}
-          setProvinciaID={setProvinciaID}/>
+          <h1 className='mb-10 text-center font-semibold text-2xl'>Proveedor</h1>
+          <ProveedorFormulario 
+            formik={formikProveedor} 
+            region={region} 
+            provincia={provincia} 
+            comuna={comuna}
+            setRegionID={setRegionID}
+            setProvinciaID={setProvinciaID}/>
 
         </div>
       </div>

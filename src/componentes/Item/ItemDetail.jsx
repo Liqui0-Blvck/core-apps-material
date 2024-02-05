@@ -32,7 +32,6 @@ const ItemDetail = () => {
     []
   )
 
-  console.log(editMode)
 
   return (
     <MaxWidthWrapper>
@@ -49,6 +48,7 @@ const ItemDetail = () => {
               editMode={setEditMode}
               editable={editMode}
               token={authTokens}
+              fecha_modificacion={formatearFecha(data.fecha_modificacion)}
               />
           )
         }

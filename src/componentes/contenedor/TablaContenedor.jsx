@@ -234,7 +234,7 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/app/contenedor-registro`}>
+            <Ln to={`/app/registro-contenedor`}>
               <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex justify-center items-center  '>
                 <span className='font-semibold'>Agregar Contenedor</span>
               </div>

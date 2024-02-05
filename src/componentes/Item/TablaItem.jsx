@@ -231,11 +231,19 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <Ln to={`/app/item/${selected}`}>
-              <IconButton size='md' variant='solid' color='primary'>
-                Detalles
-              </IconButton>
-            </Ln>
+            <>
+              <Ln to={`/app/item/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Detalles
+                </IconButton>
+              </Ln>
+
+              <Ln to={`/app/edicion-registro/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Editar
+                </IconButton>
+              </Ln>
+            </>
             )
           : null
       }

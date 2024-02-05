@@ -1,18 +1,10 @@
+import React from 'react'
+import { ESTADOS } from '@/const/constantes'
 import { compresor } from '@/services/compresor_imagen'
-import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
-import { Input, Select } from 'antd';
+import { Input, Select } from 'antd'
 
-const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, setProvinciaID }) => {
-  const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
-  const [imagen, setImagen] = useState(null)
-
-  const handleRegion = ({ target }) => {
-    const { value } = target
-    setRegionID(value)
-  }
-
-
+const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) => {
   const onSearch = (value) => {
     console.log("search:", value);
   };
@@ -22,8 +14,10 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  console.log(formik.values)
+
   return (
-    <form className='grid grid-cols-6 items-center gap-10 w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+    <form className='grid grid-cols-6 items-center gap-10 w-full h-full p-4' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
         className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
         onClick={() => document.getElementById('input-field').click()}>
@@ -76,67 +70,55 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
       </div>
       
       <div className='grid grid-cols-2 items-center col-start-5 col-span-2'>
-        <label htmlFor='rut' className='text-center w-10'>Rut: </label>
+        <label htmlFor='color' className='text-center w-10'>Color: </label>
         <Input
           type="text"
           onChange={formik.handleChange}
-          value={formik.values.rut}
-          name='rut'
+          value={formik.values.color}
+          name='color'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
       
 
       <div className='grid row-start-2 col-start-3 col-span-2  items-center'>
-        <label htmlFor='direccion' className='text-start'>Direccion: </label>
+        <label htmlFor='dimensiones' className='text-start'>Dimensiones: </label>
         <Input
           type="text"
           onChange={formik.handleChange}
-          value={formik.values.direccion}
-          name='direccion'
+          value={formik.values.dimensiones}
+          name='dimensiones'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
 
-      <div className='grid row-start-2 grid-cols-2 col-span-2 col-start-5 items-center'>
-        <label htmlFor='contacto' className='text-start'>Contacto: </label>
-        <Input
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.contacto}
-          name='contacto'
-          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
-      </div>
-      
-
-
-      <div className='grid grid-cols-2 row-start-3 items-center  col-span-2 '>
-        <label htmlFor='correo' className='text-start'>Correo: </label>
-        <Input
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.correo}
-          name='correo'
-          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
-      </div>
-
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
-        <label htmlFor="region">Region: </label>
+      <div className='grid grid-cols-2 row-start-2 col-span-2 col-start-5 items-center'>
+        <label htmlFor="estado">Estado: </label>
         <Select
           showSearch
-          placeholder="Selecciona una región"
+          placeholder="Selecciona un estado"
           optionFilterProp="children"
           className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {setRegionID(value), formik.setFieldValue('region', value)} }
+          onChange={e => formik.setFieldValue('estado', e)}
           onSearch={onSearch}
-          name='region'
+          name='estado'
           filterOption={filterOption}
-          options={region && region.map(item => ({
-            value: item.region_id,
-            label: item.region_nombre
+          options={ESTADOS.map((estado) => ({
+            value: estado,
+            label: estado
           }))}
         />
       </div>
 
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
+      <div className='grid grid-cols-2 row-start-3 col-start-3 col-span-2 items-center'>
+        <label htmlFor='tipo' className='text-start'>Tipo: </label>
+        <Input
+          type="text"
+          onChange={formik.handleChange}
+          value={formik.values.tipo}
+          name='tipo'
+          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+      </div>
+
+      {/* <div className='grid grid-cols-2 row-start-3 col-span-2 items-center'>
         <label htmlFor="provincia">Provincia: </label>
         <Select
           showSearch
@@ -148,37 +130,18 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           name='provincia'
           defaultActiveFirstOption={false}
           filterOption={filterOption}
-          options={provincia && provincia.map(item => ({
-            value: item.provincia_id,
-            label: item.provincia_nombre
-          }))}
+          // options={provincia && provincia.map(item => ({
+          //   value: item.provincia_id,
+          //   label: item.provincia_nombre
+          // }))}
         />
-      </div>
+      </div> */}
 
-      <div className='grid grid-cols-2 col-span-2 items-center'>
-        <label htmlFor="comuna">Comuna: </label>
-        <Select
-          showSearch
-          placeholder="Selecciona una provincia"
-          optionFilterProp="children"
-          className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {formik.setFieldValue('comuna', value)}}
-          name='comuna'
-          onSearch={onSearch}
-          filterOption={filterOption}
-          options={comuna && comuna.map(item => ({
-            value: item.comuna_id,
-            label: item.comuna_nombre
-          }))}
-        />
-        
-      </div>
-
-      <div className='w-full relative col-start-3 col-span-2 '>
+      <div className='w-full relative row-start-3 col-start-5 col-span-2 '>
         <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>
       </div>
     </form>
   )
 }
 
-export default ProveedorFormulario
+export default ComponenteForm
