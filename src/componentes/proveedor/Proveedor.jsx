@@ -3,64 +3,17 @@ import MaxWidthWrapper from '../MaxWidthWrapper'
 import TablaProveedor from './TablaProveedor'
 import { useLoaderData } from 'react-router-dom'
 import AuthContext from '@/context/AuthContext'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 const Proveedor = () => {
   const { authTokens, validToken } = useContext(AuthContext) 
-  const [proveedor, setProveedor] = useState([])
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: proveedor, setData, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/`
+  )
 
-  useEffect(() => {
-    let isMounted = true
-
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-            const response = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization':  `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (response.ok){
-              const data = await response.json()
-              setProveedor(data)
-            } else {
-              console.log("Error en la petición")
-            }
-          }
-        } catch (error) {
-          setError('Error en la petición');
-            console.log('Error en la petición');
-        } finally {
-          setTimeout(() => {
-            setLoading(false);
-          }, 1500)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
-
-
+ 
   const formatearFecha = useMemo(
     () => (fecha) => {
       return new Date(fecha).toLocaleString('es-ES', {
@@ -77,7 +30,7 @@ const Proveedor = () => {
   )
 
   const datosFormateados = useMemo(() => {
-    return proveedor.map((dato) => ({
+    return proveedor && proveedor.map((dato) => ({
       ...dato,
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
@@ -88,7 +41,11 @@ const Proveedor = () => {
     <div className='px-5'>
       <div className='mt-5 p-2 mb-[45%]'>
         <div className='flex justify-center mx-auto'>
-          <TablaProveedor data={datosFormateados} setData={setProveedor} token={authTokens.access} loading={loading}/>
+          {
+            proveedor && (
+              <TablaProveedor data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
+            )
+          }
         </div>
       </div>
     </div>

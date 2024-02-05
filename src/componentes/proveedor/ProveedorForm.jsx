@@ -8,106 +8,33 @@ import { useNavigate } from 'react-router-dom'
 import { Divider } from '@mui/material'
 import AuthContext from '@/context/AuthContext'
 import ProveedorFormulario from './Formularios/ProveedorFormulario'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 
 const ProveedorForm = () => {
   const { authTokens, validToken } = useContext(AuthContext)
-  const navigate = useNavigate()
-  const [region, setRegion] = useState(null)
-  const [provincia, setProvincia] = useState(null)
-  const [comuna, setComuna] = useState(null)
   const [regionID, setRegionID] = useState(null)
   const [provinciaID, setProvinciaID] = useState(null)
 
- 
 
-  useEffect(() => {
-    let isMounted = true
+  const { data: region } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/regiones/`
+  )
+  const {data: provincia} = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/region/${regionID}/provincias`
+  )
 
-    if (authTokens){
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
+  const { data: comuna } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/provincias/${provinciaID}/comunas`
+  )
 
-          } else {
-
-            const responseRegion = await fetch('http://127.0.0.1:8000/api/regiones/', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            })
-
-            if (responseRegion){
-              const data = await responseRegion.json()
-              setRegion(data)
-            } else {
-              console.log("Error en la petición")
-            }
-
-          }
-
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
-  useEffect(() => {
-    if (regionID){
-      const getComunaData = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/provincias/${provinciaID}/comunas`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        if (response.ok){
-          const data = await response.json()
-          setComuna(data)
-        }
-      }
-      getComunaData()
-
-    } 
-    return () => {}
-  }, [provinciaID])
-
-  useEffect(() => {
-      const getProvinciaData = async () => {
-        const responseProvincia = await fetch(`http://127.0.0.1:8000/api/region/${regionID}/provincias`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        if (responseProvincia.ok){
-          const data = await responseProvincia.json()
-          setProvincia(data)
-        }
-      }
-  
-      getProvinciaData()
-
-    return () => {}
-  }, [regionID])
-
+  const navigate = useNavigate()
 
   const formikProveedor = useFormik({
     initialValues: {
@@ -122,34 +49,65 @@ const ProveedorForm = () => {
       foto: ''
     },
     onSubmit: async values => {
+      try {
+        if (values.foto instanceof File){
+          const formData = new FormData();
+          formData.append('nombre', values.nombre);
+          formData.append('rut', values.rut);  
+          formData.append('correo', values.correo);  
+          formData.append('foto', values.foto);
+          formData.append('contacto', values.contacto);
+          formData.append('direccion', values.direccion);
+          formData.append('comuna', values.comuna);
+          formData.append('region', values.region);
+          formData.append('provincia', values.provincia);
 
-      const formData = new FormData();
-      formData.append('nombre', values.nombre);
-      formData.append('rut', values.rut);  
-      formData.append('correo', values.correo);  
-      formData.append('foto', values.foto);
-      formData.append('contacto', values.contacto);
-      formData.append('direccion', values.direccion);
-      formData.append('comuna', values.comuna);
-      formData.append('region', values.region);
-      formData.append('provincia', values.provincia);
+          const response = await fetch('http://localhost:8000/api/proveedor/', {
+            method: 'POST',
+            headers: {
+              
+              'authorization': `Bearer ${authTokens.access}`
+            },
+            body: formData
+          })
 
-      const response = await fetch('http://localhost:8000/api/proveedor/', {
-        method: 'POST',
-        headers: {
-          
-          'authorization': `Bearer ${authTokens.access}`
-        },
-        body: formData
-      })
+          if (response.ok) {
+            toast.success('Proveedor agregado correctamente')
+            navigate('/app/proveedores/')
+          } else {
+            toast.error('Cualquier error es tu culpa')
+          }
+        } else {
+          const formData = new FormData();
+          formData.append('nombre', values.nombre);
+          formData.append('rut', values.rut);  
+          formData.append('correo', values.correo);
+          formData.append('contacto', values.contacto);
+          formData.append('direccion', values.direccion);
+          formData.append('comuna', values.comuna);
+          formData.append('region', values.region);
+          formData.append('provincia', values.provincia);
 
-      if (response.ok) {
-        toast.success('Proveedor agregado correctamente')
-        navigate('/proveedores/')
-      } else {
-        toast.error('Cualquier error es tu culpa')
+          const response = await fetch('http://localhost:8000/api/proveedor/', {
+            method: 'POST',
+            headers: {
+              
+              'authorization': `Bearer ${authTokens.access}`
+            },
+            body: formData
+          })
+
+          if (response.ok) {
+            toast.success('Proveedor agregado correctamente')
+            navigate('/proveedores/')
+          } else {
+            toast.error('Cualquier error es tu culpa')
+          }
+        }
+
+      } catch (error) {
+        console.log(error)
       }
-
     }
   })
 

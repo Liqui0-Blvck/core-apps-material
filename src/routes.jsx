@@ -32,6 +32,8 @@ import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
 import FormularioItemEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
 import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
+import FormularioEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
+import FormularioEditableProveedor from "./componentes/proveedor/Edicion/FormularioEditableProveedor";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
   return (
@@ -253,7 +255,7 @@ export const routes = [
       },
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "contenedor",
+        name: "Edicion contenedor",
         path: "/edicion-contenedor/:id",
         element: <FormularioContenedorEdicion   />,
       },
@@ -270,12 +272,6 @@ export const routes = [
         path: "/categorias",
         element: <Categoria />,
       },
-      // {
-      //   icon: <InformationCircleIcon {...icon} />,
-      //   name: "categoria",
-      //   path: "/registro-categoria",
-      //   element: <CategoriaForm  />,
-      // },
       // OBJETOS DE PROVEEDORES
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -283,11 +279,15 @@ export const routes = [
         path: "/proveedores",
         element: <Proveedor   />,
       },
-      ,
       {
         name: 'Detalle Proveedor',
         path: '/proveedor/:id',
         element: <ProveedorDetail />
+      },
+      {
+        name: 'Edición Proveedor',
+        path: '/edicion-proveedor/:id',
+        element: <FormularioEditableProveedor />
       },
       {
         name: 'Registro Proveedor',

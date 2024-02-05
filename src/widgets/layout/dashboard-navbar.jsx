@@ -27,6 +27,7 @@ import {
 } from "@/context";
 import AccountMenu from "@/componentes/menu/AccountMenu";
 import { useEffect, useState } from "react";
+import ModalSearchItem from "@/componentes/Item/Modal/ModalSearchItem";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -35,7 +36,6 @@ export function DashboardNavbar() {
   const [layout, page] = pathname.split("/").filter((el) => el);
   const [deviceType, setDeviceType] = useState(getDeviceType());
 
-  console.log("aqui estoy", )
 
   function getDeviceType() {
     const width = window.innerWidth;
@@ -102,7 +102,7 @@ export function DashboardNavbar() {
         </div>
         <div className="flex items-center">
           <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Search" />
+            <ModalSearchItem />
           </div>
           <IconButton
             variant="text"

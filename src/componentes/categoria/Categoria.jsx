@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import TransitionsModal from '../Modal'
+import TransitionsModal from '../Item/Modal/ModalSearchItem'
 import TablaCategorias from './TablaCategorias'
 import AuthContext from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'

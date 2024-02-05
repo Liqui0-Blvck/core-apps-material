@@ -5,10 +5,29 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 
 
+
 export function SignUp() {
+  
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      password2: "",
+      email: "",
+      first_name: "",
+      last_name: ""
+    },
+
+    onSubmit: async (values) => {
+
+    }
+  })
+
+
   return (
     <section className="m-8 flex">
             <div className="w-2/5 h-full hidden lg:block">
@@ -25,7 +44,7 @@ export function SignUp() {
         <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-              Your email
+              Tu nombre
             </Typography>
             <Input
               size="lg"
@@ -35,7 +54,48 @@ export function SignUp() {
                 className: "before:content-none after:content-none",
               }}
             />
-          </div>
+            </div>
+            <div className="mb-1 flex flex-col gap-6">
+              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+                Correo
+              </Typography>
+              <Input
+                size="lg"
+                placeholder="name@mail.com"
+                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
+
+            <div className="mb-1 flex flex-col gap-6">
+              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+                Contraseña
+              </Typography>
+
+              <Input
+                size="lg"
+                placeholder="*********"
+                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
+            <div className="mb-1 flex flex-col gap-6">
+              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+                Confirma tu contraseña
+              </Typography>
+              <Input
+                size="lg"
+                placeholder="*********"
+                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
           <Checkbox
             label={
               <Typography
@@ -58,7 +118,7 @@ export function SignUp() {
             Register Now
           </Button>
 
-          <div className="space-y-4 mt-8">
+          {/* <div className="space-y-4 mt-8">
             <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
               <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_1156_824)">
@@ -83,7 +143,7 @@ export function SignUp() {
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Already have an account?
             <Link to="/auth/sign-in" className="text-gray-900 ml-1">Sign in</Link>
-          </Typography>
+          </Typography> */}
         </form>
 
       </div>

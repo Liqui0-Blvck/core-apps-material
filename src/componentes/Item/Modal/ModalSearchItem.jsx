@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -8,39 +8,43 @@ import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { Search } from '@mui/icons-material';
+import { Input } from 'antd';
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
+import AuthContext from '@/context/AuthContext';
 
 
 
-export default function TransitionsModal({ busqueda, setBusqueda, setResultados, resultados }) {
+export default function ModalSearchItem() {
+  const { authTokens, validToken } = useContext(AuthContext)
   const [open, setOpen] = useState(false);
+  const [valor, setValor] = useState(null)
+  const [busqueda, setBusqueda] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { data: items, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/item/?search=${valor}`
+  )
   
 
   const handleInputChange = (e) => {
     const nuevoValor = e.target.value;
-    setBusqueda(nuevoValor);
-
-    // Realizar la búsqueda en la API
-    axios.get(`http://127.0.0.1:8000/api/item/?search=${nuevoValor}`)
-      .then((response) => {
-        setResultados(response.data);
-      })
-      .catch((error) => {
-        console.error('Error en la búsqueda:', error);
-      })
-      .finally(() => {
-        if (busqueda === '')
-        setResultados([])
-      })
+    setBusqueda(nuevoValor  )
+    setValor(nuevoValor)
+    handleOpen(true)
   };
-
-  console.log(resultados)
 
   return (
     <div className=' bg-slate-200 rounded-md' >
       <Button onClick={handleOpen} className='text-black'>
-        <SearchIcon />
+        <Input 
+          label='search' 
+          type="text" 
+          name='nombre'
+          autoComplete='off'
+          onChange={handleInputChange}
+          value={busqueda} />
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -60,7 +64,8 @@ export default function TransitionsModal({ busqueda, setBusqueda, setResultados,
           <Box className='absolute mx-auto w-40% md:w-[50%] top-20 lg:w-[60%] bg-white px-8 py-10 rounded-md '>
             <form className='grid grid-cols-4 place-items-center relative'>
               <Search className='text-blue-400 absolute top-3.5 left-2 bottom-0'/>
-              <input 
+              <Input
+                label='search' 
                 type="text" 
                 name='nombre'
                 autoComplete='off'
@@ -75,7 +80,7 @@ export default function TransitionsModal({ busqueda, setBusqueda, setResultados,
                   ? (
                     <>
                       {
-                        resultados
+                        items
                         .slice(0, 6)
                         .map((resultado) => (
                           <li key={resultado.id}>

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useState } from 'react'
 import MenuLateral from '../menu/Drawler'
-import TransitionsModal from '../Modal'
+import TransitionsModal from '../Item/Modal/ModalSearchItem'
 import AccountMenu from '../menu/AccountMenu'
 import AuthContext from '../../context/AuthContext'
 
