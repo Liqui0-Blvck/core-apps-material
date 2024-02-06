@@ -5,13 +5,25 @@ import MaxWidthWrapper from '../../MaxWidthWrapper'
 import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
 import FormHeader from './FormHeader'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 
 const OrdenDeCompraForm = () => {
   const { authTokens, validToken } = useContext(AuthContext)
+  const [proveedor, setProveedor] = useState([])
   const navigate = useNavigate()
-  const [isActive, setIsActive] = useState(false)
+  const { data: proveedores } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/` 
+  )
 
+  const { data: items } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/item/`
+  )
+  
   const initialRows = [
     {
       item: "",
@@ -20,7 +32,8 @@ const OrdenDeCompraForm = () => {
       fecha_llegada: "",
       observaciones: "",
     },
-  ];
+  ]
+  
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
   );
@@ -35,7 +48,7 @@ const OrdenDeCompraForm = () => {
     proveedor: null,
     sucursal: ''
   })
-
+  
   const [itemOrden, setItemOrden] = useState({
     "unidad_de_compra": null,
     "costo_por_unidad": null,
@@ -44,79 +57,6 @@ const OrdenDeCompraForm = () => {
     "item": [],
     "orden_de_compra": null
   })
-
-  const [proveedores, setProveedores] = useState([])
-  const [proveedor, setProveedor] = useState([])
-  const [ordenCompra, setOrdenCompra] = useState(null)
-
-  const [items, setItems] = useState([])
-
-
-  console.log(ordenCompraData)
-  
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-
-            // peticion a proveedor
-            const responseProveedor = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseProveedor.status === 200){
-              const data = await responseProveedor.json()
-              setProveedores(data)
-            } else {
-              console.log("Error en la peticion")
-            }
-
-            const responseItem = await fetch('http://127.0.0.1:8000/api/item/', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization':  `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseItem.ok){
-              const data = await responseItem.json()
-              setItems(data)
-            } else {
-              console.log("Error en la petición")
-            }
-
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
-    }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
 
   const handleAgregarItem = () => {
     // Agregar un nuevo ítem a la lista de ítems
@@ -166,13 +106,10 @@ const OrdenDeCompraForm = () => {
           "proveedor": null,
         });
         setRows(initialRows);
-
-        setIsActive(true);
         setProveedor(data.proveedor);
         setItemOrden({
           orden_de_compra: data.id,
         });
-        setOrdenCompra(data.id);
         navigate('/app/orden-compra/')
       } else {
         console.log("Error al crear la orden de compra");
@@ -199,6 +136,8 @@ const OrdenDeCompraForm = () => {
       [name]: value
     });
   };
+
+
 
   return (
     <MaxWidthWrapper>

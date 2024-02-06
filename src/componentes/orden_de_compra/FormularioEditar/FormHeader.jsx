@@ -1,70 +1,29 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useMemo, useState } from 'react'
+import AuthContext from '@/context/AuthContext'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { Input, Spin } from 'antd';
+const { Search } = Input;
 
-const FormHeader = ({ 
-    handleSubmit, 
-    handleChange, 
-    proveedores, 
-    proveedor, 
-    setProveedor,
-    ordenCompra
- }) => {
-  
+const FormHeader = ({ handleSubmit, handleChange, ordenCompra, loading }) => {
+  const { authTokens, validToken } = useContext(AuthContext)
+  const { data: sucursales } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales`
+  )
 
-  const [sucursales, setSucursales] = useState([])
-  const [sucursal, setSucursal] = useState([])
-  const [sucursalSeleccionado, setSucursalSeleccionado] = useState([])
-  const [proveedorSeleccionado, setProveedorSeleccionado] = useState({})
+  const { data: sucursalSeleccionado } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
+  )
 
-  useEffect(() => {
-    let isMounted = true
-    if (ordenCompra){
-      const getSucursales = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${ordenCompra.proveedor}/sucursales`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        const data = await response.json()
-        if (response.ok){
-          setSucursales(data)
-        } 
-      }
-
-      const getSucursal = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${ordenCompra.proveedor}/sucursales/${sucursal}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        const data = await response.json()
-        if (response.ok){
-          setSucursalSeleccionado(data)
-        }
-  
-      }
-
-      getSucursales()
-      getSucursal()
-      
-    } else {
-      console.log("Aun no hay proveedor")
-    }
-
-
-    return () => {
-      isMounted = false
-    }
-
-
-  }, [proveedor])
-
-  console.log(proveedor)
-
+  const { data: proveedor } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
+  )
 
 
   const formatearFecha = useMemo(
@@ -90,42 +49,66 @@ const FormHeader = ({
 
           <div className='row-start-4  w-full md:w-[80%] flex gap-3 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
-            <input 
-              type="text" 
-              name='nombre'
-              value={ordenCompra && ordenCompra.nombre}
-              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+            <Spin spinning={loading}>
+                {
+                  loading
+                  ? <input disable/>
+                  : (
+                    <input
+                      type="text" 
+                      name='nombre'
+                      value={ordenCompra && ordenCompra.nombre}
+                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+                      onChange={handleChange}
+                      disabled
+                    />
+                  )
+                }
+              
+             </Spin>
           </div>
 
           <div className='row-start-6 w-full md:w-[80%]  flex gap-2 justify-between items-center'>
             <label htmlFor="numero_cotizacion" className='text-start'>Numero Cotizacion: </label>
-            <input 
-              type="text" 
-              name='numero_cotizacion' 
-              value={ordenCompra && ordenCompra.numero_cotizacion}
-              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+            <Spin spinning={loading}>
+                {
+                  loading
+                  ? <input disable/>
+                  : (
+                    <input 
+                      type="text" 
+                      name='numero_cotizacion' 
+                      value={ordenCompra && ordenCompra.numero_cotizacion}
+                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+                      onChange={handleChange}
+                      disabled
+                    />
+                  )
+                }
+            
+                
+            </Spin>
           </div>
 
           <div className='row-start-7 w-[95%] md:w-[80%] flex gap-10 justify-between items-center'>
             <label htmlFor="proveedor">Proveedor: </label>
-            <select 
-              name="proveedor"
-              // value={proveedorSeleccionado.id}
-              onChange={(e) => {
-                setProveedor(e.target.value)
-                handleChange(e)
-              }}
-              className='md:px-2.5 h-10 rounded-md'
-            >
-                <option value="">Selecciona un opcion:</option>
+            <Spin spinning={loading}>
                 {
-                  proveedores.map((proveedor) =>  (
-                      <option key={proveedor.id} name={proveedor} value={proveedor.id}>{proveedor.nombre}</option>
-                    ) )
+                  loading
+                  ? <input disable/>
+                  : (
+                    <input 
+                      type="text"
+                      name='proveedor' 
+                      value={ordenCompra && ordenCompra.proveedor_nombre}
+                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+                      disabled
+                      />
+                  )
                 }
-            </select>
+              
+            </Spin>
+            
           </div>
 
         </div>
@@ -135,12 +118,23 @@ const FormHeader = ({
         <div className='bg-gray-100 w-full grid grid-rows-8 gap-2'>
           <div className='row-start-4 w-full flex gap-10 justify-between items-center'>
             <label htmlFor="fecha_orden" className='text-start'>Fecha Orden: </label>
-            <input 
-              type="text"
-              name='fecha_orden' 
-              value={formatearFecha(ordenCompra.fecha_creacion)}
-              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+            <Spin spinning={loading}>
+              {
+                loading
+                  ? <input disable/>
+                  : (
+                    <input 
+                      type="text"
+                      name='fecha_orden' 
+                      value={formatearFecha(ordenCompra && ordenCompra.fecha_creacion)}
+                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+                      onChange={handleChange}
+                      disabled
+                      />
+                  )
+              }
+            </Spin>
+            
           </div>
 
           <div className='row-start-3 w-full flex gap-10 justify-between items-center'>
@@ -148,23 +142,25 @@ const FormHeader = ({
             <input 
               type="text" 
               name='numero_oc' 
-              value={ordenCompra.numero_oc}
-              placeholder={ordenCompra.numero_oc}
+              value={ordenCompra && ordenCompra.numero_oc}
+              placeholder={ordenCompra && ordenCompra.numero_oc}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+              onChange={handleChange}
+              disabled
+              />
           </div>
 
           <div className='row-start-5 w-full flex gap-10 justify-between '>
             <label  className='text-start'>Sucursal: </label>
             <select
               onChange={(e) => setSucursal(e.target.value)}
-              value={sucursal}
+              value={ordenCompra && ordenCompra.sucursal}
               name='sucursal'
               className='md:px-2.5 h-10'
             >
                 <option value="">Selecciona un opcion:</option>
                 {
-                  sucursales.map((sucursal) =>  (
+                  sucursales && sucursales.map((sucursal) =>  (
                       <option key={sucursal.id} name={sucursal} value={sucursal.id}>{sucursal.direccion}</option>
                     ) )
                 }
@@ -183,7 +179,7 @@ const FormHeader = ({
           <div className='lg:row-start-3 lg:w-[80%] flex items-center gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Proveedor: </label>
               <input 
-                // value={ordenCompra.proveedor.nombre}
+                value={proveedor && proveedor.nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -191,7 +187,7 @@ const FormHeader = ({
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Contacto: </label>
               <input 
-                // value={ordenCompra.proveedor.contacto}
+                value={proveedor && proveedor.contacto}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -199,7 +195,7 @@ const FormHeader = ({
           <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Correo: </label>
               <input 
-                // value={ordenCompra.proveedor.correo}
+                value={proveedor && proveedor.correo}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -215,7 +211,7 @@ const FormHeader = ({
           <div className='lg:row-start-3 lg:w-[80%] flex gap-2 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Nombre: </label>
               <input 
-                value={sucursalSeleccionado.nombre}
+                value={sucursalSeleccionado && sucursalSeleccionado.nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -223,7 +219,7 @@ const FormHeader = ({
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Dirección: </label>
               <input 
-                value={sucursalSeleccionado.direccion}
+                value={sucursalSeleccionado && sucursalSeleccionado.direccion}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -231,7 +227,7 @@ const FormHeader = ({
           <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Region: </label>
               <input 
-                value={sucursalSeleccionado.region_nombre}
+                value={sucursalSeleccionado && sucursalSeleccionado.region_nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>

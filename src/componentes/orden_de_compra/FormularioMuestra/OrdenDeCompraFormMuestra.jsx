@@ -6,229 +6,48 @@ import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
 import FormHeader from './FormHeader'
 import { useFormik } from 'formik'
+import { urlNumeros } from '@/services/url_number'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 
 const OrdenDeCompraFormMuestra = ({ data }) => {
   const { authTokens, validToken } = useContext(AuthContext)
-  const navigate = useNavigate()
-  const [ordenCompra, setOrdenCompra] = useState({})
   const { pathname } = useLocation()
+  const id = urlNumeros(pathname)
+
+  const { data: orden_compra } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/orden-compra/${id}`
+  )
+
+  const { data: items } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/item/`
+  )
  
-
- const initialRows = [
-    {
-      item: "",
-      unidad_de_compra: 0,
-      costo_por_unidad: 0,
-      fecha_llegada: "",
-      observaciones: "",
-    },
-  ];
-  const [proveedores, setProveedores] = useState([])
-  const [proveedor, setProveedor] = useState([])
-  const [rows, setRows] = useState(
-    initialRows.map((row, index) => ({ ...row, id: index }))
-    );
-
-  const [items, setItems] = useState([])
-
-  
-
-
-  const [ordenCompraData, setOrdenCompraData] = useState({
-    "nombre": "",
-    "numero_oc": "",
-    "fecha_orden": null,
-    "estado_oc": null,
-    "email_envia_oc": "",
-    "numero_cotizacion": "",
-    "proveedor": null
-  })
-
-  const [itemOrden, setItemOrden] = useState({
-    "unidad_de_compra": null,
-    "costo_por_unidad": null,
-    "fecha_llegada": null,
-    "observaciones": "",
-    "item": [],
-    "orden_de_compra": null
-  })
-
- 
-
+  const [rows, setRows] = useState(null);
 
   useEffect(() => {
     let isMounted = true
 
-    if (authTokens){
-      console.log("si hay token")
-      const fetchData = async () => {
-        try {
-          const isValidToken = await validToken(authTokens)
-  
-          if (!isMounted) return 
-  
-          if (!isValidToken) {
-            navigate('/auth/sign-in/');
-          } else {
-
-            // peticion a proveedor
-            const responseProveedor = await fetch(`http://127.0.0.1:8000/api/proveedor/`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseProveedor.status === 200){
-              const data = await responseProveedor.json()
-              setProveedores(data)
-            } else {
-              console.log("Error en la peticion")
-            }
-
-            const responseItem = await fetch('http://127.0.0.1:8000/api/item/', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization':  `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseItem.ok){
-              const data = await responseItem.json()
-              setItems(data)
-            } else {
-              console.log("Error en la petición")
-            }
-
-            const responseOrden = await fetch(`http://127.0.0.1:8000/api${pathname}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'authorization':  `Bearer ${authTokens.access}`
-              }
-            })
-
-            if (responseOrden.ok){
-              const data = await responseOrden.json()
-              setOrdenCompraData(data)
-              setRows(data.items)
-            } else {
-              console.log("Error en la petición")
-            }
-
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }
-
-      fetchData()
-    } else {
-      console.log("no pasa nada aqui no hay token")
+    if (orden_compra && isMounted){
+      setRows(orden_compra.items)
     }
-
-    return () => {
-      isMounted = false
-    }
-  }, [authTokens])
-
-
-  const handleAgregarItem = () => {
-    // Agregar un nuevo ítem a la lista de ítems
-    setRows((prevRows) => [
-      ...prevRows,
-      {
-        item: "",
-        unidad_de_compra: 0,
-        costo_por_unidad: 0,
-        fecha_llegada: "",
-        observaciones: "",
-      },
-    ]);
-  };
-
-  const handleSubmitOrdenCompra = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authTokens.access}`
-        },
-        body: JSON.stringify({
-          ...ordenCompraData,
-          items: rows.map((row) => ({
-            item: row.item,
-            unidad_de_compra: row.unidad_de_compra,
-            costo_por_unidad: row.costo_por_unidad,
-            fecha_llegada: row.fecha_llegada,
-            observaciones: row.observaciones,
-          })),
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setRows(initialRows);
-        setIsActive(true);
-        setProveedor(data.proveedor);
-        setItemOrden({
-          orden_de_compra: data.id,
-        });
-        setOrdenCompra(data.id);
-      } else {
-        console.log("Error al crear la orden de compra");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleInputChange = ({ target }) => {
-    const { name, value } = target;
-
-    setOrdenCompraData({
-      ...ordenCompraData,
-      [name]: value,
-    });
-
-    setEditedOrdenCompra((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleInputChangeItem = ({ target }) => {
-    const {name, value} = target;
-
-    setItemOrden({
-      ...itemOrden,
-      [name]: value
-    });
-  };
+  }, [orden_compra])
 
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
         <FormHeader 
-          handleSubmit={handleSubmitOrdenCompra} 
-          handleChange={handleInputChange} 
-          proveedores={proveedores}
-          proveedor={proveedor}
-          setProveedor={setProveedor}
-          ordenCompra={ordenCompraData}
+          ordenCompra={orden_compra}
         />
         <div id='form-list' className='mt-10'>
           <ItemOrdenForm
-            ordenCompra={ordenCompraData}
+            ordenCompra={orden_compra}
             rows={rows}
-            setRows={setRows}
-            handleSubmit={handleSubmitOrdenCompra} 
             itemProveedor={items} 
-            handleChange={handleInputChangeItem}
-            handleAgregarItem={handleAgregarItem}
           />
         </div>
       </div>

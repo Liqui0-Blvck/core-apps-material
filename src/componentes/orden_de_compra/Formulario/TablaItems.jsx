@@ -36,7 +36,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
     <div className='py-12 px-3'>
       <form onSubmit={handleSubmit} className='relative'>
         <div onClick={handleAgregarItem, agregarFila} 
-          className='absolute -bottom-3 left-20 
+          className='absolute -bottom-10 left-20 
             right-0 w-32 mx-auto'>
           <FaCirclePlus className='text-3xl'/>
         </div>
@@ -53,7 +53,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, index) => (
+              {rows && rows.map((row, index) => (
                 <TableRow key={index} style={{ background: 'white'}}>
                   <TableCell component="th" scope="row">
                     <select
@@ -67,7 +67,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       value={row.item}
                     >
                       <option value="">Seleccione un producto</option>
-                      {itemProveedor.map((item) => (
+                      {itemProveedor && itemProveedor.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.nombre}
                         </option>

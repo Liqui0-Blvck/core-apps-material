@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,19 +6,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import { FaCirclePlus } from "react-icons/fa6";
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 
 
-
-const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows}) => {
+const BasicTable = ({ rows }) => {
+  console.log(rows)
 
   return (
     <div className='py-12 px-3'>
-      <form onSubmit={handleSubmit} className='relative'>
+      <form className='relative'>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750, background: '#F3F4F6' }} aria-label="simple table">
             <TableHead >
@@ -32,23 +27,16 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, index) => (
+              {rows && rows.map((row, index) => (
                 <TableRow key={index} style={{ background: '#F3F4F6'}}>
                   <TableCell component="th" scope="row">
-                    <select
-                      name="item"
-                      placeholder={row.item}
-                      className="p-2 border-[1px] border-gray-300 rounded-md"
-                      value={row.item}
+                    <input
+                      type="text"
+                      name="costo_por_unidad"
+                      className="p-2 border-[1px] border-gray-300 rounded-md w-36"
+                      value={row.item_nombre}
                       disabled
-                    >
-                      <option value="">Seleccione un producto</option>
-                      {itemProveedor.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.nombre}
-                        </option>
-                      ))}
-                    </select>
+                    />
                   </TableCell>
                   <TableCell align="right">
                     <input

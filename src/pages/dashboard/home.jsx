@@ -45,8 +45,7 @@ export function Home() {
   )
 
 
-  console.log(ordenes)
-  const ordenes_filtered = ordenes && ordenes.filter(orden => orden.estado_oc_label === 'Creada')
+  const ordenes_filtered = ordenes && ordenes.filter(orden => orden.estado_oc_label === 'Aprobada')
 
 
   return (
@@ -58,7 +57,7 @@ export function Home() {
           />
 
           <StatisticsCard
-            title='Ordenes Aceptadas'
+            title='Ordenes Aprobadas'
             value={ordenes_filtered && ordenes_filtered.length}
           />
       </div>

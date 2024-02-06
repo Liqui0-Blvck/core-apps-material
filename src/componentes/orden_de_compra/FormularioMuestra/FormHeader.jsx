@@ -1,67 +1,34 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
+import AuthContext from '@/context/AuthContext'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { useContext, useMemo, useState } from 'react'
 
 
-const FormHeader = ({ 
-    handleSubmit, 
-    handleChange, 
-    proveedores, 
-    proveedor, 
-    setProveedor, 
-    ordenCompra,
- }) => {
+const FormHeader = ({ handleSubmit, handleChange, ordenCompra }) => {
+  const { authTokens, validToken } = useContext(AuthContext)
+
+  const { data: sucursalSeleccionado } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
+  )
+
+  const { data: proveedor } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
+  )
   
-
-  const [sucursales, setSucursales] = useState([])
-  const [sucursal, setSucursal] = useState([])
-  const [sucursalSeleccionado, setSucursalSeleccionado] = useState([])
-
-  useEffect(() => {
-    let isMounted = true
-
-    if (proveedor){
-      const getSucursales = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        const data = await response.json()
-        if (response.ok){
-          setSucursales(data)
-        } 
-      }
-
-      const getSucursal = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales/${sucursal}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        const data = await response.json()
-        if (response.ok){
-          setSucursalSeleccionado(data)
-        }
-  
-      }
-
-      getSucursales()
-      getSucursal()
-    } else {
-      console.log("Aun no hay proveedor")
-    }
-
-
-    return () => {
-      isMounted = false
-    }
-
-
-  }, [proveedor])
+  const formatearFecha = useMemo(
+    () => (fecha) => {
+      return new Date(fecha).toLocaleString('es-ES', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      })
+    },
+    []
+  )
 
   return (
     <div className='mb-5 overflow-hidden'>
@@ -78,11 +45,11 @@ const FormHeader = ({
             <input 
               type="text" 
               name='nombre'
-              value={ordenCompra.nombre}
-              placeholder={ordenCompra.nombre}
+              value={ordenCompra && ordenCompra.nombre}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}
-              disabled/>
+              disabled
+              />
           </div>
 
           <div className='row-start-6 w-full md:w-[80%]  flex gap-2 justify-between items-center'>
@@ -90,32 +57,22 @@ const FormHeader = ({
             <input 
               type="text" 
               name='numero_cotizacion' 
-              value={ordenCompra.numero_cotizacion}
-              placeholder={ordenCompra.numero_cotizacion}
+              value={ordenCompra && ordenCompra.numero_cotizacion}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}
-              disabled/>
+              disabled
+              />
           </div>
 
           <div className='row-start-7 w-[95%] md:w-[80%] flex gap-10 justify-between items-center'>
             <label htmlFor="proveedor">Proveedor: </label>
-            <select 
-              name="proveedor"
-              value={ordenCompra.proveedor}
+            <input 
+              type="text"
+              name='proveedor' 
+              value={ordenCompra && ordenCompra.proveedor_nombre}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               disabled
-              onChange={(e) => {
-                setProveedor(e.target.value)
-                handleChange(e)
-              }}
-              className='md:px-2.5 h-10 rounded-md'
-            >
-                <option value="">Selecciona un opcion:</option>
-                {
-                  proveedores.map((proveedor) =>  (
-                      <option key={proveedor.id} name={proveedor} value={proveedor.id}>{proveedor.nombre}</option>
-                    ) )
-                }
-            </select>
+              />
           </div>
 
         </div>
@@ -127,40 +84,36 @@ const FormHeader = ({
             <label htmlFor="fecha_orden" className='text-start'>Fecha Orden: </label>
             <input 
               type="text"
-              name='fecha_orden'
-              disabled
-              value={ordenCompra.fecha_orden}
+              name='fecha_orden' 
+              value={formatearFecha(ordenCompra && ordenCompra.fecha_creacion)}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+              onChange={handleChange}
+              disabled
+              />
           </div>
 
           <div className='row-start-3 w-full flex gap-10 justify-between items-center'>
             <label htmlFor="numero_oc" className='text-start'>Numero Orden: </label>
             <input 
               type="text" 
-              name='numero_oc'
-              disabled
-              value={ordenCompra.numero_oc}
-              placeholder={ordenCompra.numero_oc}
+              name='numero_oc' 
+              value={ordenCompra && ordenCompra.numero_oc}
+              placeholder={ordenCompra && ordenCompra.numero_oc}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-              onChange={handleChange}/>
+              onChange={handleChange}
+              disabled
+              />
           </div>
 
           <div className='row-start-5 w-full flex gap-10 justify-between '>
             <label  className='text-start'>Sucursal: </label>
-            <select
-              onChange={(e) => setSucursal(e.target.value)}
-              name='sucursal'
+            <input 
+              type="text"
+              name='proveedor' 
+              value={ordenCompra && ordenCompra.sucursal_nombre}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               disabled
-              className='md:px-2.5 h-10'
-            >
-                <option value="">Selecciona un opcion:</option>
-                {
-                  sucursales.map((sucursal) =>  (
-                      <option key={sucursal.id} name={sucursal} value={sucursal.id}>{sucursal.direccion}</option>
-                    ) )
-                }
-            </select>
+              />
           </div>
 
         </div>
@@ -175,7 +128,7 @@ const FormHeader = ({
           <div className='lg:row-start-3 lg:w-[80%] flex items-center gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Proveedor: </label>
               <input 
-                value=''
+                value={proveedor && proveedor.nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -183,15 +136,15 @@ const FormHeader = ({
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between'>
             <label htmlFor="nombre" className='text-start'>Contacto: </label>
               <input 
-                value=''
+                value={proveedor && proveedor.contacto}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
           <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between'>
-            <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
+            <label htmlFor="nombre" className='text-start'>Correo: </label>
               <input 
-                value=''
+                value={proveedor && proveedor.correo}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
@@ -205,17 +158,25 @@ const FormHeader = ({
           </div>
           
           <div className='lg:row-start-3 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Direccion: </label>
+            <label htmlFor="nombre" className='text-start'>Nombre: </label>
               <input 
-                value={sucursalSeleccionado.direccion}
+                value={sucursalSeleccionado && sucursalSeleccionado.nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>
 
           <div className='lg:row-start-4 lg:w-[80%] flex gap-2 justify-between items-center'>
-            <label htmlFor="nombre" className='text-start'>Numero: </label>
+            <label htmlFor="nombre" className='text-start'>Dirección: </label>
               <input 
-                value={sucursalSeleccionado.numero}
+                value={sucursalSeleccionado && sucursalSeleccionado.direccion}
+                className='p-2 border-[1px] border-gray-300 rounded-md'
+                disabled/>
+          </div>
+
+          <div className='lg:row-start-5 lg:w-[80%] flex gap-2 justify-between items-center'>
+            <label htmlFor="nombre" className='text-start'>Region: </label>
+              <input 
+                value={sucursalSeleccionado && sucursalSeleccionado.region_nombre}
                 className='p-2 border-[1px] border-gray-300 rounded-md'
                 disabled/>
           </div>

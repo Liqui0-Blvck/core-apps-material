@@ -20,9 +20,6 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
   const navigate = useNavigate()
 
 
-  const fecha_llega = rows.map(fecha => fecha.fecha_llegada)
-
-
   const agregarFila = () => {
       const nuevaFila = { id: rows.length, item: '', unidad_de_compra: 0, costo_por_unidad: 0, fecha_llegada: '', observaciones: '' };
       setRows((prevRows) => [...prevRows, nuevaFila]);
@@ -61,7 +58,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, index) => (
+              {rows && rows.map((row, index) => (
                 <TableRow key={index} style={{ background: 'white'}}>
                   <TableCell component="th" scope="row">
                     <select
@@ -76,7 +73,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       value={row.item}
                     >
                       <option value="">Seleccione un producto</option>
-                      {itemProveedor.map((item) => (
+                      {itemProveedor && itemProveedor.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.nombre}
                         </option>
