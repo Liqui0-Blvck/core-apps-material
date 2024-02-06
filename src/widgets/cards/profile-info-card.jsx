@@ -5,8 +5,9 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
+import { Input } from "postcss";
 
-export function ProfileInfoCard({ title, description, details, action }) {
+export function ProfileInfoCard({ title, description, details, formik, editar }) {
   return (
     <Card color="transparent" shadow={false}>
       <CardHeader
@@ -15,10 +16,35 @@ export function ProfileInfoCard({ title, description, details, action }) {
         floated={false}
         className="mx-0 mt-0 mb-4 flex items-center justify-between gap-4"
       >
-        <Typography variant="h6" color="blue-gray">
-          {title}
-        </Typography>
-        {action}
+        {
+          editar
+            ? (
+              <div>
+                <Input
+                  type="text"
+                  name='cargo'
+                  placeholder="Cargo"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.nombre}
+                  className={`
+                  ${formik.errors.username && formik.touched.username 
+                    ? 'border-[2px] text-red-900' 
+                    : 'border-[1px] border-gray-300'}
+                  rounded-md px-2 mt-1 col-span-2`
+                  }/>
+                  {formik.touched.nombre && formik.errors.nombre && (
+                    <div className='col-span-2 text-center text-sm text-red-900'>{formik.errors.nombre}</div>
+                  )}
+              </div>
+              )
+            : (
+              <Typography variant="h6" color="blue-gray">
+                {title}
+              </Typography>
+              )
+        }
+        
       </CardHeader>
       <CardBody className="p-0">
         {description && (

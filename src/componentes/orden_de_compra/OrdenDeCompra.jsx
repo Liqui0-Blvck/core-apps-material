@@ -86,13 +86,11 @@ const OrdenDeCompra = () => {
   
 
   return (
-    <div className='px-5'>
-      <div className='mt-5 p-2 mb-[45%]'>
-        <div className='flex justify-center'>
+    <MaxWidthWrapper>
+        <div className='flex justify-center mt-10'>
           <TablaOrdenDeCompra data={datosFormateados} setData={setOrdenDeCompra} token={authTokens.access} setRefresh={setRefresh}/>
         </div>
-      </div>
-    </div>
+    </MaxWidthWrapper>
   )
 }
 

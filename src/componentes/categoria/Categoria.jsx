@@ -41,7 +41,7 @@ const Categoria = () => {
   
   return (
     <MaxWidthWrapper>
-      <div className='flex justify-center'>
+      <div className='flex justify-center mt-10'>
         {
           categorias && (
             <TablaCategorias data={datosFormateados} setData={setData} token={authTokens.access} setRefresh={setRefresh}/>

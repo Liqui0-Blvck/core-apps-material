@@ -86,7 +86,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Link to='/profile' className='flex items-center'>
+          <Link to='/app/profile' className='flex items-center'>
             <Avatar /> Profile
           </Link>
         </MenuItem>

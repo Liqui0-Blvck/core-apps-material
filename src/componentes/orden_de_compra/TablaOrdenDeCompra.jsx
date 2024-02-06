@@ -239,8 +239,8 @@ function EnhancedTableToolbar(props) {
      {
         numSelected === 0
         ? (
-          <Ln to={`/app/orden-registro`}>
-            <div className='w-52 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in  '>
+          <Ln to={`/app/registro-orden-compra`}>
+            <div className='w-52 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in flex items-center justify-center'>
               <span className='font-semibold'>Agregar Orden de compra</span>
             </div>
           </Ln>

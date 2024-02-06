@@ -41,15 +41,13 @@ const ItemList = () => {
 
   return (
     <MaxWidthWrapper>
-      <div className='mt-5 p-2 mb-[45%]'>
-        <div className='flex justify-center '>
+        <div className='flex justify-center mt-10'>
           {
             items && (
               <TablaItem data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
             )
           }
         </div>
-      </div>
     </MaxWidthWrapper>
   )
 }

@@ -29,6 +29,7 @@ import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 import AuthContext from "@/context/AuthContext";
 import { useAuthenticatedFetch } from "@/hooks/useAuthenticatedFetch";
 import LinearScaleIcon from '@mui/icons-material/LinearScale';
+import { Skeleton } from "@mui/material";
 
 export function Home() {
   const {authTokens, validToken} = useContext(AuthContext)
@@ -49,17 +50,31 @@ export function Home() {
 
 
   return (
-    <div className="mt-12">
+    <div className="mt-14">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-          <StatisticsCard
-            title='Stock items'
-            value={items && items.length}
-          />
+          
+          {loading ? (
+             <Skeleton variant="rectangular" width="100%" height='60%' className="rounded-md">
+              <div style={{ paddingTop: '57%' }} />
+            </Skeleton>
+            ) : (
+              <StatisticsCard
+                title='Stock items'
+                value={items && items.length}
+              />
+            )}  
 
-          <StatisticsCard
-            title='Ordenes Aprobadas'
-            value={ordenes_filtered && ordenes_filtered.length}
-          />
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height='60%' className="rounded-md">
+              <div style={{ paddingTop: '20%' }} />
+            </Skeleton>
+            ) : (
+              <StatisticsCard
+                title='Ordenes Aprobadas'
+                value={ordenes_filtered && ordenes_filtered.length}
+              />
+            )}
+          
       </div>
       {/* <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
         {statisticsChartsData.map((props) => (
