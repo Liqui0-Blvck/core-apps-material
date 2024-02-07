@@ -31,6 +31,8 @@ const ContenedorDetail = () => {
     []
   )
 
+  console.log(data)
+
 
   return (
     <MaxWidthWrapper>
@@ -43,6 +45,7 @@ const ContenedorDetail = () => {
             codigo={data.codigo}
             color={data.color}
             items={data.items}
+            espacios={data.espacios_contenedor}
             fecha_modificacion={formatearFecha(data.fecha_creacion)}
             dimensiones={data.dimensiones}
             estado={data.estado}

@@ -13,18 +13,6 @@ const ContenedorForm = () => {
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const navigate = useNavigate()
 
-  validToken(authTokens)
-  .then((res) => {
-    if (!res){
-      navigate('/auth/sign-in/')
-    } else {
-    }
-  })
-  .catch ((error) => {
-    console.log(error)
-  })
-
-
   const formik = useFormik({
     initialValues: {
       nombre: '',
@@ -32,40 +20,79 @@ const ContenedorForm = () => {
       dimensiones: '',
       tipo: '',
       estado: '',
-      foto: null
+      foto: null,
+      espacios: 0
     },
     onSubmit: async values => {
-        const formData = new FormData();
-        formData.append('nombre', values.nombre);
-        formData.append('color', values.color);
-        formData.append('dimensiones', values.dimensiones);
-        formData.append('tipo', values.tipo);
-        formData.append('estado', values.estado);
-        formData.append('foto', values.foto);
+        try {
+          if (values.foto instanceof File){
+            const formData = new FormData();
+            formData.append('nombre', values.nombre);
+            formData.append('color', values.color);
+            formData.append('dimensiones', values.dimensiones);
+            formData.append('tipo', values.tipo);
+            formData.append('estado', values.estado);
+            formData.append('foto', values.foto)
+            formData.append('espacios', values.espacios)
 
-        const response = await fetch('http://localhost:8000/api/contenedor/', {
-          method: 'POST',
-          headers: {
-            'authorization': `Bearer ${authTokens.access}`
-          },
-          body: formData,
-        });
+            const response = await fetch('http://localhost:8000/api/contenedor/', {
+              method: 'POST',
+              headers: {
+                'authorization': `Bearer ${authTokens.access}`
+              },
+              body: formData,
+            });
 
-        if (response.ok) {  
-          toast.success('Contenedor añadido correctamente!');
-          formik.setValues(formik.initialValues)
-          setImagen(null)
-          setNombreCategoria('')
+            if (response.ok) {  
+              toast.success('Contenedor añadido correctamente!');
+              formik.setValues(formik.initialValues)
+              setImagen(null)
+              setNombreCategoria('')
 
-          setTimeout(() => {
-            navigate('/contenedores')
-          }, 2000)
+              setTimeout(() => {
+                navigate('/app/contenedores/')
+              }, 2000)
 
-        } else {
-          toast.error('Error al añadir el contenedor');
+            } else {
+              toast.error('Error al añadir el contenedor');
+            }
+          } else {
+            const formData = new FormData();
+            formData.append('nombre', values.nombre);
+            formData.append('color', values.color);
+            formData.append('dimensiones', values.dimensiones);
+            formData.append('tipo', values.tipo);
+            formData.append('estado', values.estado)
+            formData.append('espacios', values.espacios)
+
+            const response = await fetch('http://localhost:8000/api/contenedor/', {
+              method: 'POST',
+              headers: {
+                'authorization': `Bearer ${authTokens.access}`
+              },
+              body: formData,
+            });
+
+            if (response.ok) {  
+              toast.success('Contenedor añadido correctamente!');
+              formik.setValues(formik.initialValues)
+              setImagen(null)
+              setNombreCategoria('')
+
+              setTimeout(() => {
+                navigate('/app/contenedores/')
+              }, 2000)
+
+            } else {
+              toast.error('Error al añadir el contenedor');
+            }
+          }
+        } catch (error) {
+          
         }
     }
   })
+
 
   return (
     <MaxWidthWrapper>

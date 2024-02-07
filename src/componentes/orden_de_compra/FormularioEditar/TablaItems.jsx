@@ -59,7 +59,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
             </TableHead>
             <TableBody>
               {rows && rows.map((row, index) => (
-                <TableRow key={index} style={{ background: 'white'}}>
+                <TableRow key={index} style={{ background: '#F3F4F6'}}>
                   <TableCell component="th" scope="row">
                     <select
                       name="item"

@@ -14,8 +14,6 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log(formik.values)
-
   return (
     <form className='grid grid-cols-6 items-center gap-10 w-full h-full p-4' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
@@ -82,12 +80,12 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
 
       <div className='grid row-start-2 col-start-3 col-span-2  items-center'>
         <label htmlFor='dimensiones' className='text-start'>Dimensiones: </label>
-        <Input
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.dimensiones}
-          name='dimensiones'
-          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          <Input
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.dimensiones}
+            name='dimensiones'
+            className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
 
       <div className='grid grid-cols-2 row-start-2 col-span-2 col-start-5 items-center'>
@@ -118,24 +116,15 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
 
-      {/* <div className='grid grid-cols-2 row-start-3 col-span-2 items-center'>
-        <label htmlFor="provincia">Provincia: </label>
-        <Select
-          showSearch
-          placeholder="Selecciona una provincia"
-          optionFilterProp="children"
-          className='rounded-md mt-1 col-span-3 h-11 w-full'
-          onChange={value => {setProvinciaID(value), formik.setFieldValue('provincia', value)}}
-          onSearch={onSearch}
-          name='provincia'
-          defaultActiveFirstOption={false}
-          filterOption={filterOption}
-          // options={provincia && provincia.map(item => ({
-          //   value: item.provincia_id,
-          //   label: item.provincia_nombre
-          // }))}
-        />
-      </div> */}
+      <div className='grid grid-cols-2 row-start-3  col-span-2 items-center'>
+        <label htmlFor='espacios' className='text-start'>Espacios: </label>
+        <Input
+          type="number"
+          onChange={formik.handleChange}
+          value={formik.values.espacios}
+          name='espacios'
+          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+      </div>
 
       <div className='w-full relative row-start-3 col-start-5 col-span-2 '>
         <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>

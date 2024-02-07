@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
-import CategoriaForm from '@/componentes/categoria/Edicion/CategoriaForm';
+import CategoriaForm from '@/componentes/categoria/CategoriaForm';
 
 const ModalForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

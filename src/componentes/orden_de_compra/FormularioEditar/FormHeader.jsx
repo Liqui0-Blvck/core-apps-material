@@ -3,6 +3,7 @@ import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Input, Spin } from 'antd';
+import { Skeleton } from '@mui/material';
 const { Search } = Input;
 
 const FormHeader = ({ handleSubmit, handleChange, ordenCompra, loading }) => {
@@ -49,66 +50,37 @@ const FormHeader = ({ handleSubmit, handleChange, ordenCompra, loading }) => {
 
           <div className='row-start-4  w-full md:w-[80%] flex gap-3 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
-            <Spin spinning={loading}>
-                {
-                  loading
-                  ? <input disable/>
-                  : (
-                    <input
-                      type="text" 
-                      name='nombre'
-                      value={ordenCompra && ordenCompra.nombre}
-                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-                      onChange={handleChange}
-                      disabled
-                    />
-                  )
-                }
-              
-             </Spin>
+            <input
+              type="text" 
+              name='nombre'
+              value={ordenCompra && ordenCompra.nombre}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+              onChange={handleChange}
+              disabled
+            />
           </div>
 
           <div className='row-start-6 w-full md:w-[80%]  flex gap-2 justify-between items-center'>
             <label htmlFor="numero_cotizacion" className='text-start'>Numero Cotizacion: </label>
-            <Spin spinning={loading}>
-                {
-                  loading
-                  ? <input disable/>
-                  : (
-                    <input 
-                      type="text" 
-                      name='numero_cotizacion' 
-                      value={ordenCompra && ordenCompra.numero_cotizacion}
-                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-                      onChange={handleChange}
-                      disabled
-                    />
-                  )
-                }
-            
-                
-            </Spin>
+            <input 
+              type="text" 
+              name='numero_cotizacion' 
+              value={ordenCompra && ordenCompra.numero_cotizacion}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+              onChange={handleChange}
+              disabled
+            />
           </div>
 
           <div className='row-start-7 w-[95%] md:w-[80%] flex gap-10 justify-between items-center'>
             <label htmlFor="proveedor">Proveedor: </label>
-            <Spin spinning={loading}>
-                {
-                  loading
-                  ? <input disable/>
-                  : (
-                    <input 
-                      type="text"
-                      name='proveedor' 
-                      value={ordenCompra && ordenCompra.proveedor_nombre}
-                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-                      disabled
-                      />
-                  )
-                }
-              
-            </Spin>
-            
+            <input 
+              type="text"
+              name='proveedor' 
+              value={ordenCompra && ordenCompra.proveedor_nombre}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+              disabled
+              />
           </div>
 
         </div>
@@ -118,22 +90,14 @@ const FormHeader = ({ handleSubmit, handleChange, ordenCompra, loading }) => {
         <div className='bg-gray-100 w-full grid grid-rows-8 gap-2'>
           <div className='row-start-4 w-full flex gap-10 justify-between items-center'>
             <label htmlFor="fecha_orden" className='text-start'>Fecha Orden: </label>
-            <Spin spinning={loading}>
-              {
-                loading
-                  ? <input disable/>
-                  : (
-                    <input 
-                      type="text"
-                      name='fecha_orden' 
-                      value={formatearFecha(ordenCompra && ordenCompra.fecha_creacion)}
-                      className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
-                      onChange={handleChange}
-                      disabled
-                      />
-                  )
-              }
-            </Spin>
+            <input 
+              type="text"
+              name='fecha_orden' 
+              value={formatearFecha(ordenCompra && ordenCompra.fecha_creacion)}
+              className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
+              onChange={handleChange}
+              disabled
+              />
             
           </div>
 

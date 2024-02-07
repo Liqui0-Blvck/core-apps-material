@@ -8,6 +8,7 @@ import FormHeader from './FormHeader'
 import { useFormik } from 'formik'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
+import { Skeleton } from '@mui/material'
 
 
 const OrdenDeCompraFormEditar = () => {
@@ -16,13 +17,13 @@ const OrdenDeCompraFormEditar = () => {
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
 
-  const { data: orden_compra, loading: loadingOrden } = useAuthenticatedFetch(
+  const { data: orden_compra, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/orden-compra/${id}`
   )
 
-  const { data: items, loading: loadingItem } = useAuthenticatedFetch(
+  const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/item/`
@@ -114,9 +115,8 @@ const OrdenDeCompraFormEditar = () => {
         setItemOrden({
           orden_de_compra: data.id,
         })
-        setTimeout(() => {
-          navigate(`/app/orden-compra/`)
-        }, 1500)
+        navigate(`/app/orden-compra/`)
+        toast.success("Orden de compra editado correctamente")
       } else {
         console.log("Error al crear la orden de compra");
       }
@@ -148,6 +148,7 @@ const OrdenDeCompraFormEditar = () => {
 
   };
 
+
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
@@ -155,7 +156,7 @@ const OrdenDeCompraFormEditar = () => {
           handleSubmit={handleSubmitOrdenCompra} 
           handleChange={handleInputChange} 
           ordenCompra={orden_compra}
-          loading={loadingOrden}
+          loading={loading}
         />
         <div id='form-list' className='mt-10'>
           <ItemOrdenForm
@@ -163,7 +164,7 @@ const OrdenDeCompraFormEditar = () => {
             items={items}
             rows={rows}
             setRows={setRows}
-            loading={loadingItem}
+            loading={loading}
             handleSubmit={handleSubmitOrdenCompra} 
             handleChange={handleInputChangeItem}
             handleAgregarItem={handleAgregarItem}

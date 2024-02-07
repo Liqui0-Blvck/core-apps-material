@@ -53,7 +53,7 @@ export const useAuthenticatedFetch = (token, validate, url) => {
 
     setTimeout(() => {
       setLoading(false)
-    }, 2000)
+    }, 1000)
 
     return () => {
       isMounted = false

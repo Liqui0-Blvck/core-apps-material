@@ -9,14 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { FaCirclePlus } from "react-icons/fa6";
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-
-
-
 
 const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, handleAgregarItem }) => {
-  const navigate = useNavigate()
   const agregarFila = () => {
     const nuevaFila = { id: rows.length, item: '', unidad_de_compra: 0, costo_por_unidad: 0, fecha_llegada: '', observaciones: '' };
     setRows((prevRows) => [...prevRows, nuevaFila]);
@@ -54,7 +48,7 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
             </TableHead>
             <TableBody>
               {rows && rows.map((row, index) => (
-                <TableRow key={index} style={{ background: 'white'}}>
+                <TableRow key={index} style={{ background: '#F3F4F6'}}>
                   <TableCell component="th" scope="row">
                     <select
                       name="item"

@@ -9,7 +9,7 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 
 const OrdenDeCompraForm = () => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken, user } = useContext(AuthContext)
   const [proveedor, setProveedor] = useState([])
   const navigate = useNavigate()
   const { data: proveedores } = useAuthenticatedFetch(
@@ -33,6 +33,8 @@ const OrdenDeCompraForm = () => {
       observaciones: "",
     },
   ]
+
+  console.log(user)
   
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
@@ -84,6 +86,7 @@ const OrdenDeCompraForm = () => {
         },
         body: JSON.stringify({
           ...ordenCompraData,
+          solicitado_por: user.user_id,
           items: rows.map((row) => ({
             item: row.item,
             unidad_de_compra: row.unidad_de_compra,
