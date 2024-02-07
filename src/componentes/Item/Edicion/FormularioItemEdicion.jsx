@@ -15,6 +15,7 @@ const { TextArea } = Input;
 const FormularioEdicion = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null)
   const [filename, setFilename] = useState('No hay imagen seleccionada')
   const [imagen, setImagen] = useState(null)
   const id = urlNumeros(pathname)
@@ -100,6 +101,9 @@ const FormularioEdicion = () => {
     },
   });
 
+
+  console.log(item)
+
   useEffect(() => {
     let isMounted = true
 
@@ -110,13 +114,22 @@ const FormularioEdicion = () => {
         categoria: item.categoria,
         foto: item.foto,
       })
+
+      setCategoriaSeleccionada(item.nombre_categoria)
     }
+    
 
     return () => {
       isMounted = false
     }
   }, [item])
 
+  console.log(categoriaSeleccionada)
+
+  
+  const handleCategoriaSeleccionada = (value) => {
+    setCategoriaSeleccionada(value)
+  }
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -233,10 +246,10 @@ const FormularioEdicion = () => {
             placeholder="Selecciona una categoria"
             optionFilterProp="children"
             className='rounded-md mt-1 col-span-3 h-11 w-full'
-            onChange={value => formik.setFieldValue('categoria', value) }
+            onChange={value => {formik.setFieldValue('categoria', value), handleCategoriaSeleccionada(value)}}
             onSearch={onSearch}
             name='categoria'
-            values={formik.values.categoria}
+            value={categoriaSeleccionada}
             filterOption={filterOption}
             options={categoria && categoria.map(cat => ({
               value: cat.id,

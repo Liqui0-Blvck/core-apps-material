@@ -22,6 +22,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
+import ModalRegistroSucursal from './Formularios/ModalRegistroSucursal';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -179,7 +180,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected } = props;
+  const { numSelected, handleDeleteClick, selected, refresh } = props;
 
   return (
     <Box
@@ -215,11 +216,11 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/app/proveedor-registro/`}>
-              <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-autp'>
-                <span className='font-semibold text-center'>Agregar Proveeedor</span>
-              </div>
-            </Ln>
+              <Ln to={`/app/proveedor-registro/`}>
+                <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-auto'>
+                  <span className='font-semibold text-center'>Agregar Proveeedor</span>
+                </div>
+              </Ln>
             )
           : null
       }
@@ -239,6 +240,10 @@ function EnhancedTableToolbar(props) {
                   Editar
                 </IconButton>
               </Ln>
+
+              <div className='w-72 p-1.5 rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center mx-auto'>
+                <ModalRegistroSucursal id={selected} refresh={refresh}/>
+              </div>
             </>
             )
           : null
@@ -265,7 +270,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaProveedor({ data, setData, token, loading }) {
+export default function TablaProveedor({ data, setData, token, loading, refresh }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -369,7 +374,11 @@ export default function TablaProveedor({ data, setData, token, loading }) {
       variant="outlined"
       sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
+      <EnhancedTableToolbar 
+        numSelected={selected.length} 
+        handleDeleteClick={handleDeleteClick} 
+        selected={selected}
+        setRefresh={refresh}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow

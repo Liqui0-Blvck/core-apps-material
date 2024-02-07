@@ -7,7 +7,7 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 const Proveedor = () => {
   const { authTokens, validToken } = useContext(AuthContext) 
-  const { data: proveedor, setData, loading } = useAuthenticatedFetch(
+  const { data: proveedor, setData, loading, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/proveedor/`
@@ -42,7 +42,12 @@ const Proveedor = () => {
         <div className='flex justify-center mt-10'>
           {
             proveedor && (
-              <TablaProveedor data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
+              <TablaProveedor 
+                data={datosFormateados} 
+                setData={setData} 
+                token={authTokens.access} 
+                loading={loading}
+                refresh={setRefresh}/>
             )
           }
         </div>

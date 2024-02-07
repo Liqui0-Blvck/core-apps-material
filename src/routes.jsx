@@ -34,6 +34,7 @@ import FormularioItemEdicion from "./componentes/Item/Edicion/FormularioItemEdic
 import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
 import FormularioEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
 import FormularioEditableProveedor from "./componentes/proveedor/Edicion/FormularioEditableProveedor";
+import SucursalCard from "./componentes/sucursal/SucursalCard";
 
 export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
   return (
@@ -311,7 +312,13 @@ export const routes = [
         name: "Detalle Orden de Compra",
         path: "/orden-compra/:id",
         element: <OrdenCompraDetail  />,
-      }
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "Sucursal Detalle",
+        path: "/sucursal/:id",
+        element: <SucursalCard />,
+      },
     ],
   },
   {
