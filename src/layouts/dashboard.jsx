@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
 import {
@@ -39,9 +39,11 @@ export function Dashboard() {
             ({ layout, pages }) =>
               layout === "dashboard" &&
               pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
+                <Route key={path} exact path={path} element={element} />
               ))
           )}
+          {/* Ruta para redirigir al usuario a la página de inicio si ninguna de las rutas coincide */}
+          <Route path="*" element={<Navigate to="/app/home" />} />
         </Routes>
         <div className="text-blue-gray-600 absolute bottom-0">
           <Footer />
