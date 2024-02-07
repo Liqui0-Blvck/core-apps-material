@@ -13,6 +13,11 @@ import { urlNumeros } from '@/services/url_number'
 
 const FormularioEditableProveedor = () => {
   const { authTokens, validToken } = useContext(AuthContext)
+  const [locacion, setLocacion] = useState({
+    region: '',
+    provincia: '',
+    comuna: ''
+  })
   const [regionID, setRegionID] = useState(null)
   const [provinciaID, setProvinciaID] = useState(null)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
@@ -120,7 +125,7 @@ const FormularioEditableProveedor = () => {
 
           if (response.ok) {
             toast.success('Proveedor agregado correctamente')
-            navigate('/proveedores/')
+            navigate('/app/proveedores/')
           } else {
             toast.error('Cualquier error es tu culpa')
           }
@@ -148,9 +153,15 @@ const FormularioEditableProveedor = () => {
         provincia: proveedor.provincia,
         foto: proveedor.foto
       })
+      setLocacion({
+        region: proveedor.region_nombre,
+        provincia: proveedor.provincia_nombre,
+        comuna: proveedor.comuna_nombre
+      })
     }
   }, [proveedor])
 
+  console.log(locacion)
   return (
     <MaxWidthWrapper>
       <div className='flex flex-col items-center h-full' >
@@ -259,9 +270,10 @@ const FormularioEditableProveedor = () => {
                 placeholder="Selecciona una región"
                 optionFilterProp="children"
                 className='rounded-md mt-1 col-span-3 h-11 w-full'
-                onChange={value => {setRegionID(value), formik.setFieldValue('region', value)} }
+                onChange={value => {setRegionID(value), formik.setFieldValue('region', value), setLocacion('region', value)} }
                 onSearch={onSearch}
                 name='region'
+                value={locacion.region}
                 filterOption={filterOption}
                 options={region && region.map(item => ({
                   value: item.region_id,
@@ -277,11 +289,12 @@ const FormularioEditableProveedor = () => {
                 placeholder="Selecciona una provincia"
                 optionFilterProp="children"
                 className='rounded-md mt-1 col-span-3 h-11 w-full'
-                onChange={value => {setProvinciaID(value), formik.setFieldValue('provincia', value)}}
+                onChange={value => {setProvinciaID(value), formik.setFieldValue('provincia', value), setLocacion('provincia', value)}}
                 onSearch={onSearch}
                 name='provincia'
                 defaultActiveFirstOption={false}
                 filterOption={filterOption}
+                value={locacion.provincia}
                 options={provincia && provincia.map(item => ({
                   value: item.provincia_id,
                   label: item.provincia_nombre
@@ -296,9 +309,10 @@ const FormularioEditableProveedor = () => {
                 placeholder="Selecciona una provincia"
                 optionFilterProp="children"
                 className='rounded-md mt-1 col-span-3 h-11 w-full'
-                onChange={value => {formik.setFieldValue('comuna', value)}}
+                onChange={value => {formik.setFieldValue('comuna', value), setLocacion('comuna', value)}}
                 name='comuna'
                 onSearch={onSearch}
+                value={locacion.comuna}
                 filterOption={filterOption}
                 options={comuna && comuna.map(item => ({
                   value: item.comuna_id,

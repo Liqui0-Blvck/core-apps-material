@@ -99,7 +99,7 @@ const ProveedorForm = () => {
 
           if (response.ok) {
             toast.success('Proveedor agregado correctamente')
-            navigate('/proveedores/')
+            navigate('/app/proveedores/')
           } else {
             toast.error('Cualquier error es tu culpa')
           }
