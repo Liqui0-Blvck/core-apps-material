@@ -118,6 +118,25 @@ const ItemFormulario = ({ formik, categoria }) => {
         />
       </div>
 
+      <div className='grid grid-cols-2 items-center row-start-3 col-start-3 col-span-2'>
+        <label htmlFor='marca' className='text-start'>Marca:</label>
+        <Input
+          type="text"
+          name='marca'
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.marca}
+          className={`
+          ${formik.errors.username && formik.touched.username 
+            ? 'border-[2px] text-red-900' 
+            : 'border-[1px] border-gray-300'}
+          rounded-md p-2 mt-1 col-span-2`
+          }/>
+          {formik.touched.marca && formik.errors.marca && (
+            <div className='col-span-2 text-center text-sm text-red-900'>{formik.errors.marca}</div>
+          )}
+      </div>
+
       <button type='submit' className='row-start-3 col-start-5 col-span-2  p-2 bg-blue-200 rounded-md mt-5 w-full'>Agregar</button>
     </form>
   )

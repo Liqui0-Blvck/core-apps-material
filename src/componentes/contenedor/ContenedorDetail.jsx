@@ -11,7 +11,7 @@ const ContenedorDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
-  const { data, loading } = useAuthenticatedFetch(
+  const { data, loading, setRefresh} = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://localhost:8000/api/contenedor/${id}/`
@@ -31,15 +31,14 @@ const ContenedorDetail = () => {
     []
   )
 
-  console.log(data)
-
-
   return (
     <MaxWidthWrapper>
       {
         data && (
           <CartDetail
             titulo='Contenedor'
+            refresh={setRefresh}
+            id={data.id}
             foto={data.foto} 
             nombre={data.nombre} 
             codigo={data.codigo}

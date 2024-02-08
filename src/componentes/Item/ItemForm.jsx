@@ -25,6 +25,7 @@ const ItemForm = () => {
       nombre: '',
       descripcion: '',
       categoria: '',
+      marca: '',
       foto: '',
     },
     validationSchema: ComponenteSchema,
@@ -34,6 +35,7 @@ const ItemForm = () => {
       formData.append('nombre', values.nombre);
       formData.append('descripcion', values.descripcion);
       formData.append('categoria', values.categoria);
+      formData.append('marca', values.marca)
       formData.append('foto', values.foto);
   
       try {

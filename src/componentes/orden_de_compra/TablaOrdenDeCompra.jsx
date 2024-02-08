@@ -358,6 +358,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, setRefresh })
         body: JSON.stringify({ estado_oc: estado })
       })
       if (response.ok) {
+        toast.success("Acción realizada correctamente")
         setRefresh(true)
       }
     } catch (error) {

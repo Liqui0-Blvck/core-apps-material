@@ -13,7 +13,7 @@ import { urlNumeros } from '@/services/url_number';
 
 const { TextArea } = Input
 
-export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, nombre, descripcion, titulo, proveedores}) {
+export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, nombre, descripcion, titulo, proveedores, marca}) {
   const { authTokens, validToken } = useContext(AuthContext)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
@@ -96,6 +96,13 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                       <h1 className='border-[1px] border-gray-300 rounded-md font-bold pl-2'>Nombre: </h1>
                         <div className='h-10 rounded-md bg-gray-200 flex items-center justify-center '>
                           <span>{nombre}</span>
+                        </div>
+                    </div>
+
+                    <div className='h-full p-2 flex flex-col flex-1 gap-2 rounded-md'>
+                      <h1 className='border-[1px] border-gray-300 rounded-md font-bold pl-2'>Marca: </h1>
+                        <div className='h-full w-full rounded-md bg-gray-200 flex p-3'>
+                          <span>{marca}</span>
                         </div>
                     </div>
 

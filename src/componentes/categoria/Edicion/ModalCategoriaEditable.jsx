@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Modal } from 'antd';
 import CategoriaEditableForm from './CategoriaForm';
+import { WidthFull } from '@mui/icons-material';
 
 const ModalCategoriaEditable = ({id, refresh}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -22,7 +23,7 @@ const ModalCategoriaEditable = ({id, refresh}) => {
     <>
       <button onClick={showModal} className='w-full h-8 text-white font-semibold bg-blue-600 rounded-md'>Editar</button>
 
-      <Modal title="Agregar Categoria" 
+      <Modal title="Agregar Categoria"
         open={isModalOpen} 
         onOk={handleOk} 
         onCancel={handleCancel}
