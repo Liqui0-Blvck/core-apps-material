@@ -14,7 +14,7 @@ const SucursalCard = () => {
   const { data: sucursal } = useAuthenticatedFetch(
     authTokens ,
     validToken,
-    `http://127.0.0.1:8000/api/sucursal/15/`
+    `http://127.0.0.1:8000/api/sucursal/${id}/`
   )
 
   console.log(id)
@@ -24,42 +24,7 @@ const SucursalCard = () => {
     <Card className='w-full h-full mt-10'>
       <CardContent>
           <article className='w-full h-full flex gap-2 flex-col-reverse md:flex-row'>
-            {/* <div className='md:w-[40%] h-full rounded-md'>
-              <div className='h-full p-2 flex flex-col  mt-12 gap-2 rounded-md'>
-                <div className='w-full h-56 border-[1px] border-gray-300 rounded-md'>
-                  {
-                    sucursal &&
-                      ? (
-                        <img src={foto} alt="" className='w-full h-full rounded-md'/>
-                        )
-                      : (
-                        <img src='\img\default.webp' alt='' className='w-full h-full object-cover rounded-md'/>
-                      )
-                  }
-                </div>
-                <h1 className='border-[1px] border-gray-300 rounded-md font-bold text-center'>
-                  {
-                    sucursal && (
-                      sucursal.fecha_creacion !== sucursal.fecha_modificacion
-                        ? 'Fecha Modificación'
-                        : 'Fecha Creación'
-                      )
-                    }
-                  </h1>
-                <div className='h-10 rounded-md bg-gray-200 flex items-center justify-center '>
-                  <span>
-                    {
-                      sucursal && (
-                        sucursal.fecha_creacion !== sucursal.fecha_modificacion
-                          ? sucursal.fecha_modificacion
-                          : sucursal.fecha_creacion
-                      )
-                    }
-                  </span>
-                </div>
-              </div>  
-            </div> */}
-
+           
             <div className='w-full border-[1px] border-gray-300 rounded-md'>
               <div className='h-12 border-[1px] border-gray-300 rounded m-2 flex justify-center items-center col-span-2'>
                 <h1 className='font-bold text-2xl text-gray-600'>Información de la Sucursal</h1>

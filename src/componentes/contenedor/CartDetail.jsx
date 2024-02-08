@@ -135,21 +135,26 @@ export default function CartDetalle({
 
       <Card>
         <CardContent>
-          <h1>Espacios en contenedores</h1>
+          <h1 className='mb-10'>Espacios en contenedores</h1>
 
-          <div className='w-full h-40 flex gap-2 '>
-            {
-              espacios.map((espacio, index) => {
-                console.log(espacio)
-                return (
-                  <div className={`w-full flex gap-2`}>
-                    <div className={`border border-gray-300 w-full h-40 `}>
-                      <h1>Espacio {index}</h1>
-                    </div>
+          <div className={`flex ${espacios.length >= 3 ? 'flex-wrap' : 'flex-nowrap'} gap-2`}>
+            {espacios.map((espacio, index) => {
+              const porcentajeUtilizado = (espacio.cantidad / espacio.capacidad_maxima) * 100;
+              console.log(porcentajeUtilizado);
+              return (
+                <div key={index} 
+                  className={`border border-gray-300 flex-grow h-40 
+                  ${espacios.length === 8 ? 'w-56' : 'w-72'} mb-2 rounded-md
+                  relative overflow-hidden`}>
+                  <div className='w-full flex justify-between border'>
+                    <h1>Espacio {espacio.nombre}</h1>
+                    <span>{porcentajeUtilizado}%</span>
                   </div>
-                )
-              })
-            }
+                  <div className={`bg-blue-300 absolute rounded-b-md left-0 right-0 bottom-0 `} style={{ height: `${porcentajeUtilizado}%`, animation: "wave 4s ease-in-out infinite alternate"}}>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

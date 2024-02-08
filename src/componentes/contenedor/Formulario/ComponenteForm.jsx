@@ -117,12 +117,12 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
       </div>
 
       <div className='grid grid-cols-2 row-start-3  col-span-2 items-center'>
-        <label htmlFor='espacios' className='text-start'>Espacios: </label>
+        <label htmlFor='espacio' className='text-start'>Espacios: </label>
         <Input
           type="number"
           onChange={formik.handleChange}
           value={formik.values.espacios}
-          name='espacios'
+          name='espacio'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
       </div>
 

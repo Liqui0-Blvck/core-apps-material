@@ -22,3 +22,19 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.wave {
+  color: white;
+  animation: shift 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% {
+    clip-path: polygon(0% 48%, 10% 48%, 33% 54%, 54% 60%, 70% 61%, 84% 59%, 100% 62%, 100% 100%, 0% 100%);
+  }
+
+  50% {
+    clip-path: polygon(0% 60%, 15% 60%, 34% 66%, 51% 62%, 66% 60%, 84% 55%, 100% 56%, 100% 100%, 0% 100%);
+
+  }
+}

@@ -29,8 +29,7 @@ const ItemForm = () => {
     },
     validationSchema: ComponenteSchema,
     onSubmit: async (values) => {
-  
-      // Crear un FormData para enviar el archivo correctamente
+ 
       const formData = new FormData();
       formData.append('nombre', values.nombre);
       formData.append('descripcion', values.descripcion);
@@ -43,13 +42,13 @@ const ItemForm = () => {
           headers: {
             'authorization': `Bearer ${authTokens.access}`
           },
-          body: formData, // Usa el FormData directamente para enviar el archivo
+          body: formData,
         });
   
         if (response.ok) {
           toast.success('Item añadido correctamente!');
           formik.setValues(formik.initialValues);
-          navigate('/item/')
+          navigate('/app/item/')
         } else {
           toast.error('Error al añadir el item');
         }
@@ -59,13 +58,6 @@ const ItemForm = () => {
     },
   });
   
-  // if (loading) {
-  //   return (
-  //     <Backdrop open={loading} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, color: '#fff' }}>
-  //       <CircularProgress color="inherit" />
-  //     </Backdrop>
-  //   );
-  // }
   
   return (
     <MaxWidthWrapper>

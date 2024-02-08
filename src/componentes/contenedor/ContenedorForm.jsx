@@ -21,7 +21,7 @@ const ContenedorForm = () => {
       tipo: '',
       estado: '',
       foto: null,
-      espacios: 0
+      espacio: null
     },
     onSubmit: async values => {
         try {
@@ -33,7 +33,7 @@ const ContenedorForm = () => {
             formData.append('tipo', values.tipo);
             formData.append('estado', values.estado);
             formData.append('foto', values.foto)
-            formData.append('espacios', values.espacios)
+            formData.append('espacios', values.espacio)
 
             const response = await fetch('http://localhost:8000/api/contenedor/', {
               method: 'POST',
@@ -63,7 +63,7 @@ const ContenedorForm = () => {
             formData.append('dimensiones', values.dimensiones);
             formData.append('tipo', values.tipo);
             formData.append('estado', values.estado)
-            formData.append('espacios', values.espacios)
+            formData.append('espacio', values.espacio)
 
             const response = await fetch('http://localhost:8000/api/contenedor/', {
               method: 'POST',
@@ -80,7 +80,7 @@ const ContenedorForm = () => {
               setNombreCategoria('')
 
               setTimeout(() => {
-                navigate('/app/contenedores/')
+                navigate('/contenedores/')
               }, 2000)
 
             } else {
@@ -93,7 +93,7 @@ const ContenedorForm = () => {
     }
   })
 
-
+  console.log(formik.values)
   return (
     <MaxWidthWrapper>
       <div className='flex flex-col items-center h-full mt-20'>
