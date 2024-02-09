@@ -24,7 +24,7 @@ export default function ModalSearchItem() {
   const { data: items, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/?search=${valor}`
+    `http://127.0.0.1:8000/api/item-list/?search=${valor}`
   )
   
 
@@ -81,7 +81,7 @@ export default function ModalSearchItem() {
                     <>
                       {
                         items
-                        .slice(0, 6)
+                        .slice(0, 5)
                         .map((resultado) => (
                           <li key={resultado.id}>
                             <Link 

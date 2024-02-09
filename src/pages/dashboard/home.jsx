@@ -33,13 +33,13 @@ import { Skeleton } from "@mui/material";
 
 export function Home() {
   const {authTokens, validToken} = useContext(AuthContext)
-  const { data: items, loading} = useAuthenticatedFetch(
+  const { data: items} = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/`
+    `http://127.0.0.1:8000/api/item-list/`
   )
 
-  const { data: ordenes } = useAuthenticatedFetch(
+  const { data: ordenes, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/orden-compra/`

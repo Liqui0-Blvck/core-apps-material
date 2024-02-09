@@ -10,7 +10,7 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/`
+    `http://127.0.0.1:8000/api/item-list/`
   )
 
   const { data: contenedor, setRefresh } = useAuthenticatedFetch(
@@ -50,6 +50,7 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
 
         if (response.ok){
           toast.success("Item agregado correctamente al contenedor")
+          formik.setValues(formik.initialValues)
           refresh(true)
           setRefresh(true)
           close(false)

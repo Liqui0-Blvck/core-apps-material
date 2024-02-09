@@ -8,12 +8,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik/dist";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 
 export function SignIn() {
+  const [clicked, setClicked] = useState(false)
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -105,7 +106,7 @@ export function SignIn() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-          <Button className="mt-6" fullWidth type="submit">
+          <Button className="mt-6" fullWidth type="submit"  >
             Sign In
           </Button>
 
