@@ -63,6 +63,7 @@ export function SignUp() {
             </Typography>
             <Input
               size="lg"
+
               name="username"
               onChange={formik.handleChange}
               placeholder="name@mail.com"
@@ -95,6 +96,7 @@ export function SignUp() {
 
               <Input
                 size="lg"
+                type="password"
                 name="password"
                 onChange={formik.handleChange}
                 placeholder="*********"
@@ -110,6 +112,7 @@ export function SignUp() {
               </Typography>
               <Input
                 size="lg"
+                type="password"
                 name="password2"
                 onChange={formik.handleChange}
                 placeholder="*********"

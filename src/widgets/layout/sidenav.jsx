@@ -75,7 +75,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         className={`relative`}
       >
         <Link to="/app/home" className="py-6 px-8 text-center flex" onClick={() => setOpenSidenav(dispatch, false)}>
-          <img src="/img/logosnabbit.gif" alt="" className='w-full h-full object-contain'/>
+          <img src="/img/logosnabbit.gif" alt="logo snabbit consultores" className='w-full h-full object-contain'/>
         </Link>
         <IconButton
           variant="text"
