@@ -37,7 +37,7 @@ const CategoriaForm = ({ modalClose }) => {
       } else {
         toast.error('Error en')
       }
-    }
+    },
   })
 
   return (

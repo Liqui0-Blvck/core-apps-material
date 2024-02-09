@@ -1,6 +1,5 @@
 import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import CardContent from '@mui/joy/CardContent'; 
 import { Link } from 'react-router-dom';
 import ModalContenedorItems from './ItemEnContenedor/ModalContenedorItems';
 import { useState } from 'react';
@@ -23,7 +22,6 @@ export default function CartDetalle({
   const [open, setOpen] = useState(false)
 
   return (
-    <DragDropContext onDragEnd={(result) => console.log(result)}>
       <div className='flex flex-col gap-3 mb-10'>
 
         <Card className='w-full h-full mt-10'>
@@ -160,6 +158,5 @@ export default function CartDetalle({
         </Card> */}
 
       </div>
-    </DragDropContext>
   );
 }

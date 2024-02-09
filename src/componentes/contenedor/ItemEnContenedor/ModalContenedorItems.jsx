@@ -22,7 +22,7 @@ const ModalContenedorItems = ({ id, refresh }) => {
       <Button className='w-full h-full' onClick={showModal}>
         Agregar Item
       </Button>
-      <Modal title="Agregar items a espacio" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Agregar items a espacio" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={false}>
         <ItemContenedorFormulario id={id} refresh={refresh} close={setIsModalOpen}/>
       </Modal>
     </>

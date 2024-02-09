@@ -5,6 +5,7 @@ import MaxWidthWrapper from '../MaxWidthWrapper'
 import { useContext, useState } from 'react'
 import AuthContext from '../../context/AuthContext'
 import ComponenteForm from './Formulario/ComponenteForm'
+import { ContenedorSchema } from '@/services/Validator'
 
 // eslint-disable-next-line react/prop-types
 const ContenedorForm = () => {
@@ -18,11 +19,12 @@ const ContenedorForm = () => {
       nombre: '',
       color: '',
       dimensiones: '',
-      tipo: '',
+      material: '',
       estado: '',
       foto: null,
       espacio: null
     },
+    validationSchema: ContenedorSchema,
     onSubmit: async values => {
         try {
           if (values.foto instanceof File){
@@ -30,7 +32,7 @@ const ContenedorForm = () => {
             formData.append('nombre', values.nombre);
             formData.append('color', values.color);
             formData.append('dimensiones', values.dimensiones);
-            formData.append('tipo', values.tipo);
+            formData.append('material', values.material);
             formData.append('estado', values.estado);
             formData.append('foto', values.foto)
             formData.append('espacios', values.espacio)
@@ -48,10 +50,8 @@ const ContenedorForm = () => {
               formik.setValues(formik.initialValues)
               setImagen(null)
               setNombreCategoria('')
-
-              setTimeout(() => {
-                navigate('/app/contenedores/')
-              }, 2000)
+              navigate('/app/contenedores/')
+  
 
             } else {
               toast.error('Error al añadir el contenedor');
@@ -61,7 +61,7 @@ const ContenedorForm = () => {
             formData.append('nombre', values.nombre);
             formData.append('color', values.color);
             formData.append('dimensiones', values.dimensiones);
-            formData.append('tipo', values.tipo);
+            formData.append('material', values.material);
             formData.append('estado', values.estado)
             formData.append('espacio', values.espacio)
 
@@ -93,7 +93,6 @@ const ContenedorForm = () => {
     }
   })
 
-  console.log(formik.values)
   return (
     <MaxWidthWrapper>
       <div className='flex flex-col items-center h-full mt-20'>

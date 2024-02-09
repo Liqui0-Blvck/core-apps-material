@@ -216,7 +216,7 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-              <Ln to={`/app/proveedor-registro/`}>
+              <Ln to={`/app/registro-proveedor/`}>
                 <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-auto'>
                   <span className='font-semibold text-center'>Agregar Proveeedor</span>
                 </div>

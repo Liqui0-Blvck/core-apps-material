@@ -1,7 +1,6 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import TablaProveedor from './TablaProveedor'
-import { useLoaderData } from 'react-router-dom'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 

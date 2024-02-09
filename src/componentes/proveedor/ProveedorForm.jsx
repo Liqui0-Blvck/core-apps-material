@@ -9,6 +9,7 @@ import { Divider } from '@mui/material'
 import AuthContext from '@/context/AuthContext'
 import ProveedorFormulario from './Formularios/ProveedorFormulario'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { Proveedorschema } from '@/services/Validator'
 
 
 const ProveedorForm = () => {
@@ -48,6 +49,7 @@ const ProveedorForm = () => {
       provincia: null,
       foto: ''
     },
+    validationSchema: Proveedorschema,
     onSubmit: async values => {
       try {
         if (values.foto instanceof File){

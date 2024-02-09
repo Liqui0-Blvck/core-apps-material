@@ -13,6 +13,12 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
     `http://127.0.0.1:8000/api/item/`
   )
 
+  const { data: contenedor, setRefresh } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/contenedor/${id}`
+  )
+
   const onSearch = (value) => {
     console.log("search:", value);
   };
@@ -45,6 +51,7 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
         if (response.ok){
           toast.success("Item agregado correctamente al contenedor")
           refresh(true)
+          setRefresh(true)
           close(false)
           
         } else {
@@ -55,29 +62,30 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
       }
     }
   })
+  
+  const options = items && items
+    .filter(item => !contenedor.items.some(contenedorItem => contenedorItem.id === item.id))
+    .map(item => ({
+      value: item.id,
+      label: item.nombre
+    }))
 
-  console.log(formik.values)
-
-  console.log(items)
   return (
     <div className='w-full flex gap-10 '>
-      <form className='w-full border border-gray-400 flex flex-col items-center' onSubmit={formik.handleSubmit}>
+      <form className='w-full flex flex-col gap-20 items-center' onSubmit={formik.handleSubmit}>
         <Select
           showSearch
-          placeholder="Selecciona un estado"
+          placeholder="Selecciona un item"
           optionFilterProp="children"
           className='rounded-md mt-1 col-span-3 h-11 w-full'
           onChange={e => formik.setFieldValue('item', e)}
           onSearch={onSearch}
           name='item'
           filterOption={filterOption}
-          options={items && items.map((item) => ({
-            value: item.id,
-            label: item.nombre
-          }))}
+          options={options}
           />
 
-        <button type='submit' className='bg-blue-500 px-4 py-2'>Agregar Item</button>
+        <button type='submit' className='bg-blue-400 hover:bg-blue-300 rounded-md px-4 py-2'>Agregar Item</button>
       </form>
     </div>
   )

@@ -73,6 +73,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           onChange={formik.handleChange}
           value={formik.values.nombre}
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.nombre && formik.touched.nombre && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.nombre}</p>
+            )
+          }
       </div>
       
       <div className='grid grid-cols-2 items-center col-start-5 col-span-2'>
@@ -83,6 +88,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           value={formik.values.rut}
           name='rut'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.rut && formik.touched.rut && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.rut}</p>
+            )
+          }
       </div>
       
 
@@ -94,6 +104,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           value={formik.values.direccion}
           name='direccion'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.direccion && formik.touched.direccion && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.direccion}</p>
+            )
+          }
       </div>
 
       <div className='grid row-start-2 grid-cols-2 col-span-2 col-start-5 items-center'>
@@ -104,6 +119,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           value={formik.values.contacto}
           name='contacto'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.contacto && formik.touched.contacto && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.contacto}</p>
+            )
+          }
       </div>
       
 
@@ -116,6 +136,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           value={formik.values.correo}
           name='correo'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.correo && formik.touched.correo && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.correo}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
@@ -134,6 +159,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
             label: item.region_nombre
           }))}
         />
+        {
+            formik.errors.region && formik.touched.region && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.region}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
@@ -153,6 +183,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
             label: item.provincia_nombre
           }))}
         />
+        {
+            formik.errors.provincia && formik.touched.provincia && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.provincia}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 col-span-2 items-center'>
@@ -171,6 +206,11 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
             label: item.comuna_nombre
           }))}
         />
+        {
+            formik.errors.comuna && formik.touched.comuna && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.comuna}</p>
+            )
+          }
         
       </div>
 

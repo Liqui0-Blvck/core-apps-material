@@ -64,7 +64,13 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
           name='nombre'
           onChange={formik.handleChange}
           value={formik.values.nombre}
-          className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          onFocus={formik.errors.name ? 'border-red-700' : ''}
+          className={`border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2 `}/>
+          {
+            formik.errors.nombre && formik.touched.nombre && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.nombre}</p>
+            )
+          }
       </div>
       
       <div className='grid grid-cols-2 items-center col-start-5 col-span-2'>
@@ -75,6 +81,11 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
           value={formik.values.color}
           name='color'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.color && formik.touched.color && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.color}</p>
+            )
+          }
       </div>
       
 
@@ -86,6 +97,11 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
             value={formik.values.dimensiones}
             name='dimensiones'
             className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+            {
+            formik.errors.dimensiones && formik.touched.dimensiones && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.dimensiones}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 row-start-2 col-span-2 col-start-5 items-center'>
@@ -104,16 +120,26 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
             label: estado
           }))}
         />
+        {
+            formik.errors.material && formik.touched.material && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.material}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 row-start-3 col-start-3 col-span-2 items-center'>
-        <label htmlFor='tipo' className='text-start'>Tipo: </label>
+        <label htmlFor='material' className='text-start'>material: </label>
         <Input
           type="text"
           onChange={formik.handleChange}
-          value={formik.values.tipo}
-          name='tipo'
+          value={formik.values.material}
+          name='material'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.material && formik.touched.material && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.material}</p>
+            )
+          }
       </div>
 
       <div className='grid grid-cols-2 row-start-3  col-span-2 items-center'>
@@ -124,10 +150,15 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
           value={formik.values.espacios}
           name='espacio'
           className='border-[1px] border-gray-300 rounded-md p-2 mt-1 col-span-2'/>
+          {
+            formik.errors.espacios && formik.touched.espacios && (
+              <p className='text-red-600 text-center w-full col-span-2'>{formik.errors.espacios}</p>
+            )
+          }
       </div>
 
       <div className='w-full relative row-start-3 col-start-5 col-span-2 '>
-        <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>
+        <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 hover:bg-blue-300 text-white rounded-md w-full'>Agregar</button>
       </div>
     </form>
   )

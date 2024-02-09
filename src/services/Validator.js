@@ -28,3 +28,26 @@ export const ComponenteSchema = Yup.object().shape({
     .max(100, 'Descripción muy larga!'),
   categoria: Yup.string().required('La categoría es obligatoria'),
 })
+
+
+export const ContenedorSchema = Yup.object().shape({
+  nombre: Yup.string().required('El nombre es requerido'),
+  color: Yup.string().required('El color es requerido'),
+  dimensiones: Yup.string().required('las dimensiones son requeridas'),
+  material: Yup.string().required('El tipo es requerido'),
+  estado: Yup.string().required('El estado es requerido'),
+  foto: Yup.mixed().nullable(),
+  espacio: Yup.mixed().nullable()
+});
+
+
+export const Proveedorschema = Yup.object().shape({
+  nombre: Yup.string().required('El nombre es requerido'),
+  rut: Yup.string().required().matches(/^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/i, 'RUT inválido'), // Validación básica de RUT chileno
+  correo: Yup.string().email().required('El correo es requerido'),
+  contacto: Yup.string().required().matches(/^9\d{8}$/i, 'Número de contacto inválido'),
+  direccion: Yup.string().required('La dirección es requerida'),
+  comuna: Yup.number().required('La comuna es requerida'),
+  region: Yup.number().required('La región es requerida'),
+  provincia: Yup.number().required('La provincia es requerida'),
+});
