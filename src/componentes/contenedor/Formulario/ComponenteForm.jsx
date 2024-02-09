@@ -128,7 +128,7 @@ const ComponenteForm = ({ formik, filename, imagen, setImagen, setFilename }) =>
       </div>
 
       <div className='grid grid-cols-2 row-start-3 col-start-3 col-span-2 items-center'>
-        <label htmlFor='material' className='text-start'>material: </label>
+        <label htmlFor='material' className='text-start'>Material: </label>
         <Input
           type="text"
           onChange={formik.handleChange}

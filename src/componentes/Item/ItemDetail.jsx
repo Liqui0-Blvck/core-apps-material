@@ -40,6 +40,7 @@ const ItemDetail = () => {
           data && (
             <CartDetail
               titulo='Item'
+              marca={data.marca}
               id={data.id}
               foto={data.foto} 
               nombre={data.nombre}
