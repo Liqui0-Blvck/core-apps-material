@@ -92,7 +92,9 @@ export function Sidenav({ brandImg, brandName, routes }) {
           subheader={
             <ListSubheader component="div" id="nested-list-subheader" className="flex w-full justify-between items-center">
               <p>Accesos</p>
-              <ArrowBack className="animate-pulse cursor-pointer" onClick={() => {setBodegaSnabbitClicked(false)}}/>
+              {
+                bodegaSnabbitClicked && <ArrowBack className="animate-pulse cursor-pointer" onClick={() => {setBodegaSnabbitClicked(false)}}/>
+              }
             </ListSubheader>
 
           }
@@ -104,7 +106,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                   <React.Fragment>
                     <ListItemButton onClick={() => {handleClick(obj.name)}}>
                       <ListItemText primary={obj.name} />
-                      {open[obj.name] ? <ExpandLess /> : <ExpandMore />}
+                      
                     </ListItemButton>
                     <Collapse in={open[obj.name]} timeout="auto" unmountOnExit >
                       {Directions[obj.name] && renderNestedList(obj.children)}
