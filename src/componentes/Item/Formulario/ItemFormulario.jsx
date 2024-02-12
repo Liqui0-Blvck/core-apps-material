@@ -21,9 +21,14 @@ const ItemFormulario = ({ formik, categoria }) => {
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
-    <form className='grid grid-cols-6 items-center gap-8 w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+    <form className='flex flex-col md:grid lg:grid md:grid-cols-6 lg:grid-cols-6 items-center gap-8 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
-        className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+        className='
+          w-full 
+          lg:row-span-2 lg:col-span-2
+          md:row-span-2 md:col-span-2
+          border-[2px] h-44 border-dashed
+        border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
         onClick={() => document.getElementById('input-field').click()}>
         <h1 className='font-semibold text-center'>{filename}</h1>
         <input
@@ -63,7 +68,12 @@ const ItemFormulario = ({ formik, categoria }) => {
         }
       </div>
 
-      <div className='grid grid-cols-2 items-center col-start-3 col-span-2'>
+      <div 
+        className='
+        w-full
+        lg:col-start-3 lg:col-span-2
+        md:col-start-3 md:col-span-2
+        grid grid-cols-2 items-center'>
         <label htmlFor='nombre' className='text-start'>Nombre:</label>
         <Input
           type="text"
@@ -82,7 +92,7 @@ const ItemFormulario = ({ formik, categoria }) => {
           )}
       </div>
       
-      <div className='grid grid-cols-2 row-span-2 items-center col-start-5 col-span-2 h-full'>
+      <div className='w-full grid grid-cols-2 row-span-2 items-center col-start-5 col-span-2 h-full'>
         <label htmlFor='descripcion' className='text-center w-10'>Descripción: </label>
         <TextArea
           rows={7} 
@@ -100,7 +110,7 @@ const ItemFormulario = ({ formik, categoria }) => {
       </div>
       
 
-      <div className='grid grid-cols-2 row-start-2 col-span-2 col-start-3 items-center'>
+      <div className='w-full grid grid-cols-2 row-start-2 col-span-2 col-start-3 items-center'>
         <label htmlFor="categoria">Categorias: </label>
         <Select
           showSearch
@@ -118,7 +128,7 @@ const ItemFormulario = ({ formik, categoria }) => {
         />
       </div>
 
-      <div className='grid grid-cols-2 items-center row-start-3 col-start-3 col-span-2'>
+      <div className='w-full grid grid-cols-2 items-center row-start-3 col-start-3 col-span-2'>
         <label htmlFor='marca' className='text-start'>Marca:</label>
         <Input
           type="text"

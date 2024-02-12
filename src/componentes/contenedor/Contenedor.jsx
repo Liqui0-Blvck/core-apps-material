@@ -9,7 +9,7 @@ const Contenedor = () => {
   const { data: contenedor, setData, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/contenedor/'
+    'http://127.0.0.1:8000/api/contenedores/'
   )
 
   const formatearFecha = useMemo(

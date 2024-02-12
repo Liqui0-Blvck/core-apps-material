@@ -36,7 +36,7 @@ export function Home() {
   const { data: items} = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item-list/`
+    `http://127.0.0.1:8000/api/items/`
   )
 
   const { data: ordenes, loading } = useAuthenticatedFetch(
