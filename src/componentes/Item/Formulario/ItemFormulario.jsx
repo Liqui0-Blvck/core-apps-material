@@ -147,7 +147,7 @@ const ItemFormulario = ({ formik, categoria }) => {
           )}
       </div>
 
-      <button type='submit' className='row-start-3 col-start-5 col-span-2  p-2 bg-blue-200 rounded-md mt-5 w-full'>Agregar</button>
+      <button type='submit' className='row-start-3 col-start-5 col-span-2  p-2 bg-blue-400 hover:bg-blue-300 rounded-md mt-5 w-full'>Agregar</button>
     </form>
   )
 }

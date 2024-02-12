@@ -16,6 +16,7 @@ const ProveedorForm = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const [regionID, setRegionID] = useState(null)
   const [provinciaID, setProvinciaID] = useState(null)
+  const navigate = useNavigate()
 
 
   const { data: region } = useAuthenticatedFetch(
@@ -35,7 +36,7 @@ const ProveedorForm = () => {
     `http://127.0.0.1:8000/api/provincias/${provinciaID}/comunas`
   )
 
-  const navigate = useNavigate()
+  
 
   const formikProveedor = useFormik({
     initialValues: {
@@ -118,7 +119,6 @@ const ProveedorForm = () => {
     <MaxWidthWrapper>
       <div className='flex flex-col items-center h-full' >
         <div className='w-full h-full mx-auto justify-center place-items-center overflow-hidden'>
-          <h1 className='mb-10 text-center font-semibold text-2xl'>Proveedor</h1>
           <ProveedorFormulario 
             formik={formikProveedor} 
             region={region} 

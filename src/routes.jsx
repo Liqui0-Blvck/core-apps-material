@@ -103,13 +103,7 @@ export const Directions = {
   ),
 };
 
-
-
-export const LISTA_MENU = [
-  {
-    name: 'Dashboard',
-    path: '/app/home',
-  },
+export const LISTA_MENU_BODEGA = [
   {
     name: 'Registros',
     path: '',
@@ -118,14 +112,10 @@ export const LISTA_MENU = [
         name: 'Registrar Item',
         path: '/app/registro-item'
       },
-      // {
-      //   name: 'Registrar Categoria',
-      //   path: '/app/registro-categoria'
-      // },
       {
         name: 'Registrar Proveedor',
         path: '/app/registro-proveedor'
-      }
+      },
     ]
   },
   {
@@ -144,7 +134,6 @@ export const LISTA_MENU = [
         name: 'Categorias',
         path: '/app/categorias'
       },
-      
       {
         name: 'Proveedores',
         path: '/app/proveedores'
@@ -182,6 +171,21 @@ export const LISTA_MENU = [
         path: '/app/registro-inventario'
       }
     ]
+  }
+]
+
+export const LISTA_MENU = [
+  {
+    name: 'Dashboard',
+    path: '/app/home',
+  },
+  {
+    name: 'Bodega Snabbit',
+    path: ''
+  },
+  {
+    name: 'Gestion Clientes',
+    path: ''
   }
 ]
 

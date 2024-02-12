@@ -9,34 +9,30 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
-import { useState } from "react";
-// import { sideBarRoutes } from "@/routes";
-
-
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import React, { useState } from "react";
 
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
-import { Directions, LISTA_MENU } from "@/routes";
+import { ArrowBack } from "@mui/icons-material";
+import { Directions, LISTA_MENU, LISTA_MENU_BODEGA } from "@/routes";
 
 
 export function Sidenav({ brandImg, brandName, routes }) {
   const [open, setOpen] = useState(true);
   const [rotate, setRotate] = useState(false)
+  const [bodegaSnabbitClicked, setBodegaSnabbitClicked] = useState(false);
 
   const handleClick = (name) => {
     setOpen((prevOpen) => ({ ...prevOpen, [name]: !prevOpen[name] }));
-    setRotate(prev => !prev)
+    setRotate((prev) => !prev);
+    if (name === 'Bodega Snabbit') {
+      setBodegaSnabbitClicked(true);
+    } 
   };
 
   const [controller, dispatch] = useMaterialTailwindController();
@@ -52,11 +48,11 @@ export function Sidenav({ brandImg, brandName, routes }) {
   const renderNestedList = (children) => (
     <List disablePadding className="m-2">
       {children.map((child) => (
-        <ListItem key={child.id} disablePadding className="ml-5" onClick={() => {
+        <ListItem key={child.id} disablePadding className="ml-5 w-[90%] mb-2 bg-gray-50" onClick={() => {
           setOpenSidenav(dispatch, false)
           setOpen(false)
         }}>
-          <Link to={child.path} className='w-full shadow-none'>
+          <Link to={child.path} className='w-full h-full shadow-none'>
             <ListItemText primary={child.name} />
           </Link>
         </ListItem>
@@ -94,42 +90,30 @@ export function Sidenav({ brandImg, brandName, routes }) {
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Accesos
+            <ListSubheader component="div" id="nested-list-subheader" className="flex w-full justify-between items-center">
+              <p>Accesos</p>
+              <ArrowBack className="animate-pulse cursor-pointer" onClick={() => {setBodegaSnabbitClicked(false)}}/>
             </ListSubheader>
+
           }
         >
-
-        {
-          LISTA_MENU.map((obj) => (
-            <>
-              <ListItemButton onClick={() => {handleClick(obj.name)}} >
-                {
-                  obj.name === 'Dashboard'
-                   ? (
-                    <Link to={obj.path}>
+          {(bodegaSnabbitClicked ? LISTA_MENU_BODEGA : LISTA_MENU).map((obj) => {
+            return (
+              <React.Fragment key={obj.name}>
+                {(bodegaSnabbitClicked && (obj.name === 'Bodega Snabbit' || obj.name === 'Gestion Clientes')) ? null : (
+                  <React.Fragment>
+                    <ListItemButton onClick={() => {handleClick(obj.name)}}>
                       <ListItemText primary={obj.name} />
-                    </Link>
-                    )
-                   : (
-                      <>
-                        <ListItemText primary={obj.name} />
-                        <ExpandMore className={`transform ${open ? 'rotate-0' : 'rotate-180'} transition-transform duration-300 ease-in-out`}/>
-                      </>
-                    )
-                  
-                }
-                
-              </ListItemButton>
-
-              <Collapse in={open[obj.name]} timeout="auto" unmountOnExit >
-                {Directions[obj.name] && renderNestedList(obj.children)}
-              </Collapse>
-            </>
-            
-          ))
-        }
-          
+                      {open[obj.name] ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open[obj.name]} timeout="auto" unmountOnExit >
+                      {Directions[obj.name] && renderNestedList(obj.children)}
+                    </Collapse>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            )
+          })}
         </List>
       </div>
     </aside>

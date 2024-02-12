@@ -23,9 +23,9 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
-    <form className='grid grid-cols-6 items-center gap-10 w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+    <form className='flex flex-col md:grid lg:grid md:grid-cols-6 lg:grid-cols-6 items-center gap-10 w-full h-full mt-5 mb-20' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
-        className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+        className='w-full row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
         onClick={() => document.getElementById('input-field').click()}>
         <h1 className='font-semibold text-center'>{filename}</h1>
         <Input
@@ -65,7 +65,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
         }
       </div>
 
-      <div className='grid grid-cols-2 items-center col-start-3 col-span-2'>
+      <div className='w-full grid grid-cols-2 items-center col-start-3 col-span-2'>
         <label htmlFor='nombre' className='text-start'>Nombre:</label>
         <Input
           type="text"
@@ -80,7 +80,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           }
       </div>
       
-      <div className='grid grid-cols-2 items-center col-start-5 col-span-2'>
+      <div className='w-full grid grid-cols-2 items-center col-start-5 col-span-2'>
         <label htmlFor='rut' className='text-center w-10'>Rut: </label>
         <Input
           type="text"
@@ -96,7 +96,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
       </div>
       
 
-      <div className='grid row-start-2 col-start-3 col-span-2  items-center'>
+      <div className='w-full grid row-start-2 col-start-3 col-span-2  items-center'>
         <label htmlFor='direccion' className='text-start'>Direccion: </label>
         <Input
           type="text"
@@ -111,7 +111,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           }
       </div>
 
-      <div className='grid row-start-2 grid-cols-2 col-span-2 col-start-5 items-center'>
+      <div className='w-full grid row-start-2 grid-cols-2 col-span-2 col-start-5 items-center'>
         <label htmlFor='contacto' className='text-start'>Contacto: </label>
         <Input
           type="text"
@@ -128,7 +128,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
       
 
 
-      <div className='grid grid-cols-2 row-start-3 items-center  col-span-2 '>
+      <div className='w-full grid grid-cols-2 row-start-3 items-center  col-span-2 '>
         <label htmlFor='correo' className='text-start'>Correo: </label>
         <Input
           type="text"
@@ -143,7 +143,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           }
       </div>
 
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
+      <div className='w-full grid grid-cols-2 row-start-3 col-span-2 col-start-3 items-center'>
         <label htmlFor="region">Region: </label>
         <Select
           showSearch
@@ -166,7 +166,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           }
       </div>
 
-      <div className='grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
+      <div className='w-full grid grid-cols-2 row-start-3 col-span-2 col-start-5 items-center'>
         <label htmlFor="provincia">Provincia: </label>
         <Select
           showSearch
@@ -190,7 +190,7 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
           }
       </div>
 
-      <div className='grid grid-cols-2 col-span-2 items-center'>
+      <div className='w-full grid grid-cols-2 col-span-2 items-center'>
         <label htmlFor="comuna">Comuna: </label>
         <Select
           showSearch
@@ -215,7 +215,13 @@ const ProveedorFormulario = ({ formik, region, comuna, provincia, setRegionID, s
       </div>
 
       <div className='w-full relative col-start-3 col-span-2 '>
-        <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>
+        <button 
+          type='submit' 
+          className='
+            absolute -top-1 col-start-3 col-span-3 p-2
+          bg-blue-400 hover:bg-blue-300
+          text-white rounded-md w-full'
+          >Agregar</button>
       </div>
     </form>
   )
