@@ -11,7 +11,6 @@ import { ComponenteSchema } from '@/services/Validator'
 import ModalForm from './Formulario/ModalForm'
 
 const ItemForm = () => {
-  algo
   const { authTokens, validToken } = useContext(AuthContext)
   const { data: categoria, loading } = useAuthenticatedFetch(
     authTokens,
