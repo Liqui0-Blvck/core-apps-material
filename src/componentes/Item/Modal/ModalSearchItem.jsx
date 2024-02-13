@@ -24,7 +24,7 @@ export default function ModalSearchItem() {
   const { data: items, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item-list/?search=${valor}`
+    `http://127.0.0.1:8000/api/items/?search=${valor}`
   )
   
 

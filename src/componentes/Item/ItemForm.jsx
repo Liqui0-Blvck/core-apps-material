@@ -38,7 +38,7 @@ const ItemForm = () => {
       formData.append('foto', values.foto);
   
       try {
-        const response = await fetch('http://localhost:8000/api/item/', {
+        const response = await fetch('http://localhost:8000/api/items/', {
           method: 'POST',
           headers: {
             'authorization': `Bearer ${authTokens.access}`

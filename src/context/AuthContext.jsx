@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState} from 'react'
+import { createContext, useContext, useEffect, useState} from 'react'
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext()
@@ -120,3 +120,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   )
 }
+
+export const useAuth = () => useContext(AuthContext)

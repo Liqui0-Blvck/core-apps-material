@@ -7,6 +7,7 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Clientes } from '@/pages/clientes'
 import { SignIn, SignUp } from "@/pages/auth";
 import ItemForm from "./componentes/Item/ItemForm";
 import ItemDetail from "./componentes/Item/ItemDetail";
@@ -35,11 +36,16 @@ import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/Formul
 import FormularioEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
 import FormularioEditableProveedor from "./componentes/proveedor/Edicion/FormularioEditableProveedor";
 import SucursalCard from "./componentes/sucursal/SucursalCard";
+import Usuarios from "./componentes/usuarios/Usuarios";
+import Equipos from "./componentes/equipos/Equipos";
+import Tickets from "./componentes/tickets/Tickets";
+import FormularioRegistroUsuario from "./componentes/usuarios/Formularios/FormularioRegistroUsuario";
+import HomeClient from "./pages/dashboard/homeClient";
 
-export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
+export const AccordionSubItem = ({ name, path}) => {
   return (
     <Link to={path} key={path} className='w-full p-0 ml-2'>
-      <ListItemButton onClick={toggleDrawer(anchor, false)}>
+      <ListItemButton>
         <ListItemText>
           {name}
         </ListItemText>
@@ -54,7 +60,7 @@ export const AccordionSubItem = ({ name, path, anchor, toggleDrawer }) => {
 
 
 export const Directions = {
-  'Registros': (children, toggleDrawer, anchor) => (
+  'Registros': (children) => (
     <>
       {children.map((subitem) => (
         <AccordionSubItem
@@ -78,7 +84,7 @@ export const Directions = {
       ))}
     </>
   ),
-  'Orden de compra': (children, toggleDrawer, anchor) => (
+  'Orden de compra': (children) => (
     <>
       {children.map((subitem) => (
         <AccordionSubItem
@@ -89,9 +95,8 @@ export const Directions = {
       ))}
     </>
   ),
-  'Directions': (children, toggleDrawer, anchor) => (
+  'Información': (children) => (
     <>
-      {/* Lógica específica para 'Directions' */}
       {children.map((subitem) => (
         <AccordionSubItem
           key={subitem.id}
@@ -102,6 +107,53 @@ export const Directions = {
     </>
   ),
 };
+
+export const LISTA_MENU_GESTION = [
+  {
+    name: 'Clientes',
+    path: '/app/clientes',
+  }, 
+  {
+    name: 'Registro Clientes',
+    path: '/app/registro-clientes'
+  },
+]
+
+export const LISTA_MENU_CLIENTE = [
+  {
+    name: 'Registros',
+    path: '',
+    children: [
+      {
+        name: 'Registro Usuarios',
+        path: '/app/registro-usuario'
+      },
+      {
+        name: 'Registro Equipo',
+        path: '/app/registro-equipo'
+      }
+    ]
+  },
+  {
+    name: 'Información',
+    path: '',
+    children: [
+      {
+        name: 'Usuarios',
+        path: '/app/usuarios'
+      },
+      {
+        name: 'Equipos',
+        path: '/app/equipos'
+      },
+      {
+        name: 'Tickets',
+        path: '/app/tickets'
+      }
+    ]
+
+  }
+]
 
 export const LISTA_MENU_BODEGA = [
   {
@@ -189,8 +241,6 @@ export const LISTA_MENU = [
   }
 ]
 
-
-
 export const routes = [
   {
     layout: "dashboard",
@@ -201,6 +251,12 @@ export const routes = [
         name: "dashboard",
         path: "/home",
         element: <Home />,
+      },
+      {
+        icon: <HomeIcon {...icon} />,
+        name: "dashboard clientes",
+        path: "/home-clientes",
+        element: <HomeClient />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
@@ -322,6 +378,41 @@ export const routes = [
         name: "Sucursal Detalle",
         path: "/sucursal/:id",
         element: <SucursalCard />,
+      },
+      {
+        name: 'Clientes',
+        path: '/clientes',
+        element: <Clientes />
+      },
+      {
+        name: 'Registro Usuarios',
+        path: '/registro-usuario',
+        element: <FormularioRegistroUsuario />
+      },
+      {
+        name: 'Registro Equipo',
+        path: '/registro-equipo',
+        element: <Clientes />
+      },
+      {
+        name: 'Usuarios',
+        path: '/usuarios',
+        element: <Usuarios />
+      },
+      {
+        name: 'Equipos',
+        path: '/equipos',
+        element: <Equipos />
+      },
+      {
+        name: 'Tickets',
+        path: '/tickets',
+        element: <Tickets />
+      },
+      {
+        name: 'Clientes',
+        path: '/clientes',
+        element: <Clientes />
       },
     ],
   },

@@ -1,20 +1,21 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-
+import { useNavigate } from 'react-router-dom'
 import AuthContext from '../../context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
-import TablaItem from './TablaItem'
+import { useClient } from '@/context/ClientContext'
+import TablaUsuarios from './Tabla/TablaUsuarios'
 
 
-const ItemList = () => {
+const Usuarios = () => {
+  const { clientInfo } = useClient()
   const { authTokens, validToken } = useContext(AuthContext)
- const { data: items, setData, loading } = useAuthenticatedFetch(
-  authTokens,
-  validToken,
-  `http://127.0.0.1:8000/api/items/`
- )
+  const { data: usuarios, setData, loading } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/usuarios/?search=${clientInfo && clientInfo.id}`
+  )
 
-  
 
   const formatearFecha = useMemo(
     () => (fecha) => {
@@ -31,11 +32,11 @@ const ItemList = () => {
   )
 
   const datosFormateados = useMemo(() => {
-    return items && items.map((dato) => ({
+    return usuarios && usuarios.map((dato) => ({
       ...dato,
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
-  }, [items, formatearFecha])
+  }, [usuarios, formatearFecha])
 
 
 
@@ -43,8 +44,9 @@ const ItemList = () => {
     <MaxWidthWrapper>
         <div className='flex justify-center mt-10'>
           {
-            items && (
-              <TablaItem data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
+            usuarios && 
+            (
+              <TablaUsuarios data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
             )
           }
         </div>
@@ -52,4 +54,4 @@ const ItemList = () => {
   )
 }
 
-export default ItemList
+export default Usuarios

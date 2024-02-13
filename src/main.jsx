@@ -8,17 +8,20 @@ import { MaterialTailwindControllerProvider } from "@/context";
 import "../public/css/tailwind.css";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { ClientProvider } from "./context/ClientContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <ThemeProvider>
-          <MaterialTailwindControllerProvider>
-              <Toaster />
-              <App />
-          </MaterialTailwindControllerProvider>
-        </ThemeProvider>
+        <ClientProvider>
+          <ThemeProvider>
+            <MaterialTailwindControllerProvider>
+                <Toaster />
+                <App />
+            </MaterialTailwindControllerProvider>
+          </ThemeProvider>
+        </ClientProvider>
       </AuthProvider>    
     </BrowserRouter>
   </React.StrictMode>
