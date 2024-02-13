@@ -10,7 +10,7 @@ import TablaUsuarios from './Tabla/TablaUsuarios'
 const Usuarios = () => {
   const { clientInfo } = useClient()
   const { authTokens, validToken } = useContext(AuthContext)
-  const { data: usuarios, setData, loading } = useAuthenticatedFetch(
+  const { data: usuarios, setData, loading, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/usuarios/?search=${clientInfo && clientInfo.id}`
@@ -46,7 +46,7 @@ const Usuarios = () => {
           {
             usuarios && 
             (
-              <TablaUsuarios data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
+              <TablaUsuarios data={datosFormateados} setData={setData} token={authTokens.access} loading={loading} setRefresh={setRefresh}/>
             )
           }
         </div>

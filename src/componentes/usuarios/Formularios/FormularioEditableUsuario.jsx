@@ -7,12 +7,17 @@ import { useClient } from '@/context/ClientContext';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 
 const { TextArea } = Input;
 
-const FormularioRegistroUsuario = () => {
-  const { authTokens } = useAuth()
-  const { clientInfo } = useClient()
+const FormularioRegistroUsuario = ({ id }) => {
+  const { authTokens, validToken } = useAuth()
+  const { data: usuario } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/usuario/${id}`
+  )
   const navigate = useNavigate()
 
   const formik = useFormik({
@@ -25,8 +30,8 @@ const FormularioRegistroUsuario = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/usuario/', {
-          method: 'PUT',
+        const response = await fetch('http://127.0.0.1:8000/api/usuarios/', {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${authTokens.access}`
@@ -49,6 +54,9 @@ const FormularioRegistroUsuario = () => {
     }
   })
 
+  useEffect(() => {
+
+  }, [])
 
   return (
     <form className='flex flex-col md:grid lg:grid md:grid-cols-4 lg:grid-cols-4 place-items-center items-center gap-8 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>

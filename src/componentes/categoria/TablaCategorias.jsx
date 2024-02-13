@@ -220,12 +220,9 @@ function EnhancedTableToolbar(props) {
       {
         numSelected <= 1 && numSelected > 0 
           ? (
-            <>
             <div className='w-56 flex items-center justify-center p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in '>
               <ModalCategoriaEditable id={selected} refresh={setRefresh}/>
             </div>
-              
-            </>
             )
           : null
       }

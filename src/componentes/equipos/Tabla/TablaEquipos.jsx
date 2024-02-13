@@ -219,9 +219,9 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/app/registro-item`}>
+            <Ln to={`/app/registro-equipo`}>
               <div className='w-32 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
-                <span className='font-semibold'>Agregar Item</span>
+                <span className='font-semibold'>Agregar Equipo</span>
               </div>
             </Ln>
             )
@@ -232,13 +232,13 @@ function EnhancedTableToolbar(props) {
         numSelected <= 1 && numSelected > 0 
           ? (
             <>
-              <Ln to={`/app/item/${selected}`}>
+              <Ln to={`/app/equipo/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <Ln to={`/app/edicion-item/${selected}`}>
+              <Ln to={`/app/edicion-equipo/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Editar
                 </IconButton>

@@ -22,6 +22,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
+import ModalCategoriaEditable from '../Formularios/ModalUsuarioEditable';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -63,34 +64,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'id',
-    numeric: true,
-    disablePadding: true,
-    label: 'ID',
-  },
-  {
     id: 'nombre',
     numeric: false,
     disablePadding: true,
     label: 'Nombre',
   },
   {
-    id: 'descripcion',
+    id: 'apellido',
     numeric: true,
     disablePadding: false,
-    label: 'Descripcion',
+    label: 'Apellido',
   },
   {
-    id: 'nombre_categoria',
+    id: 'correo',
     numeric: false,
     disablePadding: false,
-    label: 'Categoria',
+    label: 'Correo',
   },
   {
-    id: 'stock_bodega',
+    id: 'departamento',
     numeric: false,
     disablePadding: false,
-    label: 'Stock',
+    label: 'Departamento',
   },
   {
     id: 'fecha_creacion',
@@ -183,7 +178,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected } = props;
+  const { numSelected, handleDeleteClick, selected, setRefresh } = props;
 
   return (
     <Box
@@ -219,9 +214,9 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/app/registro-item`}>
-              <div className='w-32 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
-                <span className='font-semibold'>Agregar Item</span>
+            <Ln to={`/app/registro-usuario`}>
+              <div className='w-36 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
+                <span className='font-semibold'>Agregar Usuario</span>
               </div>
             </Ln>
             )
@@ -232,17 +227,15 @@ function EnhancedTableToolbar(props) {
         numSelected <= 1 && numSelected > 0 
           ? (
             <>
-              <Ln to={`/app/item/${selected}`}>
+              <Ln to={`/app/usuario/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <Ln to={`/app/edicion-item/${selected}`}>
-                <IconButton size='md' variant='solid' color='primary'>
-                  Editar
-                </IconButton>
-              </Ln>
+              <div className='w-56 flex items-center justify-center p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in '>
+                <ModalCategoriaEditable id={selected} refresh={setRefresh}/>
+              </div>
             </>
             )
           : null
@@ -269,7 +262,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaUsuarios({ data, setData, token, loading }) {
+export default function TablaUsuarios({ data, setData, token, loading, setRefresh }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -298,7 +291,7 @@ export default function TablaUsuarios({ data, setData, token, loading }) {
 
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/usuario/${selected}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -375,7 +368,12 @@ export default function TablaUsuarios({ data, setData, token, loading }) {
       variant="outlined"
       sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
+      <EnhancedTableToolbar
+         numSelected={selected.length}
+         handleDeleteClick={handleDeleteClick}
+         selected={selected}
+         setRefresh={setRefresh}
+      />
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -387,10 +385,15 @@ export default function TablaUsuarios({ data, setData, token, loading }) {
             width: '30px',
           },
           '& thead th:nth-child(2)': {
-            width: '30%',
+            width: '30%'
           },
-          '& tr > *:nth-child(n+3)': { textAlign: 'right',
-          width: '100%'
+          '& tr' :{
+            width: '100%',
+          },
+          '& tr > *:nth-child(n+3)': { 
+            textAlign: 'center',
+            width: '60%',
+            marginLeft: '5px'
           },
           '& tfoot > td': {
             width: '100%'
@@ -441,9 +444,6 @@ export default function TablaUsuarios({ data, setData, token, loading }) {
                       sx={{ verticalAlign: 'top' }}
                     />
                   </th>
-                  <th id={labelId} scope="row">
-                    {row.id}
-                  </th>
 
                   {loading ? (
                     <td colSpan="5">
@@ -451,12 +451,12 @@ export default function TablaUsuarios({ data, setData, token, loading }) {
                     </td>
                   ) : (
                     <>
-                      <td>{row.nombre}</td>
-                      <td>{row.descripcion}</td>
-                      <td>{row.nombre_categoria}</td>
-                      <td>{row.stock_bodega }</td>
-                      <td>{row.fecha_creacion}</td>
-                    </>
+                        <td className='text-center text-clip overflow-hidden'>{row.nombre}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.apellido}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.correo}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.departamento}</td>
+                        <td>{row.fecha_creacion}</td>
+                      </>
                   )}
                 </tr>
               );

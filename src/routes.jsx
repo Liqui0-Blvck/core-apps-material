@@ -41,6 +41,8 @@ import Equipos from "./componentes/equipos/Equipos";
 import Tickets from "./componentes/tickets/Tickets";
 import FormularioRegistroUsuario from "./componentes/usuarios/Formularios/FormularioRegistroUsuario";
 import HomeClient from "./pages/dashboard/homeClient";
+import FormularioRegistroEquipo from "./componentes/equipos/Formularios/FormularioRegistroEquipo";
+import DetalleUsuario from "./componentes/usuarios/Detalle Usuario/DetalleUsuario";
 
 export const AccordionSubItem = ({ name, path}) => {
   return (
@@ -392,12 +394,17 @@ export const routes = [
       {
         name: 'Registro Equipo',
         path: '/registro-equipo',
-        element: <Clientes />
+        element: <FormularioRegistroEquipo />
       },
       {
         name: 'Usuarios',
         path: '/usuarios',
         element: <Usuarios />
+      },
+      {
+        name: 'Detalle Usuarios',
+        path: '/usuario/:id',
+        element: <DetalleUsuario />
       },
       {
         name: 'Equipos',
