@@ -8,17 +8,19 @@ import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
+import { urlNumeros } from '@/services/url_number';
 
 const { TextArea } = Input;
 
-const FormularioRegistroUsuario = ({ id }) => {
+const FormularioRegistroUsuario = ({ id, refresh, modalClose }) => {
   const { authTokens, validToken } = useAuth()
+  const { clientInfo } = useClient()
   const { data: usuario } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/usuario/${id}`
   )
-  const navigate = useNavigate()
+
 
   const formik = useFormik({
     initialValues: {
@@ -30,8 +32,8 @@ const FormularioRegistroUsuario = ({ id }) => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/usuarios/', {
-          method: 'POST',
+        const response = await fetch(`http://127.0.0.1:8000/api/usuario/${id}/`, {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${authTokens.access}`
@@ -44,7 +46,8 @@ const FormularioRegistroUsuario = ({ id }) => {
 
         if (response.ok){
           toast.success('Usuario registrado correctamente!')
-          navigate('/app/usuarios')
+          refresh(true)
+          modalClose(false)
         } else {
           toast.error('No se pudo registrar el usuario, vuelva a intentarlo!')
         }
@@ -54,15 +57,32 @@ const FormularioRegistroUsuario = ({ id }) => {
     }
   })
 
-  useEffect(() => {
 
-  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+
+    if (usuario && isMounted){
+      formik.setValues({
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        correo: usuario.correo,
+        departamento: usuario.departamento,
+        cliente: usuario.cliente
+      })
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [usuario])
+
 
   return (
     <form className='flex flex-col md:grid lg:grid md:grid-cols-4 lg:grid-cols-4 place-items-center items-center gap-8 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
         className='
-        w-96
+        w-full
         lg:col-span-2
         md:col-span-2
         grid grid-cols-2 items-center'>
@@ -84,13 +104,14 @@ const FormularioRegistroUsuario = ({ id }) => {
           )}
       </div>
       
-      <div className='w-96 grid grid-cols-2 items-center col-start- col-span-2 h-full'>
-        <label htmlFor='apellido' className='text-center w-10'>Apellido: </label>
+      <div className='w-full grid grid-cols-2 items-center col-span-2 h-full'>
+        <label htmlFor='apellido' className='text-center w-16'>Apellido: </label>
         <Input
           type='text'
           name='apellido'
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          value={formik.values.apellido}
           className={`
           ${formik.errors.apellido && formik.touched.apellido 
             ? 'border-[2px] text-red-900' 
@@ -104,7 +125,7 @@ const FormularioRegistroUsuario = ({ id }) => {
       </div>
       
 
-      <div className='w-96 grid grid-cols-2 items-center row-start-2 col-span-2'>
+      <div className='w-full grid grid-cols-2 items-center row-start-2 col-span-2'>
         <label htmlFor='correo' className='text-start'>Correo:</label>
         <Input
           type="email"
@@ -123,7 +144,7 @@ const FormularioRegistroUsuario = ({ id }) => {
           )}
       </div>
 
-      <div className='w-96 grid grid-cols-2 items-center row-start-2 col-start- col-span-2'>
+      <div className='w-full grid grid-cols-2 items-center row-start-2 col-start- col-span-2'>
         <label htmlFor='departamento' className='text-start'>Departamento:</label>
         <Input
           type="text"
@@ -142,7 +163,12 @@ const FormularioRegistroUsuario = ({ id }) => {
           )}
       </div>
 
-      <button type='submit' className='row-start-3 col-start-3 col-span-2 p-2 bg-blue-400 hover:bg-blue-300 text-white rounded-md mt-5 w-96'>Agregar</button>
+      <button
+         type='submit'
+         className='row-start-3 col-start-3 col-span-2 p-2 bg-blue-400
+          hover:bg-blue-300 text-white rounded-md mt-5 w-full'>
+        Guardar Cambios
+      </button>
     </form>
   )
 }

@@ -39,10 +39,12 @@ import SucursalCard from "./componentes/sucursal/SucursalCard";
 import Usuarios from "./componentes/usuarios/Usuarios";
 import Equipos from "./componentes/equipos/Equipos";
 import Tickets from "./componentes/tickets/Tickets";
-import FormularioRegistroUsuario from "./componentes/usuarios/Formularios/FormularioRegistroUsuario";
+import FormularioRegistroUsuario from "./componentes/usuarios/Formularios/FormularioEditableUsuario";
 import HomeClient from "./pages/dashboard/homeClient";
 import FormularioRegistroEquipo from "./componentes/equipos/Formularios/FormularioRegistroEquipo";
 import DetalleUsuario from "./componentes/usuarios/Detalle Usuario/DetalleUsuario";
+import FormularioEditableEquipo from "./componentes/equipos/Formularios/FormularioEditableEquipo";
+import DetalleEquipo from "./componentes/equipos/Detalle Equipo/DetalleEquipo";
 
 export const AccordionSubItem = ({ name, path}) => {
   return (
@@ -410,6 +412,16 @@ export const routes = [
         name: 'Equipos',
         path: '/equipos',
         element: <Equipos />
+      },
+      {
+        name: 'Editar Equipo',
+        path: '/edicion-equipo/:id',
+        element: <FormularioEditableEquipo />
+      },
+      {
+        name: 'Editar Equipo',
+        path: '/equipo/:id',
+        element: <DetalleEquipo />
       },
       {
         name: 'Tickets',

@@ -228,12 +228,12 @@ function EnhancedTableToolbar(props) {
           ? (
             <>
               <Ln to={`/app/usuario/${selected}`}>
-                <IconButton size='md' variant='solid' color='primary'>
+                <div className='w-full h-full flex items-center justify-center p-1.5 rounded-md bg-blue-600 hover:bg-blue-400  text-white font-semibold transition-all ease-in '>
                   Detalles
-                </IconButton>
+                </div>
               </Ln>
 
-              <div className='w-56 flex items-center justify-center p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in '>
+              <div className='w-24 h-full flex items-center justify-center p-1.5 rounded-md transition-all ease-in '>
                 <ModalCategoriaEditable id={selected} refresh={setRefresh}/>
               </div>
             </>

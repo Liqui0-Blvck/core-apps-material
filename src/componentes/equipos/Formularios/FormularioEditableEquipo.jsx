@@ -6,15 +6,25 @@ import { useFormik } from 'formik';
 import { useClient } from '@/context/ClientContext';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CANTIDAD_RAM, CAPACIDAD_DISCO, TIPO_DISCO, TIPO_LICENCIA, TIPO_PROCESADOR } from '@/const/constantes';
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
+import { urlNumeros } from '@/services/url_number';
 
 const { TextArea } = Input
 
-const FormularioRegistroEquipo = () => {
-  const { authTokens, user } = useAuth()
+const FormularioEditableEquipo = () => {
+  const { authTokens, user, validToken } = useAuth()
   const { clientInfo } = useClient()
+  const { pathname } = useLocation()
+  const id = urlNumeros(pathname)
   const navigate = useNavigate()
+  const { data: equipo } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
+  )
+  
 
   const formik = useFormik({
     initialValues: {
@@ -32,8 +42,8 @@ const FormularioRegistroEquipo = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/equipos/', {
-          method: 'POST',
+        const response = await fetch(`http://127.0.0.1:8000/api/equipo/${id}/` , {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${authTokens.access}`
@@ -56,6 +66,30 @@ const FormularioRegistroEquipo = () => {
       }
     }
   })
+
+  useEffect(() => {
+    let isMounted = true
+
+    if (equipo && isMounted){
+      formik.setValues({
+        marca: equipo.marca,
+        procesador: equipo.procesador,
+        detalle_procesador: equipo.detalle_procesador,
+        ram: equipo.ram,
+        tipo_disco: equipo.tipo_disco,
+        capacidad_disco: equipo.capacidad_disco,
+        licencia: equipo.licencia,
+        numero_serie: equipo.numero_serie,
+        observaciones: equipo.observaciones,
+        registrado_por: equipo.registrado_por,
+        cliente: equipo.cliente
+      })
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [equipo])
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -105,6 +139,7 @@ const FormularioRegistroEquipo = () => {
           onChange={e => formik.setFieldValue('procesador', e)}
           onSearch={onSearch}
           name='procesador'
+          value={formik.values.procesador}
           filterOption={filterOption}
           options={TIPO_PROCESADOR.map((estado) => ({
             value: estado,
@@ -142,6 +177,7 @@ const FormularioRegistroEquipo = () => {
           className='rounded-md mt-1 col-span-3 h-11 w-full'
           onChange={e => formik.setFieldValue('ram', e)}
           onSearch={onSearch}
+          value={formik.values.ram}
           name='ram'
           filterOption={filterOption}
           options={CANTIDAD_RAM.map((estado) => ({
@@ -164,6 +200,7 @@ const FormularioRegistroEquipo = () => {
           onChange={e => formik.setFieldValue('tipo_disco', e)}
           onSearch={onSearch}
           name='tipo_disco'
+          value={formik.values.tipo_disco}
           filterOption={filterOption}
           options={TIPO_DISCO.map((estado) => ({
             value: estado,
@@ -205,6 +242,7 @@ const FormularioRegistroEquipo = () => {
           onChange={e => formik.setFieldValue('licencia', e)}
           onSearch={onSearch}
           name='licencia'
+          value={formik.values.licencia}
           filterOption={filterOption}
           options={TIPO_LICENCIA.map((estado) => ({
             value: estado,
@@ -226,6 +264,7 @@ const FormularioRegistroEquipo = () => {
           onChange={e => formik.setFieldValue('capacidad_disco', e)}
           onSearch={onSearch}
           name='capacidad_disco'
+          value={formik.values.capacidad_disco}
           filterOption={filterOption}
           options={CAPACIDAD_DISCO.map((estado) => ({
             value: estado,
@@ -261,4 +300,4 @@ const FormularioRegistroEquipo = () => {
   )
 }
 
-export default FormularioRegistroEquipo
+export default FormularioEditableEquipo

@@ -2,28 +2,25 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState} from 'react'
 import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie'
 
 const AuthContext = createContext()
 
 export default AuthContext;
 
-
-
 export const AuthProvider = ({ children }) => {
-  const userLocalStorage = localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null
-  const authTokenLocalStorage = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null
+  const userLocalStorage = Cookies.get('authTokens') ? jwtDecode(Cookies.get('authTokens')) : null
+  const authTokenLocalStorage = Cookies.get('authTokens') ? JSON.parse(Cookies.get('authTokens')) : null
   
   const [authTokens, setAuthTokens] = useState(() => authTokenLocalStorage)
   const [user, setUser] = useState(()=> userLocalStorage)
   const [loading, setLoading] = useState(false)
 
   const loginUser = async (response) => {
-
       const data = await response.json()
-
       if (response.status === 200){
         setAuthTokens(data)
-        localStorage.setItem('authTokens', JSON.stringify(data))
+        Cookies.set('authTokens', JSON.stringify(data), { expires: 1 })
         setUser(jwtDecode(data.access))
       }
   }
@@ -31,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = () => {
     setAuthTokens(null)
     setUser(null)
-    localStorage.removeItem('authTokens')
+    Cookies.remove('authTokens')
   }
 
 
@@ -43,8 +40,6 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify({'token': token?.access})
     })
-
-    console.log(response)
     
     if (response.status === 200){
       return true
@@ -60,7 +55,6 @@ export const AuthProvider = ({ children }) => {
   const updateToken = async () => {
 
       const response = await fetch('http://127.0.0.1:8000/auth/token/refresh/', {
-
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -70,12 +64,10 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json()
       
-
-      console.log("Me estoy ejecutando en")
       if (response.status === 200){
           setAuthTokens(data)
           setUser(jwtDecode(data.access))
-          localStorage.setItem('authTokens', JSON.stringify(data))
+          Cookies.set('authTokens', JSON.stringify(data), { expires: 2 })
           return true
       }else{
         return false

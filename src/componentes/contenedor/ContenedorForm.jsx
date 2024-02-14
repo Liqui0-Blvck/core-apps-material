@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import { useContext, useState } from 'react'
 import AuthContext from '../../context/AuthContext'
-import ComponenteForm from './Formulario/ComponenteForm'
+import ComponenteForm from './Formulario/ContenedorForm'
 import { ContenedorSchema } from '@/services/Validator'
 
 // eslint-disable-next-line react/prop-types

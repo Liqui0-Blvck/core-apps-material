@@ -17,4 +17,61 @@ export const ESTADO_OC = [
 
 ]
 
+export const TIPO_PROCESADOR = [
+  'Intel i3',
+  'Intel i5',
+  'Intel i7',
+  'Intel i9',
+  'Ryzen 3',
+  'Ryzen 5',
+  'Ryzen 7',
+  'Ryzen 9',
+]
+
+export const CANTIDAD_RAM = [
+  '2 GB',
+  '4 GB',
+  '6 GB',
+  '8 GB',
+  '10 GB',
+  '12 GB',
+  '14 GB',
+  '16 GB',
+
+]
+
+
+export const TIPO_LICENCIA = [
+  'Windows 10',
+  'Windows 10 Pro',
+  'Windows 11',
+  'Windows 11 Pro',
+]
+
+export const DEPARTAMENTO = [
+  'Departamento de Abogacía',
+  'Departamento de Comunicaciones',
+  'Departamento de Desarrollo de Programas',
+  'Departamento de Finanzas y Control',
+  'Departamento de Padrinazgo',
+  'Departamento de Recaudación de Fondos',
+  'Departamento de Recursos Humanos & DO',
+  'Departamento de TIC',
+  'Dirección Nacional',
+  'Interárea',
+]
+  
+export const TIPO_DISCO = [
+  'Sin especificar',
+  'Disco Duro',
+  'SSD'
+]
+
+export const CAPACIDAD_DISCO = [
+  '250 GB',
+  '500 GB',
+  '1 TB',
+  '2 TB',
+]
+
 
