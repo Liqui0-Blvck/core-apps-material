@@ -63,34 +63,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'id',
+    id: 'codigo',
     numeric: true,
     disablePadding: true,
-    label: 'ID',
+    label: 'Código',
   },
   {
-    id: 'nombre',
+    id: 'marca',
     numeric: false,
     disablePadding: true,
-    label: 'Nombre',
+    label: 'Marca',
   },
   {
-    id: 'descripcion',
+    id: 'procesador',
     numeric: true,
     disablePadding: false,
-    label: 'Descripcion',
+    label: 'Procesador',
   },
   {
-    id: 'nombre_categoria',
+    id: 'usuario',
     numeric: false,
     disablePadding: false,
-    label: 'Categoria',
-  },
-  {
-    id: 'stock_bodega',
-    numeric: false,
-    disablePadding: false,
-    label: 'Stock',
+    label: 'Usuario',
   },
   {
     id: 'fecha_creacion',
@@ -277,6 +271,8 @@ export default function TablaEquipos({ data, setData, token, loading }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  console.log(data)
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -389,8 +385,8 @@ export default function TablaEquipos({ data, setData, token, loading }) {
           '& thead th:nth-child(2)': {
             width: '30%',
           },
-          '& tr > *:nth-child(n+3)': { textAlign: 'right',
-          width: '100%'
+          '& tr > *:nth-child(n+3)': { textAlign: 'center',
+          width: '50%'
           },
           '& tfoot > td': {
             width: '100%'
@@ -441,9 +437,6 @@ export default function TablaEquipos({ data, setData, token, loading }) {
                       sx={{ verticalAlign: 'top' }}
                     />
                   </th>
-                  <th id={labelId} scope="row">
-                    {row.id}
-                  </th>
 
                   {loading ? (
                     <td colSpan="5">
@@ -451,10 +444,16 @@ export default function TablaEquipos({ data, setData, token, loading }) {
                     </td>
                   ) : (
                     <>
-                      <td>{row.nombre}</td>
-                      <td>{row.descripcion}</td>
-                      <td>{row.nombre_categoria}</td>
-                      <td>{row.stock_bodega }</td>
+                      <td style={{textAlign: 'center'}}>{row.codigo}</td>
+                      <td>{row.marca}</td>
+                      <td>{row.procesador}</td>
+                      <td>
+                          {row.usuarios.map(usuario => 
+                              usuario.activo ? 
+                              <span key={usuario.id}>{usuario.usuario_nombre}</span> 
+                              : null
+                          )}
+                      </td>
                       <td>{row.fecha_creacion}</td>
                     </>
                   )}
@@ -474,7 +473,7 @@ export default function TablaEquipos({ data, setData, token, loading }) {
         </tbody>
         <tfoot >
           <tr>
-            <td colSpan={7}>
+            <td colSpan={6}>
               <Box
                 sx={{
                   width: '100%',

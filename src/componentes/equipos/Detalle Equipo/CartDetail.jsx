@@ -1,11 +1,10 @@
 import Card from '@mui/joy/Card'
 import CardContent from '@mui/joy/CardContent';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { Typography } from 'antd'
 import AuthContext from '@/context/AuthContext';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Link } from 'react-router-dom';
-
 import ModalUsuarioEquipo from '../Modal/ModalUsuarioEquipo';
 import toast from 'react-hot-toast';
 
@@ -30,16 +29,6 @@ export default function CartDetail(
     fecha_creacion,
     refresh
   }) {
-  const { authTokens, validToken } = useContext(AuthContext)
-  
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   const handleDeleteUsuario = async (id) => {
     const response = await fetch(`http://127.0.0.1:8000/api/equipo-usuario/${id}/`, {
@@ -73,7 +62,7 @@ export default function CartDetail(
 
   return (
     <div className='flex flex-col gap-2'>
-      <Card className='w-full h-full'>
+      <Card className='w-full'>
         <CardContent>
             <article className='w-full h-full flex gap-2 flex-col-reverse md:flex-row'>
               <div className='w-full border-[1px] border-gray-300 rounded-md'>
@@ -81,7 +70,7 @@ export default function CartDetail(
                   <h1 className='font-bold text-2xl text-gray-600'>Información del {titulo}</h1>
                 </div>
 
-                <div className=' w-full h-full'>
+                <div className=' w-full '>
                   <div className='rounded grid lg:grid-cols-6 h-80 gap-x-5 p-2 overflow-y-scroll'>
 
                     <div className='h-full col-span-2 p-2 flex flex-col  gap-2 rounded-md'>

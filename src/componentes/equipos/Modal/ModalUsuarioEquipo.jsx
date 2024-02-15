@@ -20,7 +20,9 @@ const ModalUsuarioEquipo = ({id, refresh}) => {
 
   return (
     <>
-      <button onClick={showModal} className='w-full h-9 text-white font-semibold bg-blue-600 hover:bg-blue-400 rounded-md'>Editar</button>
+      <button 
+        onClick={showModal} 
+        className='w-32 h-10 text-white font-semibold bg-blue-600 hover:bg-blue-400 rounded-md'>Agregar Usuario</button>
 
       <Modal title="Editar Usuario"
         open={isModalOpen} 
