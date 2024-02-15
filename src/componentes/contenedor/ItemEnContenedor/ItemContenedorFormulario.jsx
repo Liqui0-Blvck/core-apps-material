@@ -10,7 +10,7 @@ const ItemContenedorFormulario = ({ id, refresh, close }) => {
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item-list/`
+    `http://127.0.0.1:8000/api/items/`
   )
 
   const { data: contenedor, setRefresh } = useAuthenticatedFetch(

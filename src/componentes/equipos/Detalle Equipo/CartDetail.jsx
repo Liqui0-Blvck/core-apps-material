@@ -3,10 +3,11 @@ import CardContent from '@mui/joy/CardContent';
 import { useContext, useMemo } from 'react';
 import { Typography } from 'antd'
 import AuthContext from '@/context/AuthContext';
-import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Link } from 'react-router-dom';
 
 import ModalUsuarioEquipo from '../Modal/ModalUsuarioEquipo';
+import toast from 'react-hot-toast';
 
 export default function CartDetail(
   { 
@@ -26,14 +27,10 @@ export default function CartDetail(
     usuarios,
     token,
     fecha_modificacion,
-    fecha_creacion
+    fecha_creacion,
+    refresh
   }) {
   const { authTokens, validToken } = useContext(AuthContext)
-  const { data: equipo_usuario } = useAuthenticatedFetch(
-    authTokens,
-    validToken,
-    `http://127.0.0.1:8000/api/equipo-usuarios/?search=${id_equipo}`
-  )
   
   const onSearch = (value) => {
     console.log("search:", value);
@@ -44,17 +41,35 @@ export default function CartDetail(
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
+  const handleDeleteUsuario = async (id) => {
+    const response = await fetch(`http://127.0.0.1:8000/api/equipo-usuario/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
 
+    if (response.ok){
+      toast.success('Usuario desvinculado de equipo existosamente!')
+      refresh(true)
+    } else {
+      toast.error('No se pudo desvincular el usuario, vuelve a intentarlo')
+    }
+  }
 
-  const formatearFecha = useMemo(() => (fecha, tipo) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: `${tipo}`,
-        day: 'numeric'
-      })
-    },
-    []
-  )
+  const handleActiveUsuario = async (id) => {
+    const response = await fetch(`http://127.0.0.1:8000/api/equipo-usuario-update/${id}/`, {
+      method: 'PUT',
+      headers: {  
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(id)
+    })
+
+    if (response.ok){
+      refresh(true)
+    }
+  }
 
   return (
     <div className='flex flex-col gap-2'>
@@ -177,36 +192,40 @@ export default function CartDetail(
 
           <div 
             className='w-32 h-10 bg-blue-600 hover:bg-blue-400 rounded-md text-white font-semibold'>
-            <ModalUsuarioEquipo id={id_equipo} />
+            <ModalUsuarioEquipo id={id_equipo} refresh={refresh}/>
           </div>
         </div>
         <CardContent>
-          <div className='flex flex-wrap gap-5'>
+          <div className='flex flex-wrap gap-5 px-5'>
             {
               usuarios && usuarios.map((usuario) => {
-                const usuario_selected = equipo_usuario && 
-                  equipo_usuario
-                  .filter(equipo => equipo.usuario === usuario.id)
-                  .map(equipo => equipo)
-
-                console.log(usuario_selected)
-                
-
                 return (
-                <Card sx={{ width: 200 , display: 'flex', alignItems: 'center' }}>
-                  <div>
-                    <Typography className='text-center'>{usuario.nombre}</Typography>
-                    <Typography className='text-center'>{usuario.departamento}</Typography>
-                    
+                <div className='relative'>
+                  <ClearIcon className='absolute z-20 right-1 top-1 text-black hover:scale-125' onClick={() => handleDeleteUsuario(usuario.id)}/>
+                  <div 
+                    className={`absolute left-1 top-1 z-20 border border-gray-300 w-16 h-6 
+                      rounded-md flex items-center justify-center ${usuario.activo ? 'bg-[#1F6764]' : 'bg-white'}`}
+                    onClick={() => handleActiveUsuario(usuario.id)}  
+                    >
+                    <span className={`${usuario.activo ? 'text-white' : 'text-black'}`}>{usuario.activo ? 'Activo' : 'Activar'}</span>
                   </div>
-                  <CardContent>
-                    <Link to={`/app/usuario/${usuario.id}`}>
-                      <button type='button' className='w-32 bg-blue-600 hover:bg-blue-500 p-2 rounded-md text-white font-semibold'>
-                        Ver usuario
-                      </button>
-                    </Link>
-                  </CardContent>
-                </Card>
+                  <Card sx={{ width: 200 , display: 'flex', alignItems: 'center', paddingTop: '30px'}}>
+                    <div>
+                      <Typography className={`text-center text-lg font-semibold text-black`}>{usuario.usuario_nombre}</Typography>
+                      <Typography className={`text-center text-md font-semibold text-black`}>{usuario.usuario_departamento}</Typography>
+                      
+                    </div>
+
+                    
+                    <CardContent>
+                      <Link to={`/app/usuario/${usuario.usuario}`} >
+                        <button type='button' className='w-32 bg-[#1F6764] hover:bg-[#1f6763b4] p-1 rounded-md text-white font-semibold'>
+                          Ver usuario
+                        </button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </div>
                 ) 
               })
             }

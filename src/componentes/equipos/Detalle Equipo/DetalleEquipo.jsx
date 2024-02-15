@@ -5,16 +5,18 @@ import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
+import { useClient } from '@/context/ClientContext'
 
 
 const DetalleEquipo = () => {
   const { authTokens, validToken } = useContext(AuthContext)
+  const { clientInfo } = useClient()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
-  const { data: equipo, loading } = useAuthenticatedFetch(
+  const { data: equipo, loading, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/equipo/${id}`
+    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
     )
 
   
@@ -53,8 +55,9 @@ const DetalleEquipo = () => {
               numero_serie = {equipo.numero_serie}
               fecha_compra = {equipo.fecha_compra}
               observaciones = {equipo.observaciones}
-              usuarios={equipo.usuarios}
+              usuarios = {equipo.usuarios}
               token={authTokens}
+              refresh={setRefresh}
               fecha_creacion = {formatearFecha(equipo.fecha_creacion)}
               fecha_modificacion={formatearFecha(equipo.fecha_modificacion)}
               />

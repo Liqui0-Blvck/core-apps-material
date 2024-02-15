@@ -12,7 +12,7 @@ import { urlNumeros } from '@/services/url_number';
 
 const { TextArea } = Input;
 
-const FormularioRegistroUsuario = ({ id, refresh, modalClose }) => {
+const FormularioEditableUsuario = ({ id, refresh, modalClose }) => {
   const { authTokens, validToken } = useAuth()
   const { clientInfo } = useClient()
   const { data: usuario } = useAuthenticatedFetch(
@@ -173,4 +173,4 @@ const FormularioRegistroUsuario = ({ id, refresh, modalClose }) => {
   )
 }
 
-export default FormularioRegistroUsuario
+export default FormularioEditableUsuario

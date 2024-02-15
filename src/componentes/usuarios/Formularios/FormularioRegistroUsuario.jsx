@@ -13,6 +13,7 @@ const { TextArea } = Input;
 
 const FormularioRegistroUsuario = ({ id }) => {
   const { authTokens, validToken } = useAuth()
+  const { clientInfo } = useClient()
   const { data: usuario } = useAuthenticatedFetch(
     authTokens,
     validToken,
@@ -31,7 +32,7 @@ const FormularioRegistroUsuario = ({ id }) => {
     onSubmit: async (values) => {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/usuarios/', {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${authTokens.access}`

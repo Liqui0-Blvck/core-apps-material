@@ -11,12 +11,18 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 
 const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
   const { authTokens, user, validToken } = useAuth()
+  const { clientInfo } = useClient()
   const { data: usuarios } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/usuarios/`
+    `http://127.0.0.1:8000/api/usuarios/?search=${clientInfo.id}`
   )
 
+  const { data: equipos, setRefresh } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
+  )
 
   const formik = useFormik({
     initialValues: {
@@ -39,7 +45,8 @@ const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
 
         if (response.ok){
           toast.success('Equipo registrado correctamente!')
-          navigate('/app/equipos')
+          refresh(true)
+          modalClose(false)
         } else {
           toast.error('No se pudo registrar el equipo, vuelva a intentarlo!')
         }
@@ -58,7 +65,13 @@ const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log(formik.values)
+  const options = usuarios && usuarios
+    .filter(usuario => equipos && !equipos.usuarios.some(usuarioE => usuarioE.usuario === usuario.id))
+    .map(usuario => ({
+      value: usuario.id,
+      label: usuario.nombre
+    }))
+
 
   return (
     <form className='grid grid-cols-4 items-center place-items-center gap-2 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
@@ -79,10 +92,7 @@ const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
           onSearch={onSearch}
           name='procesador'
           filterOption={filterOption}
-          options={usuarios && usuarios.map((usuario) => ({
-            value: usuario.id,
-            label: usuario.nombre
-          }))}
+          options={options}
         />
       </div>
       
