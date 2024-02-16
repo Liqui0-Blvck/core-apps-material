@@ -14,6 +14,7 @@ import Tooltip from '@mui/joy/Tooltip';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -21,11 +22,11 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
-import ModalAsignarTecnico from '../Modal/ModalAsignarTecnico';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
 }
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -62,34 +63,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'titulo',
-    numeric: true,
+    id: 'nombre',
+    numeric: false,
     disablePadding: true,
-    label: 'Titulo',
+    label: 'Nombre',
   },
   {
-    id: 'prioridad',
+    id: 'procesador',
     numeric: true,
     disablePadding: false,
-    label: 'Prioridad',
+    label: 'Procesador',
   },
   {
-    id: 'estado',
+    id: 'usuario',
     numeric: false,
     disablePadding: false,
-    label: 'Estado',
-  },
-  {
-    id: 'cliente',
-    numeric: false,
-    disablePadding: true,
-    label: 'Cliente',
-  },
-  {
-    id: 'tecnico',
-    numeric: false,
-    disablePadding: true,
-    label: 'Tecnico',
+    label: 'Usuario',
   },
   {
     id: 'fecha_creacion',
@@ -182,7 +171,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected, refresh } = props;
+  const { numSelected, handleDeleteClick, selected } = props;
 
   return (
     <Box
@@ -211,23 +200,37 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Tickets
+          Items
         </Typography>
       )}
+
+      {
+        numSelected === 0
+          ? (
+            <Ln to={`/app/registro-equipo`}>
+              <div className='w-32 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
+                <span className='font-semibold'>Agregar Equipo</span>
+              </div>
+            </Ln>
+            )
+          : null
+      }
 
       {
         numSelected <= 1 && numSelected > 0 
           ? (
             <>
-              <Ln to={`/app/item/${selected}`}>
+              <Ln to={`/app/equipo/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <div className='w-52 p-1.5  rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center'>
-                <ModalAsignarTecnico id={selected} refresh={refresh}/>
-              </div>
+              <Ln to={`/app/edicion-equipo/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Editar
+                </IconButton>
+              </Ln>
             </>
             )
           : null
@@ -239,8 +242,13 @@ function EnhancedTableToolbar(props) {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : null 
-      }
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton size="sm" variant="outlined" color="neutral">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
     </Box>
   );
 }
@@ -249,13 +257,15 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaTickets({ data, setData, token, loading, setRefresh }) {
+export default function TablaInvento({ data, setData, token, loading }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  console.log(data)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -278,11 +288,11 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
 
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/invento/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'authorization': `Bearer ${token}`
+          // 'authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ ids: selected }),
       });
@@ -355,11 +365,7 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
       variant="outlined"
       sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar 
-        numSelected={selected.length} 
-        handleDeleteClick={handleDeleteClick} 
-        selected={selected}
-        refresh={setRefresh}/>
+      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -371,7 +377,7 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
             width: '30px',
           },
           '& thead th:nth-child(2)': {
-            width: '40%',
+            width: '30%',
           },
           '& tr > *:nth-child(n+3)': { textAlign: 'center',
           width: '50%'
@@ -427,17 +433,16 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
                   </th>
 
                   {loading ? (
-                    <td colSpan="6">
+                    <td colSpan="5">
                       <Skeleton className='w-full'/>
                     </td>
                   ) : (
                     <>
-                      <td className='text-center text-clip overflow-hidden'>{row.titulo}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.prioridad_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.estado_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_cliente}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_tecnico ? row.nombre_tecnico : 'No asignado'}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.fecha_creacion}</td>
+                      <td>{row.nombre}</td>
+                      <td>{row.descripcion}</td>
+                      <td>{row.procesador}</td>
+                      <td></td>
+                      <td>{row.fecha_creacion}</td>
                     </>
                   )}
                 </tr>
@@ -456,7 +461,7 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
         </tbody>
         <tfoot >
           <tr>
-            <td colSpan={7}>
+            <td colSpan={6}>
               <Box
                 sx={{
                   width: '100%',

@@ -1,18 +1,20 @@
-import { useMemo } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import AuthContext from '../../context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useClient } from '@/context/ClientContext'
-import TablaTickets from './Tabla/TablaTickets'
+import TablaEquipos from './Tabla/TablaInvento'
+import TablaInvento from './Tabla/TablaInvento'
 
 
-const Tickets = () => {
+const Invento = () => {
   const { clientInfo } = useClient()
-  const { authTokens, validToken } = useAuth()
-  const { data: tickets, setData, loading, setRefresh } = useAuthenticatedFetch(
+  const { authTokens, validToken } = useContext(AuthContext)
+  const { data: inventos, setData, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/tickets/?search=${clientInfo && clientInfo.id}`
+    `http://127.0.0.1:8000/api/inventos/`
   )
 
 
@@ -23,18 +25,18 @@ const Tickets = () => {
         month: 'numeric',
         day: 'numeric',
         hour: 'numeric',
-        minute: 'numeric',
+        minute: 'numeric'
       })
     },
     []
   )
 
   const datosFormateados = useMemo(() => {
-    return tickets && tickets.map((dato) => ({
+    return inventos && inventos.map((dato) => ({
       ...dato,
       fecha_creacion: formatearFecha(dato.fecha_creacion)
     }))
-  }, [tickets, formatearFecha])
+  }, [inventos, formatearFecha])
 
 
 
@@ -42,9 +44,9 @@ const Tickets = () => {
     <MaxWidthWrapper>
         <div className='flex justify-center mt-10'>
           {
-            tickets && 
+            inventos && 
             (
-              <TablaTickets data={datosFormateados} setData={setData} token={authTokens.access} loading={loading} setRefresh={setRefresh}/>
+              <TablaInvento data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
             )
           }
         </div>
@@ -52,4 +54,4 @@ const Tickets = () => {
   )
 }
 
-export default Tickets
+export default Invento

@@ -3,7 +3,7 @@ import MaxWidthWrapper from '../MaxWidthWrapper'
 
 import AuthContext from '../../context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
-import TablaItem from './TablaItem'
+import TablaItem from './Tabla/TablaItem'
 
 
 const ItemList = () => {

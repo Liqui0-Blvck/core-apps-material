@@ -290,11 +290,8 @@ export default function TablaEquipos({ data, setData, token, loading }) {
 
   const handleDeleteClick = async () => {
     try {
-      console.log("Eliminar elementos seleccionados:", selected);
 
-  
-      // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/equipo-delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -304,7 +301,7 @@ export default function TablaEquipos({ data, setData, token, loading }) {
       });
 
       if (response.ok){
-        toast.success('Item eliminado con exito')
+        toast.success('Equipo eliminado con exito!')
       } else {
         toast.error('No se ha podido eliminar')
       }

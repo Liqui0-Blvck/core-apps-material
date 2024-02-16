@@ -14,6 +14,7 @@ import Tooltip from '@mui/joy/Tooltip';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -21,11 +22,12 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
-import ModalAsignarTecnico from '../Modal/ModalAsignarTecnico';
+import ModalRegistroSucursal from '../Formularios/ModalRegistroSucursal';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
 }
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -44,10 +46,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -62,36 +60,30 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'titulo',
-    numeric: true,
+    id: 'nombre',
+    numeric: false,
     disablePadding: true,
-    label: 'Titulo',
+    label: 'Nombre',
   },
   {
-    id: 'prioridad',
+    id: 'region_nombre',
     numeric: true,
     disablePadding: false,
-    label: 'Prioridad',
+    label: 'Region',
   },
   {
-    id: 'estado',
+    id: 'provincia_nombre',
     numeric: false,
     disablePadding: false,
-    label: 'Estado',
+    label: 'Provincia',
   },
+
   {
-    id: 'cliente',
+    id: 'comuna_nombre',
     numeric: false,
-    disablePadding: true,
-    label: 'Cliente',
-  },
-  {
-    id: 'tecnico',
-    numeric: false,
-    disablePadding: true,
-    label: 'Tecnico',
-  },
-  {
+    disablePadding: false,
+    label: 'Comuna',
+  },{
     id: 'fecha_creacion',
     numeric: false,
     disablePadding: false,
@@ -211,22 +203,40 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Tickets
+          Items
         </Typography>
       )}
+
+      {
+        numSelected === 0
+          ? (
+              <Ln to={`/app/registro-proveedor/`}>
+                <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in  flex items-center justify-center mx-auto'>
+                  <span className='font-semibold text-center'>Agregar Proveeedor</span>
+                </div>
+              </Ln>
+            )
+          : null
+      }
 
       {
         numSelected <= 1 && numSelected > 0 
           ? (
             <>
-              <Ln to={`/app/item/${selected}`}>
-                <IconButton size='md' variant='solid' color='primary'>
+              <Ln to={`/app/proveedor/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary' className='w-24'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <div className='w-52 p-1.5  rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center'>
-                <ModalAsignarTecnico id={selected} refresh={refresh}/>
+              <Ln to={`/app/edicion-proveedor/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary' className='w-20'>
+                  Editar
+                </IconButton>
+              </Ln>
+
+              <div className='w-72 p-1.5 rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center mx-auto'>
+                <ModalRegistroSucursal id={selected} refresh={refresh}/>
               </div>
             </>
             )
@@ -239,7 +249,7 @@ function EnhancedTableToolbar(props) {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : null 
+      ) : null
       }
     </Box>
   );
@@ -249,7 +259,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaTickets({ data, setData, token, loading, setRefresh }) {
+export default function TablaProveedor({ data, setData, token, loading, refresh }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -278,7 +288,7 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
 
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/proveedor/${selected}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -345,10 +355,8 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty data.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
-
-  console.log(loading)
-
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   return (
     <Sheet
@@ -359,7 +367,7 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
         numSelected={selected.length} 
         handleDeleteClick={handleDeleteClick} 
         selected={selected}
-        refresh={setRefresh}/>
+        setRefresh={refresh}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -368,13 +376,14 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
           '--TableCell-selectedBackground': (theme) =>
             theme.vars.palette.success.softBg,
           '& thead th:nth-child(1)': {
-            width: '30px',
+            width: '50px',
           },
           '& thead th:nth-child(2)': {
-            width: '40%',
+            width: '20%',
           },
-          '& tr > *:nth-child(n+3)': { textAlign: 'center',
-          width: '50%'
+          '& tr > *:nth-child(n+3)': { 
+            textAlign: 'center',
+            width: '50%'
           },
           '& tfoot > td': {
             width: '100%'
@@ -422,24 +431,22 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
                           'aria-labelledby': labelId,
                         },
                       }}
-                      sx={{ verticalAlign: 'top' }}
+                      sx={{ verticalAlign: 'top', }}
                     />
                   </th>
-
                   {loading ? (
-                    <td colSpan="6">
-                      <Skeleton className='w-full'/>
-                    </td>
-                  ) : (
-                    <>
-                      <td className='text-center text-clip overflow-hidden'>{row.titulo}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.prioridad_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.estado_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_cliente}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_tecnico ? row.nombre_tecnico : 'No asignado'}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.fecha_creacion}</td>
-                    </>
-                  )}
+                      <td colSpan="5">
+                        <Skeleton className='w-full'/>
+                      </td>
+                    ) : (
+                      <>
+                        <td className='text-center text-clip overflow-hidden'>{row.nombre}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.region_nombre}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.provincia_nombre}</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.comuna_nombre }</td>
+                        <td className='text-center text-clip overflow-hidden'>{row.fecha_creacion}</td>
+                      </>
+                    )}
                 </tr>
               );
             })}
@@ -450,13 +457,13 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
                 '--TableRow-hoverBackground': 'transparent',
               }}
             >
-              <td colSpan={6} aria-hidden />
+              <td colSpan={5} aria-hidden />
             </tr>
           )}
         </tbody>
         <tfoot >
           <tr>
-            <td colSpan={7}>
+            <td colSpan={8}>
               <Box
                 sx={{
                   width: '100%',

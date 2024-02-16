@@ -291,7 +291,7 @@ export default function TablaUsuarios({ data, setData, token, loading, setRefres
 
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/usuario/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/usuario-delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -301,7 +301,7 @@ export default function TablaUsuarios({ data, setData, token, loading, setRefres
       });
 
       if (response.ok){
-        toast.success('Item eliminado con exito')
+        toast.success('Usuarios eliminado con exito!')
       } else {
         toast.error('No se ha podido eliminar')
       }

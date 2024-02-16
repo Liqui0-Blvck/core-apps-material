@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useContext, useEffect } from 'react';
 import { useState } from 'react'
 import PropTypes from 'prop-types';
 import Box from '@mui/joy/Box';
@@ -14,18 +15,19 @@ import Tooltip from '@mui/joy/Tooltip';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { visuallyHidden } from '@mui/utils';
-import toast from 'react-hot-toast'
-import { Link as Ln } from 'react-router-dom'
+import toast from 'react-hot-toast';
+import { Link as Ln }from 'react-router-dom'
 import { Skeleton } from '@mui/material';
-import ModalAsignarTecnico from '../Modal/ModalAsignarTecnico';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
 }
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -62,41 +64,35 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'titulo',
-    numeric: true,
-    disablePadding: true,
-    label: 'Titulo',
-  },
-  {
-    id: 'prioridad',
+    id: 'codigo',
     numeric: true,
     disablePadding: false,
-    label: 'Prioridad',
+    label: 'Codigo',
   },
   {
-    id: 'estado',
+    id: 'nombre',
+    numeric: false,
+    disablePadding: true,
+    label: 'Nombre',
+  },
+  {
+    id: 'dimensiones',
     numeric: false,
     disablePadding: false,
-    label: 'Estado',
+    label: 'Dimensiones',
   },
   {
-    id: 'cliente',
+    id: 'color',
     numeric: false,
-    disablePadding: true,
-    label: 'Cliente',
-  },
-  {
-    id: 'tecnico',
-    numeric: false,
-    disablePadding: true,
-    label: 'Tecnico',
+    disablePadding: false,
+    label: 'Color',
   },
   {
     id: 'fecha_creacion',
     numeric: false,
     disablePadding: false,
     label: 'Fecha_creacion',
-  }
+  }, 
 ];
 
 function EnhancedTableHead(props) {
@@ -131,6 +127,7 @@ function EnhancedTableHead(props) {
                 active ? { asc: 'ascending', desc: 'descending' }[order] : undefined
               }
             >
+              
               <Link
                 underline="none"
                 color="neutral"
@@ -182,15 +179,15 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected, refresh } = props;
+  const { numSelected , handleDeleteClick, selected} = props;
 
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        py: 1,
         gap: 2,
+        py: 1,
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
@@ -211,7 +208,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Tickets
+          Contenedores
         </Typography>
       )}
 
@@ -219,16 +216,30 @@ function EnhancedTableToolbar(props) {
         numSelected <= 1 && numSelected > 0 
           ? (
             <>
-              <Ln to={`/app/item/${selected}`}>
+              <Ln to={`/app/contenedor/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <div className='w-52 p-1.5  rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center'>
-                <ModalAsignarTecnico id={selected} refresh={refresh}/>
-              </div>
+              <Ln to={`/app/edicion-contenedor/${selected}`}>
+                <IconButton size='md' variant='solid' color='primary'>
+                  Editar
+                </IconButton>
+              </Ln>
             </>
+          )
+          : null
+      }
+
+      {
+        numSelected === 0
+          ? (
+            <Ln to={`/app/registro-contenedor`}>
+              <div className='w-44 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex justify-center items-center  '>
+                <span className='font-semibold'>Agregar Contenedor</span>
+              </div>
+            </Ln>
             )
           : null
       }
@@ -239,8 +250,15 @@ function EnhancedTableToolbar(props) {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : null 
-      }
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton size="sm" variant="outlined" color="neutral">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      
     </Box>
   );
 }
@@ -249,7 +267,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaTickets({ data, setData, token, loading, setRefresh }) {
+export default function TablaContenedor({ data, setData, token, loading }) {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('fecha_creacion');
@@ -263,32 +281,22 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = data.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleDeleteClick = async () => {
     try {
       console.log("Eliminar elementos seleccionados:", selected);
-
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/item/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/contenedor/${selected}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ ids: selected }),
+        body: JSON.stringify({ ids: selected})
       });
 
       if (response.ok){
-        toast.success('Item eliminado con exito')
+        toast.success('Contenedor eliminado con exito')
       } else {
         toast.error('No se ha podido eliminar')
       }
@@ -302,6 +310,15 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
       console.error("Error al eliminar elementos:", error);
 
     }
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = data.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
   };
 
   const handleClick = (event, name) => {
@@ -345,21 +362,15 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty data.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
-
-  console.log(loading)
-
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar 
-        numSelected={selected.length} 
-        handleDeleteClick={handleDeleteClick} 
-        selected={selected}
-        refresh={setRefresh}/>
+      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -368,16 +379,13 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
           '--TableCell-selectedBackground': (theme) =>
             theme.vars.palette.success.softBg,
           '& thead th:nth-child(1)': {
-            width: '30px',
+            width: '40px',
           },
           '& thead th:nth-child(2)': {
-            width: '40%',
+            width: '50%',
           },
           '& tr > *:nth-child(n+3)': { textAlign: 'center',
-          width: '50%'
-          },
-          '& tfoot > td': {
-            width: '100%'
+          width: '100%'
           }
         }}
       >
@@ -397,50 +405,50 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
-                <tr
-                  onClick={(event) => handleClick(event, row.id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.id}
-                  style={
-                    isItemSelected
-                      ? {
-                          '--TableCell-dataBackground':
-                            'var(--TableCell-selectedBackground)',
-                          '--TableCell-headBackground':
-                            'var(--TableCell-selectedBackground)',
-                        }
-                      : {}
-                  }
-                >
-                  <th scope="row">
-                    <Checkbox
-                      checked={isItemSelected}
-                      slotProps={{
-                        input: {
-                          'aria-labelledby': labelId,
-                        },
-                      }}
-                      sx={{ verticalAlign: 'top' }}
-                    />
-                  </th>
-
-                  {loading ? (
-                    <td colSpan="6">
-                      <Skeleton className='w-full'/>
-                    </td>
-                  ) : (
-                    <>
-                      <td className='text-center text-clip overflow-hidden'>{row.titulo}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.prioridad_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.estado_display}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_cliente}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre_tecnico ? row.nombre_tecnico : 'No asignado'}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.fecha_creacion}</td>
-                    </>
-                  )}
-                </tr>
+                  <tr
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    className='col-span-6'
+                    // selected={isItemSelected}
+                    style={
+                      isItemSelected
+                        ? {
+                            '--TableCell-dataBackground':
+                              'var(--TableCell-selectedBackground)',
+                            '--TableCell-headBackground':
+                              'var(--TableCell-selectedBackground)',
+                          }
+                        : {}
+                    }
+                  >
+                    <th scope="row">
+                      <Checkbox
+                        checked={isItemSelected}
+                        slotProps={{
+                          input: {
+                            'aria-labelledby': labelId,
+                          },
+                        }}
+                        sx={{ verticalAlign: 'top' }}
+                      />
+                    </th>
+                    {loading ? (
+                      <td colSpan="6">
+                        <Skeleton className='w-full'/>
+                      </td>
+                    ) : (
+                      <>
+                        <td className='text-center'>{row.codigo}</td>
+                        <td className='text-center'>{row.nombre}</td>
+                        <td className='text-center'>{row.dimensiones }</td>
+                        <td className='text-center'>{row.color}</td>
+                        <td className='text-center'>{row.fecha_creacion}</td>
+                      </>
+                    )}
+                  </tr>
               );
             })}
           {emptyRows > 0 && (
@@ -454,12 +462,11 @@ export default function TablaTickets({ data, setData, token, loading, setRefresh
             </tr>
           )}
         </tbody>
-        <tfoot >
-          <tr>
+        <tfoot className='w-full'>
+          <tr className='w-full'>
             <td colSpan={7}>
               <Box
                 sx={{
-                  width: '100%',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 2,

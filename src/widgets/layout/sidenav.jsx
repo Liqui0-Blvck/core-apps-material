@@ -84,10 +84,10 @@ export function Sidenav() {
           </Link>
         </ListItem>
       ))}
-    </List>
+    </List> 
   );
 
-  console.log(clientInfo)
+
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${

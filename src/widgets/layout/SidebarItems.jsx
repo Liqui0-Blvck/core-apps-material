@@ -16,7 +16,7 @@ const SidebarItem = ({ obj, mainMenu, open, handleClick, renderNestedList, index
               {
                 obj.name === 'Clientes' || obj.name === 'Registro Clientes'
                   ? (
-                    <Link to={obj.path}>
+                    <Link to={obj.path} className='w-full'>
                       <ListItemText primary={obj.name} className='rounded-sm'/>
                     </Link>
                   )

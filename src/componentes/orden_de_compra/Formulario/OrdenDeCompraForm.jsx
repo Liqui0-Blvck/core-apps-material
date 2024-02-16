@@ -21,7 +21,7 @@ const OrdenDeCompraForm = () => {
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/`
+    `http://127.0.0.1:8000/api/items/`
   )
   
   const initialRows = [

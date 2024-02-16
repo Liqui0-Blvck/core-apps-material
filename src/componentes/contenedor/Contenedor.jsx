@@ -1,6 +1,6 @@
 import { useContext, useMemo} from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import TablaContenedor from '../contenedor/TablaContenedor'
+import TablaContenedor from './Tabla/TablaContenedor'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 

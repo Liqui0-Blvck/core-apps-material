@@ -1,12 +1,11 @@
 import {
   HomeIcon,
   UserCircleIcon,
-  TableCellsIcon,
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Notifications } from "@/pages/dashboard";
 import { Clientes } from '@/pages/clientes'
 import { SignIn, SignUp } from "@/pages/auth";
 import ItemDetail from "./componentes/Item/Detalle Item/ItemDetail";
@@ -15,24 +14,19 @@ const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
-
-import { ListItemButton, ListItemText } from '@mui/material'
-import { Link } from 'react-router-dom'
 import Contenedor from "./componentes/contenedor/Contenedor";
-import ContenedorDetail from "./componentes/contenedor/ContenedorDetail";
-import ContenedorForm from "./componentes/contenedor/ContenedorForm";
-import ProveedorForm from "./componentes/proveedor/ProveedorForm";
+import ContenedorDetail from "./componentes/contenedor/Detalle Contenedor/ContenedorDetail";
 import ItemList from "./componentes/Item/ItemList";
 import Categoria from "./componentes/categoria/Categoria";
 import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
-import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
+import ProveedorDetail from "./componentes/proveedor/Detalle Proveedor/ProveedorDetail";
 import FormularioItemEdicion from "./componentes/Item/Formularios/FormularioItemEdicion";
-import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
+import FormularioContenedorEdicion from "./componentes/contenedor/Formulario/FormularioContenedorEdicion";
 import FormularioEditableProveedor from "./componentes/proveedor/Edicion/FormularioEditableProveedor";
-import SucursalCard from "./componentes/sucursal/SucursalCard";
+import SucursalCard from "./componentes/sucursal/Detalle Sucursal/SucursalCard";
 import Usuarios from "./componentes/usuarios/Usuarios";
 import Equipos from "./componentes/equipos/Equipos";
 import Tickets from "./componentes/tickets/Tickets";
@@ -43,6 +37,9 @@ import DetalleUsuario from "./componentes/usuarios/Detalle Usuario/DetalleUsuari
 import FormularioEditableEquipo from "./componentes/equipos/Formularios/FormularioEditableEquipo";
 import DetalleEquipo from "./componentes/equipos/Detalle Equipo/DetalleEquipo";
 import FormularioRegistroItem from "./componentes/Item/Formularios/FormularioRegistroItem";
+import FormularioRegistroContenedor from "./componentes/contenedor/Formulario/FormularioRegistroContenedor";
+import FormularioRegistroProveedor from "./componentes/proveedor/Formularios/FormularioRegistroProveedor";
+import Invento from "./componentes/invento/Invento";
 
 export const AccordionSubItem = ({ name, path}) => {
   return (
@@ -74,7 +71,7 @@ export const Directions = {
       ))}
     </>
   ),
-  'Bodega': (children, toggleDrawer, anchor) => (
+  'Bodega': (children) => (
     <>
       {children.map((subitem) => (
         <AccordionSubItem
@@ -181,6 +178,10 @@ export const LISTA_MENU_BODEGA = [
         path: '/app/item'
       },
       {
+        name: 'Invento',
+        path: '/app/inventos'
+      },
+      {
         name: 'Contenedores',
         path: '/app/contenedores'
       },
@@ -267,12 +268,6 @@ export const routes = [
         element: <Profile />,
       },
       {
-        icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
-      },
-      {
         icon: <InformationCircleIcon {...icon} />,
         name: "notifications",
         path: "/notifications",
@@ -303,6 +298,17 @@ export const routes = [
         path: "/item/:id",
         element: <ItemDetail />,
       },
+      // OBJECTOS DE INVENTOS
+      {
+        name: 'invento',
+        path: '/inventos',
+        element: <Invento />
+      },
+      {
+        name: 'Crear Orden de Compra',
+        path: '/registro-orden-compra',
+        element: <OrdenCompraForm />
+      },
       // OBJETOS DEL CONTENEDOR
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -314,7 +320,7 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "contenedor",
         path: "/registro-contenedor",
-        element: <ContenedorForm />,
+        element: <FormularioRegistroContenedor />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -355,7 +361,7 @@ export const routes = [
       {
         name: 'Registro Proveedor',
         path: '/registro-proveedor',
-        element: <ProveedorForm />
+        element: <FormularioRegistroProveedor />
       },
       // OBJETOS ORDEN DE COMPRA  
       {

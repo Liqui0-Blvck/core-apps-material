@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper';
 import { ComponenteSchema } from '@/services/Validator';
-import ModalFormularioCategoria from '../Modal/ModalFormularioCategoria';
+import ModalFormularioCategoria from '../../categoria/Modal/ModalFormularioCategoria';
 import toast from 'react-hot-toast';
 
 const { TextArea } = Input;

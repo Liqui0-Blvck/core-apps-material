@@ -371,17 +371,19 @@ export default function TablaOrdenDeCompra({ data, setData, token, setRefresh })
       console.log("Eliminar elementos seleccionados:", selected);
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-delete/`, {
         method: 'DELETE',
         headers: {
-          'authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
+          // 'authorization': `Bearer ${token}`
         },
+        body: JSON.stringify({ ids: selected })
       });
 
       if (response.ok){
-        toast.success('Item eliminado con exito')
+        toast.success('Ordenes eliminadas con exito!')
       } else {
-        toast.error('No se ha podido eliminar')
+        toast.error('No se ha podido eliminar, ¡vuelve a intentarlo!')
       }
 
       const newData = data.filter(item => !selected.includes(item.id));

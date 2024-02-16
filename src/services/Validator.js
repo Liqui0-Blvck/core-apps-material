@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 
 export const CategoriaSchema = Yup.object().shape({
   nombre: Yup.string()
-    .min(8, 'Muy corto el texto!')
+    .min(5, 'Muy corto el texto!')
     .max(20, 'Muy largo el texto!')
     .required('Required'),
   descripcion: Yup.string()

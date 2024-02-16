@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Modal } from 'antd';
-import SucursalFormulario from '@/componentes/sucursal/SucursalCard';
+import FormularioRegistroSucursal from '@/componentes/sucursal/Formularios/FormularioRegistroSucursal';
 
-const ModalRegistroSucursal = ({id, refresh}) => {
+const ModalRegistroSucursal = ({id}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
 
@@ -23,12 +23,13 @@ const ModalRegistroSucursal = ({id, refresh}) => {
     <>
       <button onClick={showModal} className='font-semibold text-center text-white'>Agregar Sucursal</button>
 
-      <Modal title="Agregar Categoria" 
+      <Modal title="Agregar Categoria"
+        width={1000}
         open={isModalOpen} 
         onOk={handleOk} 
         onCancel={handleCancel}
         footer={null}>
-        <SucursalFormulario modalClose={setIsModalOpen} refresh={refresh} id={id}/>
+        <FormularioRegistroSucursal modalClose={setIsModalOpen} id={id}/>
       </Modal>
     </>
   );

@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import TablaProveedor from './TablaProveedor'
+import TablaProveedor from './Tabla/TablaProveedor'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
@@ -20,9 +20,7 @@ const Proveedor = () => {
         month: 'numeric',
         day: 'numeric',
         hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false
+        minute: 'numeric'
       })
     },
     []

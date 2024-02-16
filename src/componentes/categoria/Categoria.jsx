@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
 import TransitionsModal from '../Item/Modal/ModalSearchItem'
-import TablaCategorias from './TablaCategorias'
+import TablaCategorias from './Tabla/TablaCategorias'
 import AuthContext from '@/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
