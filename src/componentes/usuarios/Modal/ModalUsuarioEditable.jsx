@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from 'antd';
-import FormularioEditableUsuario from './FormularioEditableUsuario';
+import FormularioEditableUsuario from '../Formularios/FormularioEditableUsuario';
 
 const ModalCategoriaEditable = ({id, refresh}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import CategoriaForm from '@/componentes/categoria/CategoriaForm';
 
-const ModalForm = () => {
+const ModalFormularioCategoria = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -35,4 +35,4 @@ const ModalForm = () => {
     </>
   );
 };
-export default ModalForm;
+export default ModalFormularioCategoria;

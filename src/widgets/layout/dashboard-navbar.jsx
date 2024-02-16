@@ -25,7 +25,7 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
-import AccountMenu from "@/componentes/menu/AccountMenu";
+import AccountMenu from "@/widgets/layout/AccountMenu";
 import { useEffect, useState } from "react";
 import ModalSearchItem from "@/componentes/Item/Modal/ModalSearchItem";
 

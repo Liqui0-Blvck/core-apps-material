@@ -9,8 +9,7 @@ import {
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { Clientes } from '@/pages/clientes'
 import { SignIn, SignUp } from "@/pages/auth";
-import ItemForm from "./componentes/Item/ItemForm";
-import ItemDetail from "./componentes/Item/ItemDetail";
+import ItemDetail from "./componentes/Item/Detalle Item/ItemDetail";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -18,11 +17,10 @@ const icon = {
 
 
 import { ListItemButton, ListItemText } from '@mui/material'
-import { Form, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Contenedor from "./componentes/contenedor/Contenedor";
 import ContenedorDetail from "./componentes/contenedor/ContenedorDetail";
 import ContenedorForm from "./componentes/contenedor/ContenedorForm";
-import CategoriaForm from "./componentes/categoria/Edicion/CategoriaForm";
 import ProveedorForm from "./componentes/proveedor/ProveedorForm";
 import ItemList from "./componentes/Item/ItemList";
 import Categoria from "./componentes/categoria/Categoria";
@@ -31,9 +29,8 @@ import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/ProveedorDetail";
-import FormularioItemEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
+import FormularioItemEdicion from "./componentes/Item/Formularios/FormularioItemEdicion";
 import FormularioContenedorEdicion from "./componentes/contenedor/Edicion/FormularioContenedorEdicion";
-import FormularioEdicion from "./componentes/Item/Edicion/FormularioItemEdicion";
 import FormularioEditableProveedor from "./componentes/proveedor/Edicion/FormularioEditableProveedor";
 import SucursalCard from "./componentes/sucursal/SucursalCard";
 import Usuarios from "./componentes/usuarios/Usuarios";
@@ -45,6 +42,7 @@ import FormularioRegistroEquipo from "./componentes/equipos/Formularios/Formular
 import DetalleUsuario from "./componentes/usuarios/Detalle Usuario/DetalleUsuario";
 import FormularioEditableEquipo from "./componentes/equipos/Formularios/FormularioEditableEquipo";
 import DetalleEquipo from "./componentes/equipos/Detalle Equipo/DetalleEquipo";
+import FormularioRegistroItem from "./componentes/Item/Formularios/FormularioRegistroItem";
 
 export const AccordionSubItem = ({ name, path}) => {
   return (
@@ -285,7 +283,7 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "item registro",
         path: "/registro-item",
-        element: <ItemForm />,
+        element: <FormularioRegistroItem />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,

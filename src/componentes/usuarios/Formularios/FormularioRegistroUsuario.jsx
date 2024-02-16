@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
+import { DEPARTAMENTO } from '@/const/constantes';
 
 const { TextArea } = Input;
 
@@ -54,6 +55,15 @@ const FormularioRegistroUsuario = ({ id }) => {
       }
     }
   })
+
+  const onSearch = (value) => {
+    console.log("search:", value);
+  };
+
+  const filterOption = (
+    input,
+    option,
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
 
   return (
@@ -123,18 +133,20 @@ const FormularioRegistroUsuario = ({ id }) => {
 
       <div className='w-96 grid grid-cols-2 items-center row-start-2 col-start- col-span-2'>
         <label htmlFor='departamento' className='text-start'>Departamento:</label>
-        <Input
-          type="text"
+        <Select
+          showSearch
+          placeholder="Selecciona una departamento"
+          optionFilterProp="children"
+          className='rounded-md mt-1 col-span-3 h-11 w-full'
+          onChange={e => formik.setFieldValue('departamento', e)}
+          onSearch={onSearch}
           name='departamento'
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.departamento}
-          className={`
-          ${formik.errors.username && formik.touched.username 
-            ? 'border-[2px] text-red-900' 
-            : 'border-[1px] border-gray-300'}
-          rounded-md p-2 mt-1 col-span-2`
-          }/>
+          filterOption={filterOption}
+          options={DEPARTAMENTO.map((estado) => ({
+            value: estado,
+            label: estado
+          }))}
+          />
           {formik.touched.departamento && formik.errors.departamento && (
             <div className='col-span-2 text-center text-sm text-red-900'>{formik.errors.departamento}</div>
           )}

@@ -68,10 +68,10 @@ export const TIPO_DISCO = [
 ]
 
 export const CAPACIDAD_DISCO = [
+  'Sin especificar',
   '250 GB',
   '500 GB',
   '1 TB',
   '2 TB',
 ]
-
 

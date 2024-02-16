@@ -22,7 +22,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
-import ModalCategoriaEditable from '../Formularios/ModalUsuarioEditable';
+import ModalCategoriaEditable from '../Modal/ModalUsuarioEditable';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;

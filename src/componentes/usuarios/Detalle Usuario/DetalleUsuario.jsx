@@ -36,7 +36,7 @@ const DetalleUsuario = () => {
   console.log(usuario)
   return (
     <MaxWidthWrapper>
-      <div className='my-14'>
+      <div>
         {
           usuario && (
             <CartDetail

@@ -20,7 +20,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ArrowBack } from "@mui/icons-material";
 import { LISTA_MENU, LISTA_MENU_BODEGA, LISTA_MENU_CLIENTE, LISTA_MENU_GESTION } from "@/routes";
-import SidebarItem from "@/componentes/sidebar/sidebarItems";
+import SidebarItem from "@/widgets/layout/SidebarItems";
 import { useClient } from "@/context/ClientContext";
 
 
