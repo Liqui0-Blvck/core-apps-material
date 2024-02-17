@@ -126,11 +126,14 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                             ? (
                                 <>
                                   {
-                                    proveedores.map((proveedor) => (
-                                      <Link to={`/app/proveedor/${proveedor.id}`} key={proveedor.id} className='bg-blue-gray-500 hover:bg-blue-gray-300 w-full flex justify-center h-10 items-center rounded-md'>
-                                        <h1 className='text-lg text-white font-bold'>{proveedor.nombre}</h1>
-                                      </Link>
-                                    ))
+                                    proveedores.map((proveedor) => {
+                                      console.log(proveedor)
+                                      return (
+                                        <Link to={`/app/proveedor/${proveedor.id}`} key={proveedor.id} className='bg-blue-gray-500 hover:bg-blue-gray-300 w-full flex justify-center h-10 items-center rounded-md'>
+                                          <h1 className='text-lg text-white font-bold'>{proveedor.nombre}</h1>
+                                        </Link>
+                                      )
+                                    })
                                   }
                                 </>
                               )

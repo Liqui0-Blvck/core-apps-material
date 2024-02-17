@@ -4,17 +4,20 @@ import CartDetail from './CartDetail'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { urlNumeros } from '@/services/url_number'
 
 
 const ItemDetail = () => {
   const { authTokens, validToken } = useContext(AuthContext)
   const { pathname } = useLocation()
+  const id = urlNumeros(pathname)
   const [editMode, setEditMode] = useState(false)
   const { data, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/${pathname.slice(5)}`
+    `http://127.0.0.1:8000/api/item/${id}`
     )
+
 
   
   const formatearFecha = useMemo(
@@ -31,6 +34,8 @@ const ItemDetail = () => {
     },
     []
   )
+
+  console.log(data)
 
 
   return (

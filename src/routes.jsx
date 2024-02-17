@@ -20,7 +20,7 @@ import ItemList from "./componentes/Item/ItemList";
 import Categoria from "./componentes/categoria/Categoria";
 import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
-import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/OrdenDeCompraForm";
+import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/FormularioOrdenCompra";
 import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/Detalle Proveedor/ProveedorDetail";
 import FormularioItemEdicion from "./componentes/Item/Formularios/FormularioItemEdicion";

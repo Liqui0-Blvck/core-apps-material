@@ -81,6 +81,12 @@ const headCells = [
     label: 'Descripcion',
   },
   {
+    id: 'stock',
+    numeric: true,
+    disablePadding: false,
+    label: 'Stock',
+  },
+  {
     id: 'fecha_creacion',
     numeric: false,
     disablePadding: false,
@@ -361,7 +367,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   return (
     <Sheet
       variant="outlined"
-      sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
+      sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm', overflow: 'hidden' }}
     >
       <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
       <Table
@@ -375,10 +381,10 @@ export default function TablaItem({ data, setData, token, loading }) {
             width: '30px',
           },
           '& thead th:nth-child(2)': {
-            width: '30%',
+            width: '20%',
           },
-          '& tr > *:nth-child(n+3)': { textAlign: 'right',
-          width: '100%'
+          '& tr > *:nth-child(n+3)': { textAlign: 'center',
+          width: '50%'
           },
           '& tfoot > td': {
             width: '100%'
@@ -429,9 +435,6 @@ export default function TablaItem({ data, setData, token, loading }) {
                       sx={{ verticalAlign: 'top' }}
                     />
                   </th>
-                  <th id={labelId} scope="row">
-                    {row.id}
-                  </th>
 
                   {loading ? (
                     <td colSpan="5">
@@ -439,9 +442,11 @@ export default function TablaItem({ data, setData, token, loading }) {
                     </td>
                   ) : (
                     <>
-                      <td className='text-center text-clip overflow-hidden'>{row.nombre}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.descripcion}</td>
-                      <td className='text-center text-clip overflow-hidden'>{row.fecha_creacion}</td>
+                      <td className='text-center relative'>{row.id}</td>
+                      <td className='text-center relative left-3 text-clip overflow-hidden'>{row.nombre}</td>
+                      <td className='text-center truncate relative left-3 text-clip overflow-hidden'>{row.descripcion}</td>
+                      <td className='text-center relative left-3 text-clip overflow-hidden'>{row.stock_bodega}</td>
+                      <td className='text-center relative left-3 text-clip overflow-hidden'>{row.fecha_creacion}</td>
                     </>
                   )}
                 </tr>

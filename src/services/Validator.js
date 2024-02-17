@@ -25,7 +25,7 @@ export const ComponenteSchema = Yup.object().shape({
   nombre: Yup.string().required('El nombre es obligatorio'),
   descripcion: Yup.string()
     .min(8, 'Muy corta descripción!')
-    .max(100, 'Descripción muy larga!'),
+    .max(200, 'Descripción muy larga!'),
   categoria: Yup.string().required('La categoría es obligatoria'),
 })
 
