@@ -40,8 +40,9 @@ import FormularioRegistroItem from "./componentes/Item/Formularios/FormularioReg
 import FormularioRegistroContenedor from "./componentes/contenedor/Formulario/FormularioRegistroContenedor";
 import FormularioRegistroProveedor from "./componentes/proveedor/Formularios/FormularioRegistroProveedor";
 import Invento from "./componentes/invento/Invento";
+import FormularioRegistroInvento from "./componentes/invento/Formularios/FormularioRegistroInvento";
 
-export const AccordionSubItem = ({ name, path}) => {
+export const AccordionSubItem = ({ name, path }) => {
   return (
     <Link to={path} key={path} className='w-full p-0 ml-2'>
       <ListItemButton>
@@ -49,7 +50,7 @@ export const AccordionSubItem = ({ name, path}) => {
           {name}
         </ListItemText>
       </ListItemButton>
-   </Link>
+    </Link>
   )
 }
 
@@ -64,7 +65,7 @@ export const Directions = {
       {children.map((subitem) => (
         <AccordionSubItem
           key={subitem.id}
-          name={subitem.name} 
+          name={subitem.name}
           path={subitem.path}
           className={open ? 'bg-blue-gray-700' : ''}
         />
@@ -76,7 +77,7 @@ export const Directions = {
       {children.map((subitem) => (
         <AccordionSubItem
           key={subitem.id}
-          name={subitem.name} 
+          name={subitem.name}
           path={subitem.path}
 
         />
@@ -88,7 +89,7 @@ export const Directions = {
       {children.map((subitem) => (
         <AccordionSubItem
           key={subitem.id}
-          name={subitem.name} 
+          name={subitem.name}
           path={subitem.path}
         />
       ))}
@@ -99,7 +100,7 @@ export const Directions = {
       {children.map((subitem) => (
         <AccordionSubItem
           key={subitem.id}
-          name={subitem.name} 
+          name={subitem.name}
           path={subitem.path}
         />
       ))}
@@ -111,7 +112,7 @@ export const LISTA_MENU_GESTION = [
   {
     name: 'Clientes',
     path: '/app/clientes',
-  }, 
+  },
   {
     name: 'Registro Clientes',
     path: '/app/registro-clientes'
@@ -166,6 +167,10 @@ export const LISTA_MENU_BODEGA = [
       {
         name: 'Registrar Proveedor',
         path: '/app/registro-proveedor'
+      },
+      {
+        name: 'Registrar Invento',
+        path: '/app/registro-invento'
       },
     ]
   },
@@ -305,9 +310,9 @@ export const routes = [
         element: <Invento />
       },
       {
-        name: 'Crear Orden de Compra',
-        path: '/registro-orden-compra',
-        element: <OrdenCompraForm />
+        name: 'invento',
+        path: '/registro-invento',
+        element: <FormularioRegistroInvento />
       },
       // OBJETOS DEL CONTENEDOR
       {
@@ -326,13 +331,13 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "Edicion contenedor",
         path: "/edicion-contenedor/:id",
-        element: <FormularioContenedorEdicion   />,
+        element: <FormularioContenedorEdicion />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "contenedor",
         path: "/contenedor/:id",
-        element: <ContenedorDetail   />,
+        element: <ContenedorDetail />,
       },
       // OBJETOS DE CATEGORIAS
       {
@@ -346,7 +351,7 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "Proveedores",
         path: "/proveedores",
-        element: <Proveedor   />,
+        element: <Proveedor />,
       },
       {
         name: 'Detalle Proveedor',
@@ -368,7 +373,7 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "Ordenes de Compra",
         path: "/orden-compra",
-        element: <OrdenDeCompra  />,
+        element: <OrdenDeCompra />,
       },
       {
         name: 'Crear Orden de Compra',
@@ -379,7 +384,7 @@ export const routes = [
         icon: <InformationCircleIcon {...icon} />,
         name: "Detalle Orden de Compra",
         path: "/orden-compra/:id",
-        element: <OrdenCompraDetail  />,
+        element: <OrdenCompraDetail />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
