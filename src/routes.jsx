@@ -41,6 +41,8 @@ import FormularioRegistroContenedor from "./componentes/contenedor/Formulario/Fo
 import FormularioRegistroProveedor from "./componentes/proveedor/Formularios/FormularioRegistroProveedor";
 import Invento from "./componentes/invento/Invento";
 import FormularioRegistroInvento from "./componentes/invento/Formularios/FormularioRegistroInvento";
+import FormularioEditableInvento from "./componentes/invento/Formularios/FormularioEditableInvento";
+import InventoDetalle from "./componentes/invento/Detalle Invento/InventoDetalle";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -311,8 +313,18 @@ export const routes = [
       },
       {
         name: 'invento',
+        path: '/invento/:id',
+        element: <InventoDetalle />
+      },
+      {
+        name: 'invento',
         path: '/registro-invento',
         element: <FormularioRegistroInvento />
+      },
+      {
+        name: 'invento',
+        path: '/edicion-invento/:id',
+        element: <FormularioEditableInvento />
       },
       // OBJETOS DEL CONTENEDOR
       {

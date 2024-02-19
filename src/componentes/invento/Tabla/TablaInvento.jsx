@@ -69,16 +69,16 @@ const headCells = [
     label: 'Nombre',
   },
   {
-    id: 'procesador',
-    numeric: true,
-    disablePadding: false,
-    label: 'Procesador',
+    id: 'descripcion',
+    numeric: false,
+    disablePadding: true,
+    label: 'Descripción',
   },
   {
-    id: 'usuario',
-    numeric: false,
+    id: 'stock',
+    numeric: true,
     disablePadding: false,
-    label: 'Usuario',
+    label: 'Stock',
   },
   {
     id: 'fecha_creacion',
@@ -207,32 +207,32 @@ function EnhancedTableToolbar(props) {
       {
         numSelected === 0
           ? (
-            <Ln to={`/app/registro-equipo`}>
-              <div className='w-32 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
-                <span className='font-semibold'>Agregar Equipo</span>
+            <Ln to={`/app/registro-invento`}>
+              <div className='w-40 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-200 transition-all ease-in flex items-center justify-center'>
+                <span className='font-semibold'>Agregar Invento</span>
               </div>
             </Ln>
-            )
+          )
           : null
       }
 
       {
-        numSelected <= 1 && numSelected > 0 
+        numSelected <= 1 && numSelected > 0
           ? (
             <>
-              <Ln to={`/app/equipo/${selected}`}>
+              <Ln to={`/app/invento/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Detalles
                 </IconButton>
               </Ln>
 
-              <Ln to={`/app/edicion-equipo/${selected}`}>
+              <Ln to={`/app/edicion-invento/${selected}`}>
                 <IconButton size='md' variant='solid' color='primary'>
                   Editar
                 </IconButton>
               </Ln>
             </>
-            )
+          )
           : null
       }
 
@@ -242,13 +242,8 @@ function EnhancedTableToolbar(props) {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton size="sm" variant="outlined" color="neutral">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      ) : null
+      }
     </Box>
   );
 }
@@ -286,7 +281,7 @@ export default function TablaInvento({ data, setData, token, loading }) {
     try {
       console.log("Eliminar elementos seleccionados:", selected);
 
-  
+
       // Realiza la solicitud de eliminación al servidor
       const response = await fetch(`http://127.0.0.1:8000/api/invento/`, {
         method: 'DELETE',
@@ -297,7 +292,7 @@ export default function TablaInvento({ data, setData, token, loading }) {
         body: JSON.stringify({ ids: selected }),
       });
 
-      if (response.ok){
+      if (response.ok) {
         toast.success('Item eliminado con exito')
       } else {
         toast.error('No se ha podido eliminar')
@@ -307,7 +302,7 @@ export default function TablaInvento({ data, setData, token, loading }) {
       setData(newData);
 
       setSelected([]);
-  
+
     } catch (error) {
       console.error("Error al eliminar elementos:", error);
 
@@ -365,7 +360,7 @@ export default function TablaInvento({ data, setData, token, loading }) {
       variant="outlined"
       sx={{ width: '95%', boxShadow: 'sm', borderRadius: 'sm' }}
     >
-      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
+      <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected} />
       <Table
         aria-labelledby="tableTitle"
         hoverRow
@@ -379,8 +374,9 @@ export default function TablaInvento({ data, setData, token, loading }) {
           '& thead th:nth-child(2)': {
             width: '30%',
           },
-          '& tr > *:nth-child(n+3)': { textAlign: 'center',
-          width: '50%'
+          '& tr > *:nth-child(n+3)': {
+            textAlign: 'center',
+            width: '50%'
           },
           '& tfoot > td': {
             width: '100%'
@@ -412,11 +408,11 @@ export default function TablaInvento({ data, setData, token, loading }) {
                   style={
                     isItemSelected
                       ? {
-                          '--TableCell-dataBackground':
-                            'var(--TableCell-selectedBackground)',
-                          '--TableCell-headBackground':
-                            'var(--TableCell-selectedBackground)',
-                        }
+                        '--TableCell-dataBackground':
+                          'var(--TableCell-selectedBackground)',
+                        '--TableCell-headBackground':
+                          'var(--TableCell-selectedBackground)',
+                      }
                       : {}
                   }
                 >
@@ -434,14 +430,13 @@ export default function TablaInvento({ data, setData, token, loading }) {
 
                   {loading ? (
                     <td colSpan="5">
-                      <Skeleton className='w-full'/>
+                      <Skeleton className='w-full' />
                     </td>
                   ) : (
                     <>
                       <td>{row.nombre}</td>
                       <td>{row.descripcion}</td>
-                      <td>{row.procesador}</td>
-                      <td></td>
+                      <td>{row.stock_bodega}</td>
                       <td>{row.fecha_creacion}</td>
                     </>
                   )}
@@ -469,7 +464,7 @@ export default function TablaInvento({ data, setData, token, loading }) {
                   alignItems: 'center',
                   gap: 2,
                   justifyContent: 'flex-end',
-                }}  
+                }}
               >
                 <FormControl orientation="horizontal" size="sm">
                   <FormLabel>Rows per page:</FormLabel>

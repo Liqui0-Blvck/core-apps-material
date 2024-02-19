@@ -1,21 +1,40 @@
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input } from 'antd'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
-import FooterFormularioRegistroInvento from './FooterFormularioRegistroInvento'
 import { compresor } from '@/services/compresor_imagen'
 import { IoMdClose } from 'react-icons/io'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import FooterFormularioEditableInvento from './FooterFormularioEditableInvento'
+import { urlNumeros } from '@/services/url_number'
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { useAuth } from '@/context/AuthContext'
 
 const { TextArea } = Input
 
-const FormularioRegistroInvento = () => {
+const FormularioEditableInvento = () => {
+  const { authTokens, validToken } = useAuth()
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const [isValid, setIsValid] = useState(false)
+  const id = urlNumeros(pathname)
+  const { data: invento } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/invento/${id}`
+  )
+
+  console.log(id)
+  console.log(invento)
+  console.log(imagen)
+
+
   const initialRows = [
     {
+      id: 0,
       item: 0,
       cantidad: 0,
     },
@@ -24,6 +43,7 @@ const FormularioRegistroInvento = () => {
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
   )
+
 
 
   const formik = useFormik({
@@ -36,17 +56,20 @@ const FormularioRegistroInvento = () => {
       const formData = new FormData();
       formData.append('nombre', values.nombre);
       formData.append('descripcion', values.descripcion);
-      formData.append('foto', values.foto);
+      if (values.foto instanceof File) {
+        formData.append('foto', values.foto);
+      }
 
       const itemsJson = JSON.stringify(rows.map((row) => ({
+        id: row.id,
         item: row.item,
         cantidad: row.cantidad
       })));
       formData.append('items', itemsJson);
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/inventos/`, {
-          method: 'POST',
+        const response = await fetch(`http://127.0.0.1:8000/api/invento/${id}/`, {
+          method: 'PUT',
           body: formData
         });
 
@@ -62,18 +85,38 @@ const FormularioRegistroInvento = () => {
     }
   });
 
+  useEffect(() => {
+    let isMounted = true
+
+    if (invento && isMounted) {
+      formik.setValues({
+        nombre: invento.nombre,
+        descripcion: invento.descripcion,
+        foto: invento.foto
+      })
+
+      setRows(invento.items)
+      setImagen(invento.foto)
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [invento])
+
+
 
   const handleAgregarItem = () => {
+    // Agregar un nuevo ítem a la lista de ítems
     setRows((prevRows) => [
       ...prevRows,
       {
-        item: "",
-        cantidad: 0
+        id: null,
+        item: null,
+        cantidad: null
       },
     ]);
   };
-
-
 
 
   return (
@@ -123,7 +166,7 @@ const FormularioRegistroInvento = () => {
                         }}
                       />
                     </div>
-                    <img src={URL.createObjectURL(imagen)} alt="" className='z-10 absolute w-full h-full object-contain rounded-md first-letter:' />
+                    <img src={imagen} alt="" className='z-10 absolute w-full h-full object-contain rounded-md first-letter:' />
                   </>
                 )
               }
@@ -134,6 +177,7 @@ const FormularioRegistroInvento = () => {
                 className='p-2.5'
                 type='text'
                 name='nombre'
+                value={formik.values.nombre}
                 onChange={formik.handleChange}
               />
             </div>
@@ -144,20 +188,22 @@ const FormularioRegistroInvento = () => {
                 rows={6}
                 name='descripcion'
                 className='w-full h-full'
+                value={formik.values.descripcion}
                 onChange={(e) => formik.handleChange(e)}
               />
             </div>
           </div>
 
 
-          <FooterFormularioRegistroInvento
+          <FooterFormularioEditableInvento
             rows={rows}
             setRows={setRows}
             formik={formik}
+            isValid={setIsValid}
             handleAgregarItem={handleAgregarItem}
           />
 
-          <button type='submit' className='absolute -bottom-20 right-10 rounded-md p-2 bg-blue-600'>
+          <button type='submit' disabled={!isValid} className='absolute -bottom-20 right-10 rounded-md p-2 bg-blue-600'>
             <p className='text-white'>
               Agregar items
             </p>
@@ -169,4 +215,4 @@ const FormularioRegistroInvento = () => {
   )
 }
 
-export default FormularioRegistroInvento
+export default FormularioEditableInvento
