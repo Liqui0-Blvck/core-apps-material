@@ -52,7 +52,6 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                 <TableCell align='center'>Items</TableCell>
                 <TableCell align="right">Cantidad</TableCell>
                 <TableCell align="right">Costo por Unidad</TableCell>
-                <TableCell align="right">Fecha de Llegada</TableCell>
                 <TableCell align="center">Observaciones</TableCell>
                 <TableCell align="right" style={{ textAlign: 'center'}}>Acciones</TableCell>
               </TableRow>
@@ -107,22 +106,6 @@ const BasicTable = ({ handleSubmit, itemProveedor, handleChange, rows, setRows, 
                       }
                       value={row.costo_por_unidad}
                     />
-                  </TableCell>
-                  <TableCell align="right">
-                    <input
-                      type="date"
-                      name="fecha_llegada"
-                      className="p-2 border-[1px] border-gray-300 rounded-md"
-                      onChange={(e) => {
-                        handleChangeRow(index, row.id, "fecha_llegada", e.target.value)
-                        handleChange(e)
-                      }
-                      }
-                      value={row.fecha_llegada}
-                    />
-
-                  
-
                   </TableCell>
                   <TableCell align="right">
                     <textarea

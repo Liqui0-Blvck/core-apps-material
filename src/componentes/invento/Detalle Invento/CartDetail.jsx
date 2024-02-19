@@ -100,7 +100,7 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
 
                   <div className='h-full p-2 flex flex-col flex-1 gap-2 rounded-md'>
                     <h1 className='border-[1px] border-gray-300 rounded-md font-bold pl-2'>Descripción: </h1>
-                    <div className='h-20 w-full rounded-md bg-gray-200 flex p-3'>
+                    <div className='h-full w-full rounded-md bg-gray-200 flex p-3'>
                       <span>{descripcion}</span>
                     </div>
                   </div>
@@ -110,7 +110,7 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                 <div className='border-[1px] border-gray-300 rounded m-2 h-72 p-2'>
                   <div className='border-[1px] border-gray-200 h-full '>
                     <div className='flex justify-center items-center'>
-                      <h1 className='text-xl font-semibold'>Proveedores</h1>
+                      <h1 className='text-xl font-semibold'>Items agregados</h1>
                     </div>
                     <div className='mt-2 flex flex-col gap-2 items-center p-2 overflow-y-scroll'>
                       {
