@@ -75,3 +75,7 @@ export const CAPACIDAD_DISCO = [
   '2 TB',
 ]
 
+export const ContentTypes = [
+  {value: 13, label: 'Item', path: 'items'},
+  {value: 31, label: 'Invento', path: 'inventos'}
+]

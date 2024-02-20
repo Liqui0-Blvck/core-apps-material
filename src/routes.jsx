@@ -43,6 +43,9 @@ import Invento from "./componentes/invento/Invento";
 import FormularioRegistroInvento from "./componentes/invento/Formularios/FormularioRegistroInvento";
 import FormularioEditableInvento from "./componentes/invento/Formularios/FormularioEditableInvento";
 import InventoDetalle from "./componentes/invento/Detalle Invento/InventoDetalle";
+import GuiaDeSalida from "./componentes/guia_de_salida/GuiaDeSalida";
+import FormularioGuiaSalida from "./componentes/guia_de_salida/Formulario/FormularioGuiaSalida";
+import FormularioEditableGuiaSalida from "./componentes/guia_de_salida/Formulario Editable/FormularioEditableGuiaSalida";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -87,6 +90,17 @@ export const Directions = {
     </>
   ),
   'Orden de compra': (children) => (
+    <>
+      {children.map((subitem) => (
+        <AccordionSubItem
+          key={subitem.id}
+          name={subitem.name}
+          path={subitem.path}
+        />
+      ))}
+    </>
+  ),
+  'Guia de Salida': (children) => (
     <>
       {children.map((subitem) => (
         <AccordionSubItem
@@ -217,6 +231,20 @@ export const LISTA_MENU_BODEGA = [
       {
         name: 'Crear Orden de compra',
         path: '/app/registro-orden-compra'
+      }
+    ]
+  },
+  {
+    name: 'Guia de Salida',
+    path: '',
+    children: [
+      {
+        name: 'Guia de Salida',
+        path: '/app/guia-salida'
+      },
+      {
+        name: 'Crear Guia de Salida',
+        path: '/app/registro-guia-salida'
       }
     ]
   },
@@ -379,6 +407,22 @@ export const routes = [
         name: 'Registro Proveedor',
         path: '/registro-proveedor',
         element: <FormularioRegistroProveedor />
+      },
+      // RUTAS DE LA GUIA DE SALIDA
+      {
+        name: 'Guias de Salida',
+        path: '/guia-salida',
+        element: <GuiaDeSalida />
+      },
+      {
+        name: 'Registro Guia Salida',
+        path: '/registro-guia-salida',
+        element: <FormularioGuiaSalida />
+      },
+      {
+        name: 'Registro Guia Salida',
+        path: '/edicion-guia-salida/:id',
+        element: <FormularioEditableGuiaSalida />
       },
       // OBJETOS ORDEN DE COMPRA  
       {
