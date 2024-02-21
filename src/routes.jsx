@@ -46,6 +46,7 @@ import InventoDetalle from "./componentes/invento/Detalle Invento/InventoDetalle
 import GuiaDeSalida from "./componentes/guia_de_salida/GuiaDeSalida";
 import FormularioGuiaSalida from "./componentes/guia_de_salida/Formulario/FormularioGuiaSalida";
 import FormularioEditableGuiaSalida from "./componentes/guia_de_salida/Formulario Editable/FormularioEditableGuiaSalida";
+import DetalleGuiaSalida from "./componentes/guia_de_salida/Detalle Guia/DetalleGuiaSalida";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -415,6 +416,11 @@ export const routes = [
         element: <GuiaDeSalida />
       },
       {
+        name: 'Detalle Guia Salida',
+        path: '/guia-salida/:id',
+        element: <DetalleGuiaSalida />
+      },
+      {
         name: 'Registro Guia Salida',
         path: '/registro-guia-salida',
         element: <FormularioGuiaSalida />
@@ -424,6 +430,7 @@ export const routes = [
         path: '/edicion-guia-salida/:id',
         element: <FormularioEditableGuiaSalida />
       },
+      
       // OBJETOS ORDEN DE COMPRA  
       {
         icon: <InformationCircleIcon {...icon} />,

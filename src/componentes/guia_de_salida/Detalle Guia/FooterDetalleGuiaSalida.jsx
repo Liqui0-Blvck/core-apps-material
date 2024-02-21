@@ -19,7 +19,7 @@ import { IoMdClose } from 'react-icons/io'
 import { dataURLtoFile } from '@/services/captureSignature';
 
 
-const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
+const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
   const { authTokens, validToken } = useAuth()
   const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
   const sigCanvas = useRef()
@@ -110,11 +110,6 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
-        <div onClick={handleAgregarItem, agregarFila}
-          className='absolute bottom-44 left-20 
-            right-0 w-32 mx-auto'>
-          <FaCirclePlus className='text-3xl' />
-        </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750, background: '#F3F4F6' }} aria-label="simple table">
             <TableHead >
@@ -122,7 +117,6 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                 <TableCell align='center'>Objeto</TableCell>
                 <TableCell align="center">Cantidad</TableCell>
                 <TableCell align="center">Tipo Objeto</TableCell>
-                <TableCell align="center">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody sx={{ position: 'relative'}}>
@@ -169,6 +163,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                       filterOption={filterOption}
                       value={row.content_type === 13 ? itemSelected?.label : row.content_type === 31 ? inventoSelected?.label : 'Selecciona uno'}
                       options={options}
+                      disabled
                     />
 
                     </TableCell>
@@ -186,6 +181,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
 
                         }
                         value={row.cantidad}
+                        disabled
                       />
                     </TableCell>
                     <TableCell align="" style={{ maxWidth: '150px', minWidth: '150px' }}>
@@ -205,12 +201,8 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                           value: obj.value,
                           label: obj.label
                         }))}
+                        disabled
                       />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button onClick={() => { eliminarFila(row.id), setTipoSeleccionado(0) }} variant="outlined" color="secondary">
-                        Eliminar
-                      </Button>
                     </TableCell>
                   </TableRow>
                 )
@@ -222,28 +214,19 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
           <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 relative rounded-md flex flex-col '>
             <h1>Firma Encargado: </h1>
             <img src={formik.values.firma_encargado} alt="" className='w-full h-32'/>
+
           </div>
 
-          <div className='bg-gray-300 h-40 w-96 mt-14 mb-5 rounded-md relative flex flex-col '>
-          <h1>Firma Recepcionista:</h1>
-          <SignatureCanvas
-            penColor="black"
-            canvasProps={{ width: 385, height: 120 }}
-            ref={sigCanvas}
-          />
-          <IoMdClose className='absolute top-1 right-10 text-2xl cursor-pointer' onClick={() => sigCanvas.current.clear()}/>
-          <IoMdSave className='absolute top-1 right-1 text-2xl cursor-pointer' onClick={handleSaveSignature}/>
+          <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 relative rounded-md flex flex-col '>
+            <h1>Firma Recepcionista: </h1>
+            <img src={formik.values.firma_recepcion} alt="" className='w-full h-32'/>
 
           </div>
         </div>
-        
-        <button type='submit' className='absolute px-4 py-2 right-0 -bottom-14 bg-[#2732FF] rounded-md text-white'>
-          Crear Orden de Compra
-        </button>
       </form>
     </div>
   );
 };
 
-export default FooterFormularioEditableRegistro;
+export default FooterDetalleGuiaSalida;
 

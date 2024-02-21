@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,11 +13,17 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { useAuth } from '@/context/AuthContext';
 import { Select } from 'antd';
 import { ContentTypes } from '@/const/constantes';
+import SignatureCanvas from "react-signature-canvas";
+import { IoMdSave } from "react-icons/io";
+import { IoMdClose } from 'react-icons/io'
+import { dataURLtoFile } from '@/services/captureSignature';
+
 
 const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
   const { authTokens, validToken } = useAuth()
   const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
   const tipo_objeto = ContentTypes.find(obj => obj.value === tipoSeleccionado)?.path
+  const sigCanvas = useRef()
   const { data: objeto } = useAuthenticatedFetch(
     authTokens,
     validToken,
@@ -56,7 +62,15 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
-  console.log(rows)
+  const handleSaveSignature = () => {
+    const signatureImage = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png');
+
+    const signatureFile = dataURLtoFile(signatureImage, 'firma.png');
+
+    formik.setFieldValue('firma_encargado', signatureFile);
+  };
+
+
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
@@ -142,8 +156,17 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
             </TableBody>
           </Table>
         </TableContainer>
-        <div className='bg-gray-300 h-40 w-full mt-14 mb-5 rounded-md '>
-          firma
+        
+        <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 rounded-md relative left-[550px] flex flex-col '>
+          <h1 className='text-gray-500'>Firma Encargado:</h1>
+          <SignatureCanvas
+            penColor="black"
+            canvasProps={{ width: 385, height: 155 }}
+            ref={sigCanvas}
+          />
+          <IoMdClose className='absolute top-1 right-10 text-2xl cursor-pointer'/>
+          <IoMdSave className='absolute top-1 right-1 text-2xl cursor-pointer' onClick={handleSaveSignature}/>
+
         </div>
         <button type='submit' className='absolute px-4 py-2 right-0 -bottom-14 bg-[#2732FF] rounded-md text-white'>
           Crear Orden de Compra

@@ -200,8 +200,9 @@ function EnhancedTableToolbar(props) {
     handleUpdateClick(estado)
   }
 
-  console.log(estado)
+  console.log(datos)
 
+  console.log(estado)
   return (
     <Box
       sx={{
@@ -238,7 +239,7 @@ function EnhancedTableToolbar(props) {
      {
         numSelected === 0
         ? (
-          <Ln to={`/app/registro-orden-compra`}>
+          <Ln to={`/app/registro-guia-salida`}>
             <div className='w-52 p-1.5 rounded-md bg-[#F0F4F8] hover:bg-indigo-100 transition-all ease-in flex items-center justify-center'>
               <span className='font-semibold'>Agregar Guia de Salida</span>
             </div>
@@ -253,18 +254,10 @@ function EnhancedTableToolbar(props) {
           <h1 className='mr-10'>Acciones</h1>
           
 
-          {datos[0].estado_oc_label === 'Aprobada' || datos[0].estado_oc_label === 'Rechazada' || datos[0].estado_oc_label === 'Finalizado' ? (
-            datos[0].estado_oc_label === 'Aprobada' && (
+          {datos[0].estado_guia_label === 'Aprobada' || datos[0].estado_guia_label === 'Rechazada' || datos[0].estado_guia_label === 'Finalizado' ? (
+            datos[0].estado_guia_label === 'Aprobada' && (
               <>
-                <IconButton
-                  size='md'
-                  className='w-20'
-                  variant='solid'
-                  color='primary'
-                  onClick={() => handleClickEstado('Finalizada', 5, true)}
-                >
-                  Finalizada
-                </IconButton>
+                
               </>
             )
           ) : (
@@ -301,11 +294,21 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Ln>
 
-          <Ln to={`/app/edicion-guia-salida/${selected}`}>
-            <IconButton size='md' variant='solid' color='primary'>
-              Editar
-            </IconButton>
-          </Ln>
+          {
+            datos[0].estado_guia_label === 'Finalizado' 
+              ? null
+              : (
+                <Ln to={`/app/edicion-guia-salida/${selected}`}>
+                  <IconButton size='md' variant='solid' color='primary' className={`${datos[0].estado_guia_label === 'Creada' ? '' : 'w-48'}`}>
+                    {
+                      datos[0].estado_guia_label === 'Creada'
+                        ? 'Editar'
+                        : 'Firma Recepcionista'
+                    }
+                  </IconButton>
+                </Ln>
+              )
+          }
         </div>
       ) : null}
 
@@ -315,13 +318,8 @@ function EnhancedTableToolbar(props) {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton size="sm" variant="outlined" color="neutral">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      ) :null
+      }
     </Box>
   );
 }
@@ -355,12 +353,12 @@ export default function TablaGuiaDeSalida({ data, setData, token, setRefresh }) 
   const handleUpdateClick = async (estado) => {
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-update/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${selected}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ estado_oc: estado })
+        body: JSON.stringify({ estado_guia: estado })
       })
       if (response.ok) {
         toast.success("Acción realizada correctamente")
@@ -376,7 +374,7 @@ export default function TablaGuiaDeSalida({ data, setData, token, setRefresh }) 
       console.log("Eliminar elementos seleccionados:", selected);
   
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/guia-salida/${selected}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
