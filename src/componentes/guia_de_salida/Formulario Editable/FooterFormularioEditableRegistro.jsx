@@ -18,24 +18,64 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
   const { authTokens, validToken } = useAuth()
   const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
   const tipo_objeto = ContentTypes.find(obj => obj.value === tipoSeleccionado)?.path
-  const { data: objeto } = useAuthenticatedFetch(
+  const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/${tipo_objeto}/`
+    'http://127.0.0.1:8000/api/items/'
   )
 
-  console.log(rows)
+  const { data: inventos } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    'http://127.0.0.1:8000/api/inventos/'
+  )
 
-  const options = objeto &&
-    objeto.filter(item => !rows.some(rowItem => Number(rowItem.item) === item.id))
-      .map(objeto => ({
-        value: objeto.id,
-        label: objeto.nombre
+  const itemNombre = items &&
+    items.filter(item => rows.some(rowItem => Number(rowItem.object_id) === item.id))
+      .map(item => ({
+        value: item.id,
+        label: item.nombre
+      }))
+
+  const inventoNombre = inventos &&
+    inventos.filter(item => rows.some(rowItem => Number(rowItem.object_id) === item.id))
+      .map(item => ({
+        value: item.id,
+        label: item.nombre
       }))
 
 
+
+
+
+  // Verifica si el nombre de una de las listas coincide con el path del tipo de objeto
+  const objeto = (content_type) => {
+    let obj
+
+    if (content_type === 'items') {
+      obj = itemNombre
+    } else if (content_type === 'inventos') {
+      obj = inventoNombre
+    }
+
+    return obj
+  }
+
+
+
+
+
+  // Si hay coincidencia, filtra los objetos disponibles
+  const options = objeto() &&
+    objeto().filter(item => !rows.some(rowItem => Number(rowItem.item) === item.id))
+      .map(obj => ({
+        value: obj.id,
+        label: obj.nombre
+      }));
+
+
   const agregarFila = () => {
-    const nuevaFila = { id: rows.length,  object_id: 0, cantidad: 0, content_type: 0, guia_salida: 0 };
+    const nuevaFila = { id: rows.length, object_id: 0, cantidad: 0, content_type: 0, guia_salida: 0 };
     setRows((prevRows) => [...prevRows, nuevaFila]);
   };
 
@@ -50,14 +90,10 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
     );
   };
 
-  
+  console.log(objeto(tipo_objeto))
+  console.log(tipo_objeto)
 
-  const objetoNombre = objeto &&
-    objeto.filter(obj => rows.some(rowItem => Number(rowItem.item) === obj.id))
-      .map(obj => ({
-        value: obj.id,
-        label: obj.nombre
-      }))
+
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -68,7 +104,17 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
+  useEffect(() => {
+    if (rows && rows.length > 0) {
+      // Iterar sobre cada fila y obtener el content_type
+      const tiposSeleccionados = rows.map(row => row.content_type);
+
+      setTipoSeleccionado(tiposSeleccionados[0]);
+    }
+  }, [rows]);
+
   console.log(rows)
+  console.log(tipoSeleccionado)
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
@@ -89,49 +135,52 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
             </TableHead>
             <TableBody>
               {rows && rows.map((row, index) => {
-                const limite = objeto && objeto.find(item => item.id === row.item)?.stock_bodega
+                const limite = objeto(tipo_objeto).find(item => item.id === row.item)?.stock_bodega
 
-                const objeto_label = objetoNombre && objetoNombre.find(obj => obj.value === row.object_id)?.label || ""
+                const itemSelected = itemNombre && itemNombre.find(obj => obj.value === row.objeto_id)?.label || ""
+                const inventoSelected = inventoNombre && inventoNombre.find(obj => obj.value === row.objeto_id)?.label || ""
 
-                
+                console.log(itemSelected)
+                console.log(inventoSelected)
+
                 return (
-                <TableRow key={index} style={{ background: '#F3F4F6' }}>
-                  <TableCell component="th" scope="row" style={{maxWidth: '250px', minWidth: '250px'}}>
-                    <Select
-                      showSearch
-                      placeholder="Selecciona una item"
-                      optionFilterProp="children"
-                      className='rounded-md col-span-3 h-10 w-full'
-                      onChange={value => {
-                        handleChangeRow(index, "object_id", value)
+                  <TableRow key={index} style={{ background: '#F3F4F6' }}>
+                    <TableCell component="th" scope="row" style={{ maxWidth: '250px', minWidth: '250px' }}>
+                      <Select
+                        showSearch
+                        placeholder="Selecciona una item"
+                        optionFilterProp="children"
+                        className='rounded-md col-span-3 h-10 w-full'
+                        onChange={value => {
+                          handleChangeRow(index, "object_id", value)
 
-                      }}
-                      onSearch={onSearch}
-                      name='object_id'
-                      filterOption={filterOption}
-                      value={objetoNombre && objetoNombre.find(obj => obj.value === row.objeto_id)?.label || ""}
-                      options={options}
-                    />
+                        }}
+                        onSearch={onSearch}
+                        name='object_id'
+                        filterOption={filterOption}
+                        // value={ }
+                        options={options}
+                      />
 
-                  </TableCell>
-                  <TableCell align="center">
-                    <input
-                      type="number"
-                      name="cantidad"
-                      min={0}
-                      max={limite}
-                      className="p-2 border-[1px] border-gray-300 rounded-md w-14"
-                      onChange={(e) => {
-                        handleChangeRow(index, "cantidad", e.target.value)
-                        handleChange(e)
-                      }
+                    </TableCell>
+                    <TableCell align="center">
+                      <input
+                        type="number"
+                        name="cantidad"
+                        min={0}
+                        max={limite}
+                        className="p-2 border-[1px] border-gray-300 rounded-md w-14"
+                        onChange={(e) => {
+                          handleChangeRow(index, "cantidad", e.target.value)
+                          handleChange(e)
+                        }
 
-                      }
-                      value={row.cantidad}
-                    />
-                  </TableCell>
-                  <TableCell align="" style={{maxWidth: '150px', minWidth: '150px'}}>
-                    <Select
+                        }
+                        value={row.cantidad}
+                      />
+                    </TableCell>
+                    <TableCell align="" style={{ maxWidth: '150px', minWidth: '150px' }}>
+                      <Select
                         showSearch
                         placeholder="Selecciona una Objeto"
                         optionFilterProp="children"
@@ -148,14 +197,15 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                           label: obj.label
                         }))}
                       />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button onClick={() => {eliminarFila(index), setTipoSeleccionado(0)}} variant="outlined" color="secondary">
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )})}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button onClick={() => { eliminarFila(index), setTipoSeleccionado(0) }} variant="outlined" color="secondary">
+                        Eliminar
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </TableContainer>
