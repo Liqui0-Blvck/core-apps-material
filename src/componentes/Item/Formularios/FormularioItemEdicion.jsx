@@ -102,8 +102,6 @@ const FormularioEdicion = () => {
   });
 
 
-  console.log(item)
-
   useEffect(() => {
     let isMounted = true
 
@@ -115,7 +113,7 @@ const FormularioEdicion = () => {
         foto: item.foto,
       })
 
-      setCategoriaSeleccionada(item.nombre_categoria)
+      setCategoriaSeleccionada(item.categoria)
     }
     
 
@@ -123,9 +121,6 @@ const FormularioEdicion = () => {
       isMounted = false
     }
   }, [item])
-
-  console.log(categoriaSeleccionada)
-
   
   const handleCategoriaSeleccionada = (value) => {
     setCategoriaSeleccionada(value)
@@ -145,7 +140,7 @@ const FormularioEdicion = () => {
     <div className='my-16'>
       <form className='grid grid-cols-6 items-center gap-8 w-full h-full' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
-          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
           onClick={() => document.getElementById('input-field').click()}
         >
           <h1 className='font-semibold text-center'>{filename}</h1>
@@ -249,7 +244,7 @@ const FormularioEdicion = () => {
             onChange={value => {formik.setFieldValue('categoria', value), handleCategoriaSeleccionada(value)}}
             onSearch={onSearch}
             name='categoria'
-            value={categoriaSeleccionada}
+            value={categoria && categoria.find(cat => cat.id === formik.values.categoria)?.nombre}
             filterOption={filterOption}
             options={categoria && categoria.map(cat => ({
               value: cat.id,
@@ -258,7 +253,7 @@ const FormularioEdicion = () => {
           />
         </div>
 
-        <button type='submit' className='row-start-3 col-start-5 col-span-2  p-2 bg-blue-200 rounded-md mt-5 w-full'>Agregar</button>
+        <button type='submit' className='row-start-3 font-semibold col-start-5 col-span-2 text-white p-2 bg-[#224871] hover:bg-[#224871ce] rounded-md mt-5 w-full'>Agregar</button>
       </form>
     </div>
   )

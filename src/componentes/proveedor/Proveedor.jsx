@@ -12,6 +12,8 @@ const Proveedor = () => {
     `http://127.0.0.1:8000/api/proveedor/`
   )
 
+  console.log(proveedor)
+
  
   const formatearFecha = useMemo(
     () => (fecha) => {

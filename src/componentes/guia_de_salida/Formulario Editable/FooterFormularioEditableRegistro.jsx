@@ -17,11 +17,12 @@ import SignatureCanvas from "react-signature-canvas";
 import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from 'react-icons/io'
 import { dataURLtoFile } from '@/services/captureSignature';
+import { useLocation } from 'react-router-dom';
 
 
-const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
+const FooterFormularioEditableRegistro = ({ formik, rows, setRows, handleAgregarItem }) => {
   const { authTokens, validToken } = useAuth()
-  const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
+  const { state } = useLocation()
   const sigCanvas = useRef()
   const { data: items } = useAuthenticatedFetch(
     authTokens,
@@ -72,7 +73,6 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
   };
 
   const handleChangeRow = (id, fieldName, value) => {
-    setTipoSeleccionado(value)
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === id ? { ...row, [fieldName]: value } : row))
     );
@@ -89,15 +89,6 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
-  useEffect(() => {
-    if (rows && rows.length > 0) {
-      // Iterar sobre cada fila y obtener el content_type
-      const tiposSeleccionados = rows.map(row => row.content_type);
-
-      setTipoSeleccionado(tiposSeleccionados[0]);
-    }
-  }, [rows]);
-
 
   const handleSaveSignature = () => {
     const signatureImage = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png');
@@ -106,15 +97,23 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
 
     formik.setFieldValue('firma_recepcion', signatureFile);
   };
+
+  
   
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
-        <div onClick={handleAgregarItem, agregarFila}
-          className='absolute bottom-44 left-20 
-            right-0 w-32 mx-auto'>
-          <FaCirclePlus className='text-3xl' />
-        </div>
+        { 
+          state && state.tipo === 'Firmar' 
+            ? null
+            : (
+              <div onClick={agregarFila}
+                className='absolute bottom-44 left-20 
+                  right-0 w-32 mx-auto'>
+                <FaCirclePlus className='text-3xl' />
+              </div>
+            ) 
+        }
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750, background: '#F3F4F6' }} aria-label="simple table">
             <TableHead >
@@ -122,7 +121,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                 <TableCell align='center'>Objeto</TableCell>
                 <TableCell align="center">Cantidad</TableCell>
                 <TableCell align="center">Tipo Objeto</TableCell>
-                <TableCell align="center">Acciones</TableCell>
+                {state && state.tipo === 'Firmar' ? null : <TableCell align="center">Acciones</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody sx={{ position: 'relative'}}>
@@ -169,6 +168,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                       filterOption={filterOption}
                       value={row.content_type === 13 ? itemSelected?.label : row.content_type === 31 ? inventoSelected?.label : 'Selecciona uno'}
                       options={options}
+                      disabled={state.tipo === 'Firmar'}
                     />
 
                     </TableCell>
@@ -181,11 +181,12 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                         className="p-2 border-[1px] border-gray-300 rounded-md w-14"
                         onChange={(e) => {
                           handleChangeRow(row.id, "cantidad", e.target.value)
-                          handleChange(e)
                         }
 
                         }
                         value={row.cantidad}
+                        disabled={state.tipo === 'Firmar'}
+
                       />
                     </TableCell>
                     <TableCell align="" style={{ maxWidth: '150px', minWidth: '150px' }}>
@@ -205,40 +206,49 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows,
                           value: obj.value,
                           label: obj.label
                         }))}
+                        disabled={state.tipo === 'Firmar'}
+
                       />
                     </TableCell>
-                    <TableCell align="center">
-                      <Button onClick={() => { eliminarFila(row.id), setTipoSeleccionado(0) }} variant="outlined" color="secondary">
-                        Eliminar
-                      </Button>
-                    </TableCell>
+                    {
+                      state && state.tipo === 'Firmar'
+                        ? null
+                        : (
+                          <TableCell align="center">
+                            <Button 
+                              onClick={() => { eliminarFila(row.id), setTipoSeleccionado(0) }} variant="outlined" color="secondary">
+                              Eliminar
+                            </Button>
+                          </TableCell>
+                        )
+                    }
                   </TableRow>
                 )
               })}
             </TableBody>
           </Table>
         </TableContainer>
-        <div className='flex justify-between'>
-          <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 relative rounded-md flex flex-col '>
-            <h1>Firma Encargado: </h1>
+        <div className='flex flex-col md:flex-row lg:flex-row justify-center items-center md:justify-between lg:justify-between py-4 px-4'>
+          <div className='border border-gray-500 h-36 w-72 md:w-72 lg:w-80 mt-14 relative rounded-md flex flex-col '>
+            <h1>Firma Encargado:</h1>
             <img src={formik.values.firma_encargado} alt="" className='w-full h-32'/>
           </div>
 
-          <div className='bg-gray-300 h-40 w-96 mt-14 mb-5 rounded-md relative flex flex-col '>
-          <h1>Firma Recepcionista:</h1>
+          <div className='bg-gray-200 border border-gray-500 h-36 w-72 md:w-72 lg:w-80 mt-14 rounded-md relative flex flex-col items-center'>
+          <h1 className='h-10'>Firma Recepcionista</h1>
           <SignatureCanvas
             penColor="black"
-            canvasProps={{ width: 385, height: 120 }}
+            canvasProps={{ width: 305, height: 110 }}
             ref={sigCanvas}
           />
-          <IoMdClose className='absolute top-1 right-10 text-2xl cursor-pointer' onClick={() => sigCanvas.current.clear()}/>
-          <IoMdSave className='absolute top-1 right-1 text-2xl cursor-pointer' onClick={handleSaveSignature}/>
+          <IoMdClose className='absolute top-0 right-10 text-2xl cursor-pointer' onClick={() => sigCanvas.current.clear()}/>
+          <IoMdSave className='absolute top-0 right-1 text-2xl cursor-pointer' onClick={handleSaveSignature}/>
 
           </div>
         </div>
         
-        <button type='submit' className='absolute px-4 py-2 right-0 -bottom-14 bg-[#2732FF] rounded-md text-white'>
-          Crear Orden de Compra
+        <button type='submit' className='absolute px-4 py-2 right-0 -bottom-10 bg-[#2732FF] rounded-md text-white'>
+          Finalizar Guia
         </button>
       </form>
     </div>

@@ -78,10 +78,10 @@ const FormularioRegistroInvento = () => {
 
   return (
     <MaxWidthWrapper>
-      <div className='flex items-center my-10 w-full'>
+      <div className='flex items-center my-12 w-full overflow-hidden'>
         <form onSubmit={formik.handleSubmit} className='w-full h-full p-5 relative' encType='multipart/form-data'>
 
-          <div className='grid grid-cols-7 h-52 gap-5'>
+          <div className='flex flex-col md:grid lg:grid-cols-7 md:grid-cols-7 lg:h-52 gap-5'>
 
             <div
               className='
@@ -89,7 +89,7 @@ const FormularioRegistroInvento = () => {
               lg:row-span-2 lg:col-span-2
               md:row-span-2 md:col-span-2
               border-[2px] h-44 border-dashed
-            border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+            border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
               onClick={() => document.getElementById('input-field').click()}>
               <h1 className='font-semibold text-center'>{filename}</h1>
               <input
@@ -138,7 +138,7 @@ const FormularioRegistroInvento = () => {
               />
             </div>
 
-            <div className='flex flex-col col-start-5 col-span-3 row-span-2 gap-2'>
+            <div className='flex flex-col col-start-5 col-span-3 row-span-2 gap-2 h-full lg:mb-0 md:mb-12 mb-10'>
               <label htmlFor="descripcion col-span-1">Descripción: </label>
               <TextArea
                 rows={6}
@@ -157,9 +157,9 @@ const FormularioRegistroInvento = () => {
             handleAgregarItem={handleAgregarItem}
           />
 
-          <button type='submit' className='absolute -bottom-20 right-10 rounded-md p-2 bg-blue-600'>
+          <button type='submit' className='absolute bottom-0 right-6 rounded-md p-2 bg-[#224871] hover:bg-[#224871ad]'>
             <p className='text-white'>
-              Agregar items
+              Registrar Invento
             </p>
           </button>
         </form>

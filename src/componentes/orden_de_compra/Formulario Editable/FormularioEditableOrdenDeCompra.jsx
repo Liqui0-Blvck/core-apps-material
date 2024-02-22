@@ -1,20 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react'
-import AuthContext from '../../../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../context/AuthContext'
+import { useLocation, useNavigate } from 'react-router-dom'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
 import toast from 'react-hot-toast'
-import FormHeader from './HeaderFormularioRegistro'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useFormik } from 'formik'
-import FooterFormularioRegistro from './FooterFormularioRegistro'
+import FooterFormularioEditableRegistro from './FooterFormularioEditableRegistro'
+import HeaderFormularioRegistro from './HeaderFormularioRegistro'
+import { urlNumeros } from '@/services/url_number'
 
 
-const FormularioOrdenDeCompra = () => {
-  const { authTokens, validToken, user } = useContext(AuthContext)
-
+const FormularioEditableOrdenDeCompra = () => {
+  const { authTokens, validToken, user } = useAuth()
   const navigate = useNavigate()
-
-
+  const { pathname } = useLocation()
+  const id = urlNumeros(pathname)
+  const { data: orden_de_compra } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `http://127.0.0.1:8000/api/orden-compra/${id}`
+  ) 
   const initialRows = [
     {
       item: 0,
@@ -24,7 +29,6 @@ const FormularioOrdenDeCompra = () => {
       observaciones: "",
     },
   ]
-
 
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
@@ -36,11 +40,9 @@ const FormularioOrdenDeCompra = () => {
       nombre: "",
       numero_oc: "",
       fecha_orden: null,
-      estado_oc: null,
-      email_envia_oc: "",
       numero_cotizacion: "",
       proveedor: null,
-      sucursal: ''
+      sucursal: null
     },
     onSubmit: async (values) => {
       try {
@@ -57,7 +59,7 @@ const FormularioOrdenDeCompra = () => {
               item: row.item,
               unidad_de_compra: row.unidad_de_compra,
               costo_por_unidad: row.costo_por_unidad,
-              fecha_llegada: formik.values.fecha_orden,
+              fecha_llegada: row.fecha_llegada,
               observaciones: row.observaciones,
             })),
           }),
@@ -109,15 +111,37 @@ const FormularioOrdenDeCompra = () => {
   };
 
 
+  useEffect(() => {
+    let isMounted = true
 
+    if (orden_de_compra && isMounted){
+      formik.setValues({
+        nombre: orden_de_compra.nombre,
+        numero_oc: orden_de_compra.numero_oc,
+        fecha_orden: orden_de_compra.fecha_orden,
+        numero_cotizacion: orden_de_compra.numero_cotizacion,
+        proveedor: orden_de_compra.proveedor,
+        sucursal: orden_de_compra.sucursal
+      })
+
+      setRows(orden_de_compra.items)
+    }
+
+    return () => {
+      isMounted = false
+    }
+  }, [orden_de_compra])
+  console.log(rows)
+
+  console.log(orden_de_compra)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-20 py-10 lg:px-10 px-2 overflow-hidden'>
-        <FormHeader
+        <HeaderFormularioRegistro
           formik={formik}
         />
         <div id='form-list' className='mt-10'>
-          <FooterFormularioRegistro
+          <FooterFormularioEditableRegistro
             rows={rows}
             setRows={setRows}
             formik={formik}
@@ -130,4 +154,4 @@ const FormularioOrdenDeCompra = () => {
   );
 }
 
-export default FormularioOrdenDeCompra
+export default FormularioEditableOrdenDeCompra

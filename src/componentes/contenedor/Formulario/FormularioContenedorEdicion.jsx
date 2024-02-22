@@ -126,13 +126,12 @@ const FormularioContenedorEdicion = () => {
 
   return (
     <MaxWidthWrapper>
-    <div className='flex flex-col items-center h-full mt-20'>
+    <div className='flex items-center justify-center mt-10'>
       <div className='w-full h-full mx-auto justify-center place-items-center overflow-hidden'>
-        <h1 className='text-center font-semibold text-2xl'>Contenedor</h1>
         
         <form className='grid grid-cols-6 items-center gap-10 w-full h-full p-4' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <div 
-          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
           onClick={() => document.getElementById('input-field').click()}
         >
           <h1 className='font-semibold text-center'>{filename}</h1>
@@ -271,28 +270,8 @@ const FormularioContenedorEdicion = () => {
                 )
               }
           </div>
-
-          {/* <div className='grid grid-cols-2 row-start-3 col-span-2 items-center'>
-            <label htmlFor="provincia">Provincia: </label>
-            <Select
-              showSearch
-              placeholder="Selecciona una provincia"
-              optionFilterProp="children"
-              className='rounded-md mt-1 col-span-3 h-11 w-full'
-              onChange={value => {setProvinciaID(value), formik.setFieldValue('provincia', value)}}
-              onSearch={onSearch}
-              name='provincia'
-              defaultActiveFirstOption={false}
-              filterOption={filterOption}
-              // options={provincia && provincia.map(item => ({
-              //   value: item.provincia_id,
-              //   label: item.provincia_nombre
-              // }))}
-            />
-          </div> */}
-
           <div className='w-full relative row-start-3 col-start-5 col-span-2 '>
-            <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>
+            <button type='submit' className='row-start-3 font-semibold col-start-5 col-span-2 text-white p-2 bg-[#224871] hover:bg-[#224871ce] rounded-md mt-7 w-full'>Agregar</button>
           </div>
         </form>
       </div>

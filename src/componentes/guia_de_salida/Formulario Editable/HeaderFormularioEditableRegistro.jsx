@@ -3,9 +3,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useAuth } from '@/context/AuthContext'
 import { Select } from 'antd'
+import { useLocation } from 'react-router-dom'
 
-const HeaderFormularioRegistro = ({ formik }) => {
-  const { authTokens, validToken } = useAuth()
+const HeaderFormularioEditableRegistro = ({ formik }) => {
+  const { state } = useLocation()
 
   const onSearch = (value) => {
     console.log("search:", value);
@@ -18,7 +19,7 @@ const HeaderFormularioRegistro = ({ formik }) => {
 
   return (
     <section className='mb-5 overflow-hidden px-5 py-3'>
-      <form className='w-full full flex xl:flex-row xl:justify-between lg:flex-row lg:justify-between gap-20 md:flex-row flex-col'>
+      <form className='w-full full flex xl:flex-row xl:justify-between lg:flex-row lg:justify-between lg:gap-20 md:gap-20 md:flex-row flex-col'>
 
         {/* // Part de la izquierda del documento */}
         <div className='bg-gray-100 w-full lg:w-[80%] grid grid-rows-8 gap-2'>
@@ -33,7 +34,9 @@ const HeaderFormularioRegistro = ({ formik }) => {
               name='encargado'
               value={formik.values.encargado}
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-8/12 md:w-full w-8/12'
-              onChange={formik.handleChange} />
+              onChange={formik.handleChange} 
+              disabled={state.tipo === 'Firmar'}
+              />
           </div>
 
           <div className='row-start-6 w-full md:w-[90%] flex gap-3 md:gap-6 justify-between items-center'>
@@ -43,7 +46,9 @@ const HeaderFormularioRegistro = ({ formik }) => {
               name='destinatario'
               value={formik.values.destinatario}
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-8/12 md:w-full w-8/12'
-              onChange={formik.handleChange} />
+              onChange={formik.handleChange} 
+              disabled={state.tipo === 'Firmar'}
+              />
           </div>
         </div>
 
@@ -57,7 +62,9 @@ const HeaderFormularioRegistro = ({ formik }) => {
               name='direccion'
               value={formik.values.direccion}
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-8/12 md:w-full w-8/12'
-              onChange={formik.handleChange} />
+              onChange={formik.handleChange} 
+              disabled={state.tipo === 'Firmar'}
+              />
           </div>
 
           <div className='row-start-6 w-full md:w-[90%] flex gap-3 md:gap-6 justify-between items-center'>
@@ -67,7 +74,9 @@ const HeaderFormularioRegistro = ({ formik }) => {
               name='nombre_receptor'
               value={formik.values.nombre_receptor}
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-8/12 md:w-full w-8/12'
-              onChange={formik.handleChange} />
+              onChange={formik.handleChange} 
+              disabled={state.tipo === 'Firmar'}
+              />
           </div>
         </div>
       </form>
@@ -75,4 +84,4 @@ const HeaderFormularioRegistro = ({ formik }) => {
   )
 }
 
-export default HeaderFormularioRegistro
+export default HeaderFormularioEditableRegistro

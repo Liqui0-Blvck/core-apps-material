@@ -1,26 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import FormHeader from './HeaderFormularioRegistro'
 import { useFormik } from 'formik'
 import { useAuth } from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
 import { urlNumeros } from '@/services/url_number'
 import FooterFormularioEditableRegistro from './FooterFormularioEditableRegistro'
+import HeaderFormularioEditableRegistro from './HeaderFormularioEditableRegistro'
 
 
 const FormularioEditableGuiaSalida = () => {
   const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
+
   const id = urlNumeros(pathname)
   const { data: guia_salida } = useAuthenticatedFetch(
     authTokens,
     validToken,
     `http://127.0.0.1:8000/api/guia_salida/${id}`
   )
-  console.log(guia_salida)
-
+  
   const navigate = useNavigate()
   const initialRows = [
     {
@@ -29,9 +29,6 @@ const FormularioEditableGuiaSalida = () => {
       content_type: 0
     },
   ]
-
-  
-
 
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
@@ -55,6 +52,7 @@ const FormularioEditableGuiaSalida = () => {
       formData.append('firma_recepcion', values.firma_recepcion)
   
       const objetoEnGuia = JSON.stringify(rows.map((row) => ({
+        id: row.id,
         object_id: row.object_id,
         cantidad: row.cantidad,
         content_type: row.content_type,
@@ -78,7 +76,7 @@ const FormularioEditableGuiaSalida = () => {
   
         if (response.ok) {
           toast.success("Orden de compra creado correctamente!")
-          navigate('/app/guia_salida')
+          navigate('/app/guia-salida')
         } else {
           toast.error("No se ha podido crear la orden de compra, ¡vuelve a intentarlo!")
           toast.error("Debes incluir la firma")
@@ -90,7 +88,6 @@ const FormularioEditableGuiaSalida = () => {
   })
 
   
-
   useEffect(() => {
     let isMounted = true
 
@@ -108,24 +105,10 @@ const FormularioEditableGuiaSalida = () => {
   }, [guia_salida])
   
 
-  const handleAgregarItem = () => {
-    // Agregar un nuevo ítem a la lista de ítems
-    setRows((prevRows) => [
-      ...prevRows,
-      {
-        object_id: 0,
-        cantidad: 0,
-        content_type: 0
-      },
-    ]);
-  };
-
-  console.log(formik.values)
-
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 my-10 overflow-hidden'>
-        <FormHeader
+        <HeaderFormularioEditableRegistro
           formik={formik}
         />
         <div id='form-list'>
@@ -133,7 +116,6 @@ const FormularioEditableGuiaSalida = () => {
             rows={rows}
             setRows={setRows}
             formik={formik}
-            handleAgregarItem={handleAgregarItem}
           />
         </div>
       </div>

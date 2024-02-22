@@ -95,7 +95,7 @@ const FormularioRegistroProveedor = () => {
   return (
     <form className='flex flex-col md:grid lg:grid md:grid-cols-6 lg:grid-cols-6 items-center gap-10 w-full h-full mt-5 mb-20' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
       <div 
-        className='w-full row-span-2 col-span-2 border-[2px] h-44 border-dashed border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+        className='w-full row-span-2 col-span-2 border-[2px] h-44 border-dashed border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
         onClick={() => document.getElementById('input-field').click()}>
         <h1 className='font-semibold text-center'>{filename}</h1>
         <Input
@@ -289,7 +289,8 @@ const FormularioRegistroProveedor = () => {
           type='submit' 
           className='
             absolute -top-1 col-start-3 col-span-3 p-2
-          bg-blue-400 hover:bg-blue-300
+            font-semibold
+          bg-[#224871] hover:bg-[#224871ab]
           text-white rounded-md w-full'
           >Agregar</button>
       </div>

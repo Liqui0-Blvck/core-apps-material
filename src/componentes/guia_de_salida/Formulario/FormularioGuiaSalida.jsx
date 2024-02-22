@@ -60,7 +60,7 @@ const FormularioGuiaSalida = () => {
   
         if (response.ok) {
           toast.success("Orden de compra creado correctamente!")
-          navigate('/app/guia_salidas/')
+          navigate('/app/guia-salida/')
         } else {
           toast.error("No se ha podido crear la orden de compra, ¡vuelve a intentarlo!")
           setTimeout(() => {

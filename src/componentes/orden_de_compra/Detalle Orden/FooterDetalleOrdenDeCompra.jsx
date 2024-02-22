@@ -6,23 +6,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { format } from "@formkit/tempo"
 
 
 
-const BasicTable = ({ rows }) => {
+const FooterDetalleOrdenDeCompra = ({ rows }) => {
   console.log(rows)
 
   return (
     <div className='py-12 px-3'>
-      <form className='relative'>
+      <div className='relative'>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750, background: '#F3F4F6' }} aria-label="simple table">
             <TableHead >
               <TableRow>
                 <TableCell align='center'>Items</TableCell>
-                <TableCell align="right">Cantidad</TableCell>
-                <TableCell align="right">Costo por Unidad</TableCell>
-                <TableCell align="right">Fecha de Llegada</TableCell>
+                <TableCell align="center">Cantidad</TableCell>
+                <TableCell align="center">Costo por Unidad</TableCell>
+                <TableCell align="center">Fecha de Llegada</TableCell>
                 <TableCell align="center">Observaciones</TableCell>
               </TableRow>
             </TableHead>
@@ -38,7 +39,7 @@ const BasicTable = ({ rows }) => {
                       disabled
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <input
                       type="number"
                       name="unidad_de_compra"
@@ -47,7 +48,7 @@ const BasicTable = ({ rows }) => {
                       disabled
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <input
                       type="number"
                       name="costo_por_unidad"
@@ -56,16 +57,15 @@ const BasicTable = ({ rows }) => {
                       disabled
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <input
-                      type="date"
                       name="fecha_llegada"
                       className="p-2 border-[1px] border-gray-300 rounded-md"
-                      value={row.fecha_llegada}
+                      value={format(row.fecha_llegada, {date: 'long'}, 'es')}
                       disabled
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <textarea
                       name="observaciones"
                       className="p-2 border-[1px] border-gray-300 rounded-md"
@@ -79,17 +79,9 @@ const BasicTable = ({ rows }) => {
             </TableBody>
           </Table>
         </TableContainer>
-
-        {/* <button 
-          type='submit'
-          className='absolute px-4 py-2 right-0 
-            -bottom-20 bg-[#2732FF] rounded-md
-            text-white'>
-          Crear Orden de Compra
-        </button> */}
-      </form>
+      </div>
     </div>
   );
 };
 
-export default BasicTable;
+export default FooterDetalleOrdenDeCompra;

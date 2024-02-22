@@ -122,6 +122,7 @@ const DetalleGuiaSalida = () => {
     ]);
   };
 
+  console.log(rows)
 
   return (
     <MaxWidthWrapper>

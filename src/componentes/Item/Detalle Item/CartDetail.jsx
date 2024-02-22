@@ -38,15 +38,20 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
 
   console.log(historial)
 
-  const formatearFecha = useMemo(() => (fecha, tipo) => {
+  const formatearFecha = useMemo(() => (fecha, tipo, opt) => {
       return new Date(fecha).toLocaleString('es-ES', {
         year: 'numeric',
         month: `${tipo}`,
-        day: 'numeric'
+        day: 'numeric',
       })
     },
     []
   )
+  const formatearFecha2 = useMemo(() => (fecha, opt) => {
+    return new Date(fecha).toLocaleString('es-ES', opt)
+  },
+  []
+)
 
   return (
     <div className='flex flex-col gap-2'>
@@ -127,7 +132,6 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                                 <>
                                   {
                                     proveedores.map((proveedor) => {
-                                      console.log(proveedor)
                                       return (
                                         <Link to={`/app/proveedor/${proveedor.id}`} key={proveedor.id} className='bg-blue-gray-500 hover:bg-blue-gray-300 w-full flex justify-center h-10 items-center rounded-md'>
                                           <h1 className='text-lg text-white font-bold'>{proveedor.nombre}</h1>
@@ -189,10 +193,10 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                               <div className="shadow-md border-gray-50 w-full h-full rounded-md grid grid-rows-6 bg-white">
                                 <div className="grid grid-cols-5 row-span-2 h-full items-center">
                                   <div className="col-span-3 px-2 flex items-center gap-2">
-                                    <h3 className="font-semibold text-md text-ellipsis">{historiaMismo.history_change_reason ? historiaMismo.history_change_reason.slice(0, 22) : ''}</h3>
+                                    <h3 className="font-semibold text-md text-ellipsis">{nombre}</h3>
                                   </div>
                                   <div className="col-start-5 flex justify-end px-5 items-center gap-3">
-                                    <span className="text-sm text-gray-500"><i className="fas fa-clock mr-1"></i>{formatearFecha(historiaMismo.history_date, 'numeric')}</span>
+                                    <span className="text-sm text-gray-500"><i className="fas fa-clock mr-1"></i>{formatearFecha2(historiaMismo.history_date, {hour: 'numeric', minute: 'numeric', second: 'numeric'})}</span>
                                   </div>
                                   <div className="row-start-2 col-span-5 border-t border-gray-400" />
                                 </div>

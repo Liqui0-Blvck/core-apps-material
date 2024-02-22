@@ -21,7 +21,7 @@ const ModalCategoriaEditable = ({id, refresh}) => {
 
   return (
     <>
-      <button onClick={showModal} className='w-full h-8 text-white font-semibold bg-blue-600 rounded-md'>Editar</button>
+      <button onClick={showModal} className='w-full h-full'>Editar</button>
 
       <Modal title="Agregar Categoria"
         open={isModalOpen} 

@@ -21,7 +21,6 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
-import AuthContext from '../../context/AuthContext';
 
 function labelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -296,11 +295,23 @@ function EnhancedTableToolbar(props) {
             </>
           )}
 
-          <Ln to={`/app/orden-compra/${selected}`}>
-            <IconButton size='md' variant='solid' color='primary'>
-              Detalles
-            </IconButton>
-          </Ln>
+          {
+            datos[0].estado_oc_label === 'Creada'
+              ? (      
+                <Ln to={`/app/edicion-orden-compra/${selected}`}>
+                  <IconButton size='md' variant='solid' color='primary'>
+                    Editar
+                  </IconButton>
+                </Ln>
+                )
+               : (
+                <Ln to={`/app/orden-compra/${selected}`}>
+                  <IconButton size='md' variant='solid' color='primary'>
+                    Detalle
+                  </IconButton>
+                </Ln>
+                )
+          }
         </div>
       ) : null}
 

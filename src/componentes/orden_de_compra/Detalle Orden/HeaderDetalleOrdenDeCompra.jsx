@@ -4,7 +4,7 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useContext, useMemo, useState } from 'react'
 
 
-const FormHeader = ({ handleSubmit, handleChange, ordenCompra }) => {
+const HeaderDetalleOrdenDeCompra = ({ handleSubmit, handleChange, ordenCompra }) => {
   const { authTokens, validToken } = useContext(AuthContext)
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
@@ -32,7 +32,7 @@ const FormHeader = ({ handleSubmit, handleChange, ordenCompra }) => {
 
   return (
     <div className='mb-5 overflow-hidden'>
-      <form className='w-full full flex xl:flex-row lg:flex-row md:flex-row flex-col border' onSubmit={handleSubmit}>
+      <form className='w-full full flex xl:flex-row lg:flex-row md:flex-row flex-col' onSubmit={handleSubmit}>
 
         {/* // Part de la izquierda del documento */}
         <div className='bg-gray-100 w-[80%] md:w-full grid grid-rows-8 gap-2'>
@@ -189,4 +189,4 @@ const FormHeader = ({ handleSubmit, handleChange, ordenCompra }) => {
   )
 }
 
-export default FormHeader
+export default HeaderDetalleOrdenDeCompra

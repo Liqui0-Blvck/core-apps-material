@@ -79,7 +79,7 @@ const FormularioRegistroItem = () => {
   return (
     <MaxWidthWrapper>
       <div className='flex flex-col mt-10 relative'>
-        <div className='absolute right-0 w-52 p-1.5 rounded-md bg-[#8bbae9] hover:bg-[#68a1da] transition-all ease-in flex items-center justify-center'>
+        <div className='absolute right-0 w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center'>
           <ModalFormularioCategoria refresh={setRefresh}/>
         </div>
         <form className='flex flex-col md:grid lg:grid md:grid-cols-6 lg:grid-cols-6 items-center gap-8 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
@@ -89,7 +89,7 @@ const FormularioRegistroItem = () => {
               lg:row-span-2 lg:col-span-2
               md:row-span-2 md:col-span-2
               border-[2px] h-44 border-dashed
-            border-blue-400 rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+            border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
             onClick={() => document.getElementById('input-field').click()}>
             <h1 className='font-semibold text-center'>{filename}</h1>
             <input
@@ -208,7 +208,7 @@ const FormularioRegistroItem = () => {
               )}
           </div>
 
-          <button type='submit' className='row-start-3 col-start-5 col-span-2  p-2 bg-blue-400 hover:bg-blue-300 rounded-md mt-5 w-full'>Agregar</button>
+          <button type='submit' className='row-start-3 font-semibold col-start-5 col-span-2 text-white p-2 bg-[#224871] hover:bg-[#224871ce] rounded-md mt-5 w-full'>Agregar</button>
         </form>
       </div>
     </MaxWidthWrapper>

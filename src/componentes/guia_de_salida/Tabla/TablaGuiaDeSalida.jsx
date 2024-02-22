@@ -298,7 +298,7 @@ function EnhancedTableToolbar(props) {
             datos[0].estado_guia_label === 'Finalizado' 
               ? null
               : (
-                <Ln to={`/app/edicion-guia-salida/${selected}`}>
+                <Ln to={`/app/edicion-guia-salida/${selected}`} state={{ tipo: `${datos[0].estado_guia_label === 'Creada' ? 'Editar' : 'Firmar'}`}}>
                   <IconButton size='md' variant='solid' color='primary' className={`${datos[0].estado_guia_label === 'Creada' ? '' : 'w-48'}`}>
                     {
                       datos[0].estado_guia_label === 'Creada'
@@ -333,7 +333,7 @@ export default function TablaGuiaDeSalida({ data, setData, token, setRefresh }) 
   const [orderBy, setOrderBy] = useState('id');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

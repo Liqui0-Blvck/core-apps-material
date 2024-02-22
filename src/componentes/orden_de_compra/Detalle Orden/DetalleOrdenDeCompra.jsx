@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react'
-import AuthContext from '../../../context/AuthContext'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useAuth } from '../../../context/AuthContext'
+import { useLocation } from 'react-router-dom'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
-import ItemOrdenForm from './ItemOrdenForm'
 import toast from 'react-hot-toast'
-import FormHeader from './FormHeader'
 import { useFormik } from 'formik'
 import { urlNumeros } from '@/services/url_number'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import HeaderDetalleOrdenDeCompra from './HeaderDetalleOrdenDeCompra'
+import FooterDetalleOrdenDeCompra from './FooterDetalleOrdenDeCompra'
 
 
-const OrdenDeCompraFormMuestra = ({ data }) => {
-  const { authTokens, validToken } = useContext(AuthContext)
+const DetalleOrdenDeCompra = ({ data }) => {
+  const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
 
@@ -24,7 +24,7 @@ const OrdenDeCompraFormMuestra = ({ data }) => {
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/`
+    `http://127.0.0.1:8000/api/items/`
   )
  
   const [rows, setRows] = useState(null);
@@ -37,14 +37,16 @@ const OrdenDeCompraFormMuestra = ({ data }) => {
     }
   }, [orden_compra])
 
+
+  console.log(rows)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>
-        <FormHeader 
+        <HeaderDetalleOrdenDeCompra 
           ordenCompra={orden_compra}
         />
         <div id='form-list' className='mt-10'>
-          <ItemOrdenForm
+          <FooterDetalleOrdenDeCompra
             ordenCompra={orden_compra}
             rows={rows}
             itemProveedor={items} 
@@ -55,4 +57,4 @@ const OrdenDeCompraFormMuestra = ({ data }) => {
   );
 }
 
-export default OrdenDeCompraFormMuestra
+export default DetalleOrdenDeCompra

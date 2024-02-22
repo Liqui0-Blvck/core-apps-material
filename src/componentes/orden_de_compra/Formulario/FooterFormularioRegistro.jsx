@@ -70,7 +70,6 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
                 <TableCell align='center'>Items</TableCell>
                 <TableCell align="center">Cantidad</TableCell>
                 <TableCell align="center">Costo por Unidad</TableCell>
-                <TableCell align="center">Fecha de Llegada</TableCell>
                 <TableCell align="center">Observaciones</TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
@@ -121,19 +120,6 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
 
                       }
                       value={row.costo_por_unidad}
-                    />
-                  </TableCell>
-                  <TableCell align="right">
-                    <input
-                      type="date"
-                      name="fecha_llegada"
-                      className="p-2 border-[1px] border-gray-300 rounded-md"
-                      onChange={(e) => {
-                        handleChangeRow(index, "fecha_llegada", e.target.value)
-                        handleChange(e)
-                      }
-                      }
-                      value={row.fecha_llegada}
                     />
                   </TableCell>
                   <TableCell align="right">

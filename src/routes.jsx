@@ -21,7 +21,6 @@ import Categoria from "./componentes/categoria/Categoria";
 import Proveedor from "./componentes/proveedor/Proveedor";
 import OrdenDeCompra from "./componentes/orden_de_compra/OrdenDeCompra";
 import OrdenCompraForm from "./componentes/orden_de_compra/Formulario/FormularioOrdenCompra";
-import OrdenCompraDetail from "./componentes/orden_de_compra/OrdenCompraDetail";
 import ProveedorDetail from "./componentes/proveedor/Detalle Proveedor/ProveedorDetail";
 import FormularioItemEdicion from "./componentes/Item/Formularios/FormularioItemEdicion";
 import FormularioContenedorEdicion from "./componentes/contenedor/Formulario/FormularioContenedorEdicion";
@@ -47,6 +46,10 @@ import GuiaDeSalida from "./componentes/guia_de_salida/GuiaDeSalida";
 import FormularioGuiaSalida from "./componentes/guia_de_salida/Formulario/FormularioGuiaSalida";
 import FormularioEditableGuiaSalida from "./componentes/guia_de_salida/Formulario Editable/FormularioEditableGuiaSalida";
 import DetalleGuiaSalida from "./componentes/guia_de_salida/Detalle Guia/DetalleGuiaSalida";
+import DetalleOrdenDeCompra from "./componentes/orden_de_compra/Detalle Orden/DetalleOrdenDeCompra";
+import FormularioOrdenDeCompra from "./componentes/orden_de_compra/Formulario/FormularioOrdenCompra";
+import FormularioEdtiableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
+import FormularioEditableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -441,13 +444,18 @@ export const routes = [
       {
         name: 'Crear Orden de Compra',
         path: '/registro-orden-compra',
-        element: <OrdenCompraForm />
+        element: <FormularioOrdenDeCompra />
+      },
+      {
+        name: 'Editar Orden de Compra',
+        path: '/edicion-orden-compra/:id',
+        element: <FormularioEditableOrdenDeCompra />
       },
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "Detalle Orden de Compra",
         path: "/orden-compra/:id",
-        element: <OrdenCompraDetail />,
+        element: <DetalleOrdenDeCompra />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,

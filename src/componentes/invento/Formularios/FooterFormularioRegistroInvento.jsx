@@ -52,14 +52,14 @@ const FooterFormularioRegistroInvento = ({ rows, setRows, handleAgregarItem }) =
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
 
   return (
-    <div className='w-full h-full rounded-md'>
-      <div onClick={handleAgregarItem, agregarFila}
-        className='absolute -bottom-10 left-20 
-            right-0 w-32 mx-auto'>
-        <FaCirclePlus className='text-3xl' />
+    <div className='w-full h-full rounded-md mb-20'>
+      <div 
+        className='absolute bottom-10 left-20 
+        right-0 w-32 mx-auto'>
+        <FaCirclePlus onClick={agregarFila} className='text-3xl' />
       </div>
       <TableContainer>
-        <Table sx={{ minWidth: 750, background: 'white' }} aria-label="simple table">
+        <Table sx={{ minWidth: 750, background: 'white'}} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell align='center'>Items</TableCell>
