@@ -1,7 +1,8 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import AuthContext from "./context/AuthContext";
 import React, { useContext } from "react";
+import OrdenDeCompraPDF from "./componentes/pdf/OrdenDeCompraPDF";
 
 const PrivateRoute = ({ element, ...props }) => {
   const { authTokens } = useContext(AuthContext);
@@ -27,6 +28,7 @@ function App() {
 
       {/* Rutas de autenticación */}
       <Route path="/auth/*" element={<Auth />} />
+      <Route path="pdf-preview-orden/:id" element={<OrdenDeCompraPDF />}/>
 
       {/* Redirige cualquier ruta no válida o no autenticada al dashboard */}
       <Route

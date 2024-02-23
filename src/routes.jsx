@@ -48,9 +48,9 @@ import FormularioEditableGuiaSalida from "./componentes/guia_de_salida/Formulari
 import DetalleGuiaSalida from "./componentes/guia_de_salida/Detalle Guia/DetalleGuiaSalida";
 import DetalleOrdenDeCompra from "./componentes/orden_de_compra/Detalle Orden/DetalleOrdenDeCompra";
 import FormularioOrdenDeCompra from "./componentes/orden_de_compra/Formulario/FormularioOrdenCompra";
-import FormularioEdtiableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
 import FormularioEditableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
 import FormularioRegistroClientes from "./pages/clientes/Formulario Registro/FormularioRegistroCliente";
+import OrdenDeCompraPDF from "./componentes/pdf/OrdenDeCompraPDF";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -520,6 +520,7 @@ export const routes = [
         path: '/clientes',
         element: <Clientes />
       },
+     
     ],
   },
   {
@@ -539,7 +540,7 @@ export const routes = [
         element: <SignUp />,
       },
     ],
-  },
+  }
 ];
 
 export default routes;

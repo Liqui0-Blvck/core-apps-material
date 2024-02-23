@@ -265,13 +265,23 @@ function EnhancedTableToolbar(props) {
                   </Tooltip>
                 )
                 : (
-                  <Tooltip title='Detalle'>
-                    <Ln to={`/app/orden-compra/${selected}`}>
-                      <button type='button' className='bg-[#224871] hover:bg-[#224871c0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
-                        Detalles
-                      </button>
-                    </Ln>
-                  </Tooltip>
+                  <>
+                    <Tooltip title='Editar'>
+                      <Ln to={`/pdf-preview-orden/${selected}`} target='_blank'>
+                        <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
+                          PDF
+                        </button>
+                      </Ln>
+                    </Tooltip>
+                    <Tooltip title='Detalle'>
+                      <Ln to={`/app/orden-compra/${selected}`}>
+                        <button type='button' className='bg-[#224871] hover:bg-[#224871c0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
+                          Detalles
+                        </button>
+                      </Ln>
+                    </Tooltip>
+                  </>
+                  
                 )
             }
           </div>

@@ -40,7 +40,7 @@ const HeaderDetalleOrdenDeCompra = ({ handleSubmit, handleChange, ordenCompra })
             <img src="/img/logosnabbit.gif" alt="" className='w-full h-full object-contain'/>
           </div>
 
-          <div className='row-start-4  w-full md:w-[80%] flex gap-3 justify-between items-center'>
+          <div className='row-start-4 w-full md:w-[80%] flex gap-3 justify-between items-center'>
             <label htmlFor="nombre" className='text-start'>Nombre Orden: </label>
             <input 
               type="text" 
