@@ -15,13 +15,13 @@ const OrdenDeCompra = () => {
 
   return (
     <MaxWidthWrapper>
-        <div className='flex justify-center mt-10'>
-          {
-            orden_de_compra && (
-              <TablaOrdenDeCompra data={orden_de_compra} setData={setData} token={authTokens.access} setRefresh={setRefresh}/>
-            )
-          }
-        </div>
+      <div className='flex justify-center mt-10'>
+        {
+          orden_de_compra && (
+            <TablaOrdenDeCompra data={orden_de_compra} setData={setData} token={authTokens.access} setRefresh={setRefresh} />
+          )
+        }
+      </div>
     </MaxWidthWrapper>
   )
 }

@@ -26,27 +26,27 @@ export function SignIn() {
     onSubmit: async (values) => {
       try {
         const response = await fetch('http://127.0.0.1:8000/auth/token/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values)
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values)
         })
 
-        if (response.status === 200){
+        if (response.status === 200) {
           loginUser(response)
-          toast.success('Tu registro fue realizado con exito!')
+          toast.success('Inicio de sesión realizado con exito!')
           setTimeout(() => {
             navigate('/app/home')
-          }, 1500)
+          }, 1000)
         } else if (response.status === 401) {
           console.log(error)
           toast.error('Hubo un error en la creación del usuario, volver a intentar!')
         }
-        
+
       } catch (error) {
         console.log(error)
-        toast.error('No se puede iniciar sesion',error.message)
+        toast.error('No se puede iniciar sesion', error.message)
       }
     },
   });

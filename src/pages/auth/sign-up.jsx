@@ -1,20 +1,19 @@
 import {
-  Card,
   Input,
   Checkbox,
   Button,
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 
 
 export function SignUp() {
-  
+
   const navigate = useNavigate()
-  
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -29,17 +28,18 @@ export function SignUp() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify  (values)
+          body: JSON.stringify(values)
         })
 
 
-        if (response.ok){
+        if (response.ok) {
+          toast.success('Se ha registrado correctamente!')
           navigate('/auth/sign-in')
         } else {
-          console.log("Todo mal compadre todo mal")
+          console.log('No se ha registrado, vuelva intentarlo')
         }
       } catch (error) {
-        
+        console.log(error)
       }
     }
   })
@@ -47,7 +47,7 @@ export function SignUp() {
 
   return (
     <section className="m-8 flex">
-            <div className="w-2/5 h-full hidden lg:block">
+      <div className="w-2/5 h-full hidden lg:block">
         <img
           src="/img/pattern.png"
           className="h-full w-full object-cover rounded-3xl"
@@ -74,56 +74,56 @@ export function SignUp() {
                 className: "before:content-none after:content-none",
               }}
             />
-            </div>
-            <div className="mb-1 flex flex-col gap-6">
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Correo
-              </Typography>
-              <Input
-                size="lg"
-                name="email"
-                onChange={formik.handleChange}
-                placeholder="name@mail.com"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
+          </div>
+          <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Correo
+            </Typography>
+            <Input
+              size="lg"
+              name="email"
+              onChange={formik.handleChange}
+              placeholder="name@mail.com"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+          </div>
 
-            <div className="mb-1 flex flex-col gap-6">
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Contraseña
-              </Typography>
+          <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Contraseña
+            </Typography>
 
-              <Input
-                size="lg"
-                type="password"
-                name="password"
-                onChange={formik.handleChange}
-                placeholder="*********"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div className="mb-1 flex flex-col gap-6">
-              <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-                Confirma tu contraseña
-              </Typography>
-              <Input
-                size="lg"
-                type="password"
-                name="password2"
-                onChange={formik.handleChange}
-                placeholder="*********"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
+            <Input
+              size="lg"
+              type="password"
+              name="password"
+              onChange={formik.handleChange}
+              placeholder="*********"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+          </div>
+          <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Confirma tu contraseña
+            </Typography>
+            <Input
+              size="lg"
+              type="password"
+              name="password2"
+              onChange={formik.handleChange}
+              placeholder="*********"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+          </div>
           <Checkbox
             label={
               <Typography
@@ -175,7 +175,7 @@ export function SignUp() {
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Already have an account?
             <Link to="/auth/sign-in" className="text-gray-900 ml-1">Sign in</Link>
-          </Typography> 
+          </Typography>
         </form>
 
       </div>

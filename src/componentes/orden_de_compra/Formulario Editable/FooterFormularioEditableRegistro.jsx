@@ -50,6 +50,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
     console.log("search:", value);
   };
 
+
   const filterOption = (
     input,
     option,
@@ -89,6 +90,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                       }}
                       onSearch={onSearch}
                       name='item'
+                      value={items.find(item => item.id === 1)?.nombre}
                       filterOption={filterOption}
                       options={options}
                     />
