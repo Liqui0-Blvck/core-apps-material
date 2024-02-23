@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from 'antd';
 import FormularioEditableUsuario from '../Formularios/FormularioEditableUsuario';
 
-const ModalCategoriaEditable = ({id, refresh}) => {
+const ModalUsuarioEditable = ({id, refresh}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const showModal = () => {
@@ -20,7 +20,7 @@ const ModalCategoriaEditable = ({id, refresh}) => {
 
   return (
     <>
-      <button onClick={showModal} className='w-full h-9 text-white font-semibold bg-blue-600 hover:bg-blue-400 rounded-md'>Editar</button>
+      <button onClick={showModal} className='w-full h-full'>Editar</button>
 
       <Modal title="Editar Usuario"
         width={800}
@@ -33,4 +33,4 @@ const ModalCategoriaEditable = ({id, refresh}) => {
     </>
   );
 };
-export default ModalCategoriaEditable;
+export default ModalUsuarioEditable;

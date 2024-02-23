@@ -147,9 +147,12 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
                       />
                   </TableCell>
                   <TableCell align="center">
-                    <Button onClick={() => {eliminarFila(index), setTipoSeleccionado(0)}} variant="outlined" color="secondary">
+                    <button type='button'
+                        onClick={() => eliminarFila(row.id)}
+                        className='border border-red-800 px-4 py-2 rounded-md 
+                        hover:scale-110 hover:bg-red-700 text-red-800 hover:text-white'>
                       Eliminar
-                    </Button>
+                    </button>
                   </TableCell>
                 </TableRow>
               )})}
@@ -164,12 +167,12 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
             canvasProps={{ width: 385, height: 155 }}
             ref={sigCanvas}
           />
-          <IoMdClose className='absolute top-1 right-10 text-2xl cursor-pointer'/>
+          <IoMdClose className='absolute top-1 right-10 text-2xl cursor-pointer' onClick={() => sigCanvas.current.clear()}/>
           <IoMdSave className='absolute top-1 right-1 text-2xl cursor-pointer' onClick={handleSaveSignature}/>
 
         </div>
         <button type='submit' className='absolute px-4 py-2 right-0 -bottom-14 bg-[#2732FF] rounded-md text-white'>
-          Crear Orden de Compra
+          Crear Guia de Salida
         </button>
       </form>
     </div>

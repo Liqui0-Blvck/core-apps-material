@@ -50,6 +50,7 @@ import DetalleOrdenDeCompra from "./componentes/orden_de_compra/Detalle Orden/De
 import FormularioOrdenDeCompra from "./componentes/orden_de_compra/Formulario/FormularioOrdenCompra";
 import FormularioEdtiableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
 import FormularioEditableOrdenDeCompra from "./componentes/orden_de_compra/Formulario Editable/FormularioEditableOrdenDeCompra";
+import FormularioRegistroClientes from "./pages/clientes/Formulario Registro/FormularioRegistroCliente";
 
 export const AccordionSubItem = ({ name, path }) => {
   return (
@@ -463,10 +464,16 @@ export const routes = [
         path: "/sucursal/:id",
         element: <SucursalCard />,
       },
+      // RUTAS CLIENTES
       {
         name: 'Clientes',
         path: '/clientes',
         element: <Clientes />
+      },
+      {
+        name: 'Clientes',
+        path: '/registro-clientes',
+        element: <FormularioRegistroClientes />
       },
       {
         name: 'Registro Usuarios',

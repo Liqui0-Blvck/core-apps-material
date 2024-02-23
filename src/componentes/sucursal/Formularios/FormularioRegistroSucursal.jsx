@@ -213,7 +213,7 @@ const FormularioRegistroSucursal = ({ id, modalClose }) => {
           type='submit' 
           className='
             absolute -top-1 col-start-3 col-span-3 p-2
-          bg-blue-400 hover:bg-blue-300
+            bg-[#224871] hover:bg-[#224871ad]
           text-white rounded-md w-full'
           >Agregar</button>
       </div>

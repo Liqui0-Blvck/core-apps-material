@@ -430,7 +430,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
                 width: '20px',
               },
               '& tr > *:nth-child(3)': {
-                textAlign: 'center',
+                textAlign: 'left',
                 width: '15%'
               },
               '& tr > *:nth-child(4)': {
@@ -438,7 +438,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
                 width: '15%'
               },
               '& tr > *:nth-child(5)': {
-                textAlign: 'center',
+                textAlign: '',
                 width: '15%'
               },
               '& tfoot > td': {
@@ -446,7 +446,6 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
               }
             }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -490,7 +489,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
                         <TableCell align='center' className='text-clip overflow-hidden'>{row.id}</TableCell>
                         <TableCell align='center' className='text-clip overflow-hidden'>{row.nombre}</TableCell>
                         <TableCell align='center' className='text-clip overflow-hidden'>{row.numero_oc}</TableCell>
-                        <TableCell align='center'>{row.solicitado_por}</TableCell>
+                        <TableCell >{row.solicitado_por}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.estado_oc_label}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.proveedor_nombre}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>

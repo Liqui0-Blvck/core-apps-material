@@ -135,9 +135,12 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <Button onClick={() => eliminarFila(index)} variant="outlined" color="secondary">
+                    <button type='button'
+                        onClick={() => eliminarFila(row.id)}
+                        className='border border-red-800 px-4 py-2 rounded-md 
+                        hover:scale-110 hover:bg-red-700 text-red-800 hover:text-white'>
                       Eliminar
-                    </Button>
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

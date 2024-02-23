@@ -15,36 +15,14 @@ const Tickets = () => {
     `http://127.0.0.1:8000/api/tickets/?search=${clientInfo && clientInfo.id}`
   )
 
-
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      })
-    },
-    []
-  )
-
-  const datosFormateados = useMemo(() => {
-    return tickets && tickets.map((dato) => ({
-      ...dato,
-      fecha_creacion: formatearFecha(dato.fecha_creacion)
-    }))
-  }, [tickets, formatearFecha])
-
-
-
+  console.log(tickets)
   return (
     <MaxWidthWrapper>
         <div className='flex justify-center mt-10'>
           {
             tickets && 
             (
-              <TablaTickets data={datosFormateados} setData={setData} token={authTokens.access} loading={loading} setRefresh={setRefresh}/>
+              <TablaTickets data={tickets} setData={setData} token={authTokens.access} loading={loading} setRefresh={setRefresh}/>
             )
           }
         </div>

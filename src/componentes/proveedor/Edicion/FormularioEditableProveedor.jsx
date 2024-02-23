@@ -323,7 +323,7 @@ const FormularioEditableProveedor = () => {
             </div>
 
             <div className='w-full relative col-start-3 col-span-2 '>
-              <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-blue-400 text-white rounded-md w-full'>Agregar</button>
+              <button type='submit' className='absolute -top-1 col-start-3 col-span-3 p-2 bg-[#224871] hover:bg-[#224871ad] text-white rounded-md w-full'>Agregar</button>
             </div>
           </form>
         </div>

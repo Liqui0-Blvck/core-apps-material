@@ -215,10 +215,12 @@ const FooterFormularioEditableRegistro = ({ formik, rows, setRows, handleAgregar
                         ? null
                         : (
                           <TableCell align="center">
-                            <Button 
-                              onClick={() => { eliminarFila(row.id), setTipoSeleccionado(0) }} variant="outlined" color="secondary">
+                            <button type='button'
+                                onClick={() => eliminarFila(row.id)}
+                                className='border border-red-800 px-4 py-2 rounded-md 
+                                hover:scale-110 hover:bg-red-700 text-red-800 hover:text-white'>
                               Eliminar
-                            </Button>
+                            </button>
                           </TableCell>
                         )
                     }

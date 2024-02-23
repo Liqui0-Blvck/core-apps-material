@@ -79,3 +79,14 @@ export const ContentTypes = [
   {value: 13, label: 'Item', path: 'items'},
   {value: 31, label: 'Invento', path: 'inventos'}
 ]
+
+
+export const TIPO_CLIENTE = [
+  {value: 1 , label: 'Empresa'},
+  {value: 2 , label: 'Fundacion'},
+]
+
+export const ESTADO_CLIENTE = [
+  {value: 1 , label: 'Activo'},
+  {value: 2 , label: 'Inactivo'},
+]

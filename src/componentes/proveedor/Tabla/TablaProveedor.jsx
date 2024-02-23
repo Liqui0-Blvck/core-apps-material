@@ -546,6 +546,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
+import ModalRegistroSucursal from '../Formularios/ModalRegistroSucursal';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -672,7 +673,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, handleDeleteClick, selected } = props;
+  const { numSelected, handleDeleteClick, selected, refresh } = props;
 
   return (
     <Toolbar
@@ -736,6 +737,13 @@ function EnhancedTableToolbar(props) {
                   </button>
                 </Ln>
               </Tooltip>
+
+              <Tooltip title='Agregar Sucursal'>
+                <div className='w-72 p-1.5 rounded-md bg-[#22325c] hover:bg-[#22325ccb] transition-all ease-in  flex items-center justify-center mx-auto'>
+                  <ModalRegistroSucursal id={selected} refresh={refresh}/>
+                </div>
+              </Tooltip>
+              
               
             </>
             )
@@ -758,7 +766,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaItem({ data, setData, token, loading }) {
+export default function TablaProveedor({ data, setData, token, loading, setRefresh }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -859,7 +867,11 @@ export default function TablaItem({ data, setData, token, loading }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDeleteClick={handleDeleteClick} selected={selected}/>
+        <EnhancedTableToolbar
+         numSelected={selected.length}
+         handleDeleteClick={handleDeleteClick}
+         selected={selected}
+         refresh={setRefresh}/>
         <TableContainer>
           <Table
             sx={{ minWidth: 750, 

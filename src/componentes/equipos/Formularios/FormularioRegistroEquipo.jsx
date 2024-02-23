@@ -66,8 +66,6 @@ const FormularioRegistroEquipo = () => {
     option,
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  console.log(formik.values)
-
 
   return (
     <form className='flex flex-col md:grid lg:grid md:grid-cols-6 lg:grid-cols-6 place-items-center items-center gap-8 w-full h-full my-10' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
@@ -256,7 +254,7 @@ const FormularioRegistroEquipo = () => {
           )}
       </div>
 
-      <button type='submit' className='row-start-4 col-start-5 col-span-2 p-2 bg-blue-400 hover:bg-blue-300 text-white rounded-md mt-5 w-full'>Agregar</button>
+      <button type='submit' className='row-start-4 col-start-5 col-span-2 p-2 text-white bg-[#224871] hover:bg-[#224871ce] rounded-md mt-5 w-full'>Agregar</button>
     </form>
   )
 }
