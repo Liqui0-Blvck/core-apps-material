@@ -27,13 +27,13 @@ const FooterFormularioEditableRegistro = ({ formik, rows, setRows, handleAgregar
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/items/'
+    '/api/items/'
   )
 
   const { data: inventos } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/inventos/'
+    '/api/inventos/'
   )
 
   const itemNombre = items &&
@@ -189,7 +189,7 @@ const FooterFormularioEditableRegistro = ({ formik, rows, setRows, handleAgregar
 
                       />
                     </TableCell>
-                    <TableCell align="" style={{ maxWidth: '150px', minWidth: '150px' }}>
+                    <TableCell style={{ maxWidth: '150px', minWidth: '150px' }}>
                       <Select
                         showSearch
                         placeholder="Selecciona una Objeto"

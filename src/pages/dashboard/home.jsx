@@ -37,7 +37,7 @@ export function Home() {
               <StatisticsCard
                 title='Stock items'
                 icon={<Inventory2RoundedIcon style={{ fontSize: '50px'}}/>}
-                value={items && items.length}
+                value={items ? items.length: 0}
               />
             )}  
 
@@ -49,7 +49,7 @@ export function Home() {
               <StatisticsCard
                 title='Ordenes Aprobadas'
                 icon={<TextSnippetRoundedIcon style={{ fontSize: '50px'}}/>}
-                value={ordenes_filtered && ordenes_filtered.length}
+                value={ordenes_filtered ?  ordenes_filtered.length : 0}
               />
             )}
           

@@ -309,6 +309,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -328,7 +329,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
   const handleUpdateClick = async (estado) => {
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-update/${selected}`, {
+      const response = await fetch(`${base_url}/api/orden-compra-update/${selected}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -349,7 +350,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
       console.log("Eliminar elementos seleccionados:", selected);
 
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/orden-compra-delete/`, {
+      const response = await fetch(`${base_url}/api/orden-compra-delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

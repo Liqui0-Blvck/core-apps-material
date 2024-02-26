@@ -18,13 +18,13 @@ const DetalleOrdenDeCompra = ({ data }) => {
   const { data: orden_compra } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/orden-compra/${id}`
+    `/api/orden-compra/${id}`
   )
 
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
  
   const [rows, setRows] = useState(null);
@@ -38,7 +38,6 @@ const DetalleOrdenDeCompra = ({ data }) => {
   }, [orden_compra])
 
 
-  console.log(rows)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-10 p-2'>

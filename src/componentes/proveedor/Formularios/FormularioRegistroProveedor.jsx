@@ -15,22 +15,23 @@ const FormularioRegistroProveedor = () => {
   const { authTokens, validToken } = useAuth()
   const [regionID, setRegionID] = useState(null)
   const [provinciaID, setProvinciaID] = useState(null)
+  const base_url = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
   const { data: region } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/regiones/`
+    `/api/regiones/`
   )
   const {data: provincia} = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/region/${regionID}/provincias`
+    `/api/region/${regionID}/provincias`
   )
 
   const { data: comuna } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/provincias/${provinciaID}/comunas`
+    `/api/provincias/${provinciaID}/comunas`
   )
 
 
@@ -54,14 +55,16 @@ const FormularioRegistroProveedor = () => {
           formData.append('nombre', values.nombre);
           formData.append('rut', values.rut);  
           formData.append('correo', values.correo);  
-          formData.append('foto', values.foto);
           formData.append('contacto', values.contacto);
           formData.append('direccion', values.direccion);
           formData.append('comuna', values.comuna);
           formData.append('region', values.region);
           formData.append('provincia', values.provincia);
+          if (values.foto instanceof File){
+            formData.append('foto', values.foto);
+          }
 
-          const response = await fetch('http://localhost:8000/api/proveedor/', {
+          const response = await fetch(`${base_url}/api/proveedor/`, {
             method: 'POST',
             headers: {
               
@@ -81,7 +84,6 @@ const FormularioRegistroProveedor = () => {
       }
     }
   })
-
 
   const onSearch = (value) => {
     console.log("search:", value);

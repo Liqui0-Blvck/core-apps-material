@@ -2,7 +2,7 @@ import Card from '@mui/joy/Card'
 import CardContent from '@mui/joy/CardContent';
 import { useContext, useMemo, useState } from 'react';
 import { Input, Timeline } from 'antd'
-import AuthContext from '@/context/AuthContext';
+import AuthContext, { useAuth } from '@/context/AuthContext';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { Link, useLocation } from 'react-router-dom';
 import { urlNumeros } from '@/services/url_number';
@@ -10,35 +10,14 @@ import { urlNumeros } from '@/services/url_number';
 const { TextArea } = Input
 
 export default function CartDetail({ fecha_creacion, titulo, fecha_modificacion, nombre, apellido, departamento, correo}) {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
 
   const { data: historial } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/historia/${id}`
-  )
-  
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
-
-  const formatearFecha = useMemo(() => (fecha, tipo) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: `${tipo}`,
-        day: 'numeric'
-      })
-    },
-    []
+    `/api/historia/${id}`
   )
 
   return (

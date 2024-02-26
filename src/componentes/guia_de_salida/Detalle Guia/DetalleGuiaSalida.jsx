@@ -17,11 +17,9 @@ const DetalleGuiaSalida = () => {
   const { data: guia_salida } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/guia_salida/${id}`
+    `/api/guia_salida/${id}`
   )
-  console.log(guia_salida)
 
-  const navigate = useNavigate()
   const initialRows = [
     {
       object_id: 0,
@@ -45,48 +43,6 @@ const DetalleGuiaSalida = () => {
       nombre_receptor: "",
       firma_encargado: null,
       firma_recepcion: null
-    },
-    onSubmit: async (values) => {
-      const formData = new FormData()
-      formData.append('destinatario', values.destinatario)
-      formData.append('direccion', values.direccion)
-      formData.append('encargado', values.encargado)
-      formData.append('nombre_receptor', values.nombre_receptor)
-      if (values.firma_recepcion instanceof File){
-        formData.append('firma_recepcion', values.firma_recepcion)
-      }
-  
-      const objetoEnGuia = JSON.stringify(rows.map((row) => ({
-        object_id: row.object_id,
-        cantidad: row.cantidad,
-        content_type: row.content_type,
-      })));
-  
-      formData.append('objetos_en_guia', objetoEnGuia)
-  
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/guia_salida/${id}/`, {
-          method: 'PUT',
-          body: formData
-        });
-
-        await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ estado_guia: 5 })
-      })
-  
-        if (response.ok) {
-          toast.success("Orden de compra creado correctamente!")
-          navigate('/app/guia_salida/')
-        } else {
-          toast.error("No se ha podido crear la orden de compra, ¡vuelve a intentarlo!")
-        }
-      } catch (error) {
-        console.log(error)
-      }
     }
   })
 
@@ -121,8 +77,6 @@ const DetalleGuiaSalida = () => {
       },
     ]);
   };
-
-  console.log(rows)
 
   return (
     <MaxWidthWrapper>

@@ -4,24 +4,24 @@ import { useFormik } from 'formik';
 import { useClient } from '@/context/ClientContext';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { Checkbox } from '@mui/material';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 
 
 const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
-  const { authTokens, user, validToken } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
+  const { authTokens, validToken } = useAuth()
   const { clientInfo } = useClient()
   const { data: usuarios } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/usuarios/?search=${clientInfo.id}`
+    `/api/usuarios/?search=${clientInfo.id}`
   )
 
   const { data: equipos, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
+    `/api/equipo/${id}/?search=${clientInfo.id}`
   )
 
   const formik = useFormik({
@@ -31,7 +31,7 @@ const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/equipo-usuarios/', {
+        const response = await fetch(`${base_url}/api/equipo-usuarios/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const FormularioUsuarioEquipo = ({ modalClose, id, refresh }) => {
         />
       </div>
       
-      <button type='submit' className='row-start-2 col-span-4 p-2 bg-blue-400 hover:bg-blue-300 text-white rounded-md mt-5 w-full'>Agregar</button>
+      <button type='submit' className='row-start-2 col-span-4 p-2 text-white bg-[#224871] hover:bg-[#224871ce] rounded-md mt-5 w-full'>Agregar</button>
     </form>
   )
 }

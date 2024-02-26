@@ -15,10 +15,11 @@ const FormularioEditableOrdenDeCompra = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
+  const base_url = import.meta.env.VITE_BASE_URL
   const { data: orden_de_compra } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/orden-compra/${id}`
+    `api/orden-compra/${id}`
   ) 
   const initialRows = [
     {
@@ -46,7 +47,7 @@ const FormularioEditableOrdenDeCompra = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
+        const response = await fetch(`${base_url}/api/orden-compra/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -131,9 +132,7 @@ const FormularioEditableOrdenDeCompra = () => {
       isMounted = false
     }
   }, [orden_de_compra])
-  console.log(rows)
 
-  console.log(orden_de_compra)
   return (
     <MaxWidthWrapper>
       <div className='border-[1px] border-gray-500 rounded-md bg-gray-100 md:my-20 my-20 py-10 lg:px-10 px-2 overflow-hidden'>

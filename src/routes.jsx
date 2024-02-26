@@ -271,10 +271,6 @@ export const LISTA_MENU_BODEGA = [
 
 export const LISTA_MENU = [
   {
-    name: 'Dashboard',
-    path: '/app/home',
-  },
-  {
     name: 'Bodega Snabbit',
     path: ''
   },

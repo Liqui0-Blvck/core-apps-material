@@ -18,18 +18,19 @@ const FormularioEdicion = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null)
   const [filename, setFilename] = useState('No hay imagen seleccionada')
   const [imagen, setImagen] = useState(null)
+  const base_url = import.meta.env.VITE_BASE_URL
   const id = urlNumeros(pathname)
 
   const { data: categoria, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/categoria/'
+    '/api/categoria/'
     )
 
   const { data: item } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/${id}`
+    `/api/item/${id}`
     )
 
   const navigate = useNavigate()
@@ -44,15 +45,17 @@ const FormularioEdicion = () => {
     validationSchema: ComponenteSchema,
     onSubmit: async (values) => {
       try {
-        if (values.foto instanceof File){
           const formData = new FormData();
             formData.append('nombre', values.nombre);
             formData.append('descripcion', values.descripcion);
             formData.append('categoria', values.categoria);
-            formData.append('foto', values.foto);
+            if (values.foto instanceof File){
+              formData.append('foto', values.foto);
+            }
+            
         
             try {
-              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
+              const response = await fetch(`${base_url}/api/item/${id}/`, {
                 method: 'PUT',
                 headers: {
                   'authorization': `Bearer ${authTokens.access}`
@@ -70,33 +73,8 @@ const FormularioEdicion = () => {
             } catch (error) {
               toast.error('Error al procesar la solicitud');
             }
-          } else {
-            const formData = new FormData();
-            formData.append('nombre', values.nombre);
-            formData.append('descripcion', values.descripcion);
-            formData.append('categoria', values.categoria)
-        
-            try {
-              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
-                method: 'PUT',
-                headers: {
-                  'authorization': `Bearer ${authTokens.access}`
-                },
-                body: formData,
-              });
-        
-              if (response.ok) {
-                toast.success('Item añadido correctamente!');
-                formik.setValues(formik.initialValues);
-                navigate('/app/item/')
-              } else {
-                toast.error('Error al añadir el item');
-              }
-            } catch (error) {
-              toast.error('Error al procesar la solicitud');
-            }
-          }
         } catch (error) {
+          console.log(error)
       }
     },
   });

@@ -1,53 +1,30 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
 import MaxWidthWrapper from '../MaxWidthWrapper'
-import { useNavigate } from 'react-router-dom'
-import AuthContext from '../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
-import { useClient } from '@/context/ClientContext'
-import TablaEquipos from './Tabla/TablaInvento'
+
 import TablaInvento from './Tabla/TablaInvento'
+import TableLoader from '../loaders/TableLoader'
 
 
 const Invento = () => {
-  const { clientInfo } = useClient()
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const { data: inventos, setData, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/inventos/`
+    `/api/inventos/`
   )
-
-
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      })
-    },
-    []
-  )
-
-  const datosFormateados = useMemo(() => {
-    return inventos && inventos.map((dato) => ({
-      ...dato,
-      fecha_creacion: formatearFecha(dato.fecha_creacion)
-    }))
-  }, [inventos, formatearFecha])
-
-
 
   return (
     <MaxWidthWrapper>
         <div className='flex justify-center mt-10'>
           {
-            inventos && 
-            (
-              <TablaInvento data={datosFormateados} setData={setData} token={authTokens.access} loading={loading}/>
-            )
+            inventos
+              ? 
+                (
+                  <TablaInvento data={inventos} setData={setData} token={authTokens.access} loading={loading}/>
+                )
+              : <TableLoader className='w-full absolute top-32 left-40 right-0 bottom-0'/>
+              
           }
         </div>
     </MaxWidthWrapper>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import AuthContext from '../../../context/AuthContext'
+import AuthContext, { useAuth } from '../../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
 import toast from 'react-hot-toast'
@@ -10,7 +10,8 @@ import FooterFormularioRegistro from './FooterFormularioRegistro'
 
 
 const FormularioOrdenDeCompra = () => {
-  const { authTokens, validToken, user } = useContext(AuthContext)
+  const { authTokens, validToken, user } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const navigate = useNavigate()
 
@@ -44,7 +45,7 @@ const FormularioOrdenDeCompra = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/orden-compra/`, {
+        const response = await fetch(`${base_url}/api/orden-compra/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -85,7 +86,6 @@ const FormularioOrdenDeCompra = () => {
   })
 
   const handleAgregarItem = () => {
-    // Agregar un nuevo ítem a la lista de ítems
     setRows((prevRows) => [
       ...prevRows,
       {
@@ -107,8 +107,6 @@ const FormularioOrdenDeCompra = () => {
       [name]: value
     });
   };
-
-
 
   return (
     <MaxWidthWrapper>

@@ -5,6 +5,7 @@ import MaxWidthWrapper from '../../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
+import { format } from '@formkit/tempo'
 
 
 const InventoDetalle = () => {
@@ -14,26 +15,8 @@ const InventoDetalle = () => {
   const { data: invento, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/invento/${id}`
+    `/api/invento/${id}`
   )
-
-  console.log(id)
-
-
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      })
-    },
-    []
-  )
-
-  console.log(invento)
 
 
   return (
@@ -45,9 +28,9 @@ const InventoDetalle = () => {
               titulo='Item'
               nombre={invento.nombre}
               descripcion={invento.descripcion}
-              fecha_creacion={formatearFecha(invento.fecha_creacion)}
+              fecha_creacion={format(invento.fecha_creacion, { date: 'short', time: 'short' })}
               items={invento.items}
-              fecha_modificacion={formatearFecha(invento.fecha_modificacion)}
+              fecha_modificacion={format(invento.fecha_modificacion, { date: 'short', time: 'short' })}
             />
           )
         }

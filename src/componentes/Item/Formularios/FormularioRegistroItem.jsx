@@ -17,11 +17,12 @@ const FormularioRegistroItem = () => {
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
   const { authTokens, validToken } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
   const { data: categoria, loading, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/categoria/'
+    '/api/categoria/'
     )
     
   
@@ -41,10 +42,12 @@ const FormularioRegistroItem = () => {
       formData.append('descripcion', values.descripcion);
       formData.append('categoria', values.categoria);
       formData.append('marca', values.marca)
-      formData.append('foto', values.foto);
+      if (values.foto instanceof File){
+        formData.append('foto', values.foto);
+      }
   
       try {
-        const response = await fetch('http://localhost:8000/api/items/', {
+        const response = await fetch(`${base_url}/api/items/`, {
           method: 'POST',
           headers: {
             'authorization': `Bearer ${authTokens.access}`

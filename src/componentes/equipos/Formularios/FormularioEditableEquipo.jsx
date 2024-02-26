@@ -19,10 +19,11 @@ const FormularioEditableEquipo = () => {
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
   const navigate = useNavigate()
+  const base_url = import.meta.env.VITE_BASE_URL
   const { data: equipo } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
+    `/api/equipo/${id}/?search=${clientInfo.id}`
   )
   
 
@@ -42,7 +43,7 @@ const FormularioEditableEquipo = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/equipo/${id}/` , {
+        const response = await fetch(`${base_url}/api/equipo/${id}/` , {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

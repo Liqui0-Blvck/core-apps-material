@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { useContext, useMemo, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { Input, Timeline } from 'antd'
-import AuthContext from '@/context/AuthContext';
+import AuthContext, { useAuth } from '@/context/AuthContext';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { Link, useLocation } from 'react-router-dom';
 import { urlNumeros } from '@/services/url_number';
@@ -14,7 +14,7 @@ import { urlNumeros } from '@/services/url_number';
 const { TextArea } = Input
 
 export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, nombre, descripcion, titulo, proveedores, marca}) {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
   const { pathname } = useLocation()
@@ -23,35 +23,9 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
   const { data: historial } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/historia/${id}`
+    `/api/historia/${id}`
   )
-  
 
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
-  console.log(historial)
-
-  const formatearFecha = useMemo(() => (fecha, tipo, opt) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: `${tipo}`,
-        day: 'numeric',
-      })
-    },
-    []
-  )
-  const formatearFecha2 = useMemo(() => (fecha, opt) => {
-    return new Date(fecha).toLocaleString('es-ES', opt)
-  },
-  []
-)
 
   return (
     <div className='flex flex-col gap-2'>

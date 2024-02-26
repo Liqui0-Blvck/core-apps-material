@@ -11,6 +11,7 @@ import HeaderFormularioEditableRegistro from './HeaderFormularioEditableRegistro
 
 
 const FormularioEditableGuiaSalida = () => {
+  const base_url = import.meta.env.VITE_BASE_URL
   const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
 
@@ -18,7 +19,7 @@ const FormularioEditableGuiaSalida = () => {
   const { data: guia_salida } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/guia_salida/${id}`
+    `/api/guia_salida/${id}`
   )
   
   const navigate = useNavigate()
@@ -61,12 +62,12 @@ const FormularioEditableGuiaSalida = () => {
       formData.append('objetos_en_guia', objetoEnGuia)
   
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/guia_salida/${id}/`, {
+        const response = await fetch(`${base_url}/api/guia_salida/${id}/`, {
           method: 'PUT',
           body: formData
         });
 
-        await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${id}`, {
+        await fetch(`${base_url}/api/guia_salida_update/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -75,10 +76,10 @@ const FormularioEditableGuiaSalida = () => {
       })
   
         if (response.ok) {
-          toast.success("Orden de compra creado correctamente!")
+          toast.success("Guia de Salida modificada correctamente!")
           navigate('/app/guia-salida')
         } else {
-          toast.error("No se ha podido crear la orden de compra, ¡vuelve a intentarlo!")
+          toast.error("No se ha podido modificar la guia de salida, ¡vuelve a intentarlo!")
           toast.error("Debes incluir la firma")
         }
       } catch (error) {

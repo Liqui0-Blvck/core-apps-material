@@ -1,12 +1,9 @@
-import { compresor } from '@/services/compresor_imagen'
-import React, { useEffect, useState } from 'react'
-import { IoMdClose } from 'react-icons/io'
+import React, { useEffect } from 'react'
 import { Input, Select } from 'antd';
 import { useFormik } from 'formik';
 import { useClient } from '@/context/ClientContext';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { urlNumeros } from '@/services/url_number';
 import { DEPARTAMENTO } from '@/const/constantes';
@@ -16,10 +13,11 @@ const { TextArea } = Input;
 const FormularioEditableUsuario = ({ id, refresh, modalClose }) => {
   const { authTokens, validToken } = useAuth()
   const { clientInfo } = useClient()
+  const base_url = import.meta.env.VITE_BASE_URL
   const { data: usuario } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/usuario/${id}`
+    `/api/usuario/${id}`
   )
 
 
@@ -33,7 +31,7 @@ const FormularioEditableUsuario = ({ id, refresh, modalClose }) => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/usuario/${id}/`, {
+        const response = await fetch(`${base_url}/api/usuario/${id}/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

@@ -7,6 +7,7 @@ export const useAuthenticatedFetch = (token, validate, url) => {
   const [error, setError] = useState(null)
   const [refresh, setRefresh] = useState(false)
   const navigate = useNavigate()
+  const base_url = import.meta.env.VITE_BASE_URL
   
   useEffect(() => {
     let isMounted = true
@@ -22,7 +23,7 @@ export const useAuthenticatedFetch = (token, validate, url) => {
         if (!isValid){
           navigate('/auth/sign-in')
         } else {
-          const response = await fetch(url, {
+          const response = await fetch((base_url + url), {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

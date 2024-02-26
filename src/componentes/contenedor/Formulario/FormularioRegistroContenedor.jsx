@@ -14,6 +14,7 @@ const FormularioRegistroContenedor = () => {
   const { authTokens } = useAuth()
   const [imagen, setImagen] = useState(null)
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
+  const base_url = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
 
   const formik = useFormik({
@@ -37,7 +38,7 @@ const FormularioRegistroContenedor = () => {
             formData.append('estado', values.estado);
             formData.append('espacios', values.espacio)
 
-            const response = await fetch('http://localhost:8000/api/contenedores/', {
+            const response = await fetch(`${base_url}/api/contenedores/`, {
               method: 'POST',
               headers: {
                 'authorization': `Bearer ${authTokens.access}`
@@ -51,8 +52,6 @@ const FormularioRegistroContenedor = () => {
               formik.setValues(formik.initialValues)
               setImagen(null)
               setNombreCategoria('')
-  
-
             } else {
               toast.error('Error al añadir el contenedor');
             }

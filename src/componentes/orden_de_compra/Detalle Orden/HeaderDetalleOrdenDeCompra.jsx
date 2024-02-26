@@ -1,34 +1,24 @@
 /* eslint-disable react/prop-types */
-import AuthContext from '@/context/AuthContext'
+import AuthContext, { useAuth } from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
-import { useContext, useMemo, useState } from 'react'
+import { format } from '@formkit/tempo'
 
 
 const HeaderDetalleOrdenDeCompra = ({ handleSubmit, handleChange, ordenCompra }) => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
+    `/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
   )
 
   const { data: proveedor } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
+    `/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
   )
   
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-      })
-    },
-    []
-  )
 
   return (
     <div className='mb-5 overflow-hidden'>
@@ -85,7 +75,7 @@ const HeaderDetalleOrdenDeCompra = ({ handleSubmit, handleChange, ordenCompra })
             <input 
               type="text"
               name='fecha_orden' 
-              value={formatearFecha(ordenCompra && ordenCompra.fecha_creacion)}
+              value={format(ordenCompra && ordenCompra.fecha_creacion, { date: 'short' })}
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md'
               onChange={handleChange}
               disabled

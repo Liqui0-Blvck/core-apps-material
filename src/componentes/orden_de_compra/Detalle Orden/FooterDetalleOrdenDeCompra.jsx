@@ -11,7 +11,6 @@ import { format } from "@formkit/tempo"
 
 
 const FooterDetalleOrdenDeCompra = ({ rows }) => {
-  console.log(rows)
 
   return (
     <div className='py-12 px-3'>

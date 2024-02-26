@@ -5,9 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
-import axios from 'axios'
 import { Link } from 'react-router-dom';
-import { Search } from '@mui/icons-material';
 import { Input } from 'antd';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import AuthContext from '@/context/AuthContext';
@@ -24,7 +22,7 @@ export default function ModalSearchItem() {
   const { data: items, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/?search=${valor}`
+    `/api/items/?search=${valor}`
   )
   
 

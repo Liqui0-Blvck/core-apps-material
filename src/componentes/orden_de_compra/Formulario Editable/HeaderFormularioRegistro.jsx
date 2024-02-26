@@ -13,25 +13,23 @@ const HeaderFormularioRegistro = ({ formik }) => {
   const { data: proveedores } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/`
+    `/api/proveedor/`
   )
 
 
   const { data: sucursales } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${formik.values.proveedor}/sucursales`
+    `/api/proveedor/${formik.values.proveedor}/sucursales`
   )
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${formik.values.proveedor}/sucursales/${formik.values.sucursal}`
+    `/api/proveedor/${formik.values.proveedor}/sucursales/${formik.values.sucursal}`
   )
 
   const proveedorSeleccionado = proveedores && proveedores.find(pro => pro.id === Number(formik.values.proveedor))
-
-  const algo = sucursales && sucursales.find(sucur => sucur.id === formik.values.sucursal)?.nombre
 
   const onSearch = (value) => {
     console.log("search:", value);

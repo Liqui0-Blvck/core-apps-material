@@ -155,7 +155,6 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, handleDeleteClick, selected, handleUpdateClick, data } = props;
   const datos = data.filter(item => selected.includes(item.id))
-  console.log(datos)
   const [estado, setEstado] = React.useState({
     label: '',
     estado_oc: null,
@@ -245,13 +244,6 @@ function EnhancedTableToolbar(props) {
               </>
             )}
 
-            <Tooltip title='Editar'>
-              <Ln to={`/pdf-preview-guia/${selected}`} target='_blank'>
-                <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
-                  PDF
-                </button>
-              </Ln>
-            </Tooltip>
 
             <Ln to={`/app/guia-salida/${selected}`}>
               <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
@@ -261,7 +253,15 @@ function EnhancedTableToolbar(props) {
 
             {
               datos[0].estado_guia_label === 'Finalizado'
-                ? null
+                ? (
+                    <Tooltip title='Editar'>
+                      <Ln to={`/pdf-preview-guia/${selected}`} target='_blank'>
+                        <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
+                          PDF
+                        </button>
+                      </Ln>
+                    </Tooltip>
+                  )
                 : (
                   <Ln to={`/app/edicion-guia-salida/${selected}`} state={{ tipo: `${datos[0].estado_guia_label === 'Creada' ? 'Editar' : 'Firmar'}` }}>
                     <button type='button' className={`${datos[0].estado_guia_label === 'Creada' ? '' : 'w-48'} bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105`}>
@@ -292,13 +292,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaOrdenDeCompra({ data, setData, token, loading, setRefresh }) {
+export default function TablaGuiaDeSalida({ data, setData, token, loading, setRefresh }) {
   const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('fecha_creacion');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -317,7 +318,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
 
   const handleUpdateClick = async (estado) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${selected}`, {
+      const response = await fetch(`${base_url}/api/guia_salida_update/${selected}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -338,7 +339,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
       console.log("Eliminar elementos seleccionados:", selected);
 
       // Realiza la solicitud de eliminación al servidor
-      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_delete/`, {
+      const response = await fetch(`${base_url}/api/guia_salida_delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -407,6 +408,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
       ),
     [order, orderBy, page, rowsPerPage, data],
   );
+
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -481,7 +483,7 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
                       />
                     </TableCell>
                     {loading ? (
-                      <TableCell colSpan="5">
+                      <TableCell colSpan="6">
                         <Skeleton className='w-full' />
                       </TableCell>
                     ) : (

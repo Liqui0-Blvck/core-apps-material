@@ -1,21 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect, useState } from 'react'
-import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useAuth } from '@/context/AuthContext'
-import { Select } from 'antd'
+
 
 const HeaderFormularioRegistro = ({ formik }) => {
-  const { authTokens, validToken } = useAuth()
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-
   return (
     <section className='mb-5 overflow-hidden px-5 py-3'>
       <form className='w-full full flex xl:flex-row xl:justify-between lg:flex-row lg:justify-between gap-20 md:flex-row flex-col'>

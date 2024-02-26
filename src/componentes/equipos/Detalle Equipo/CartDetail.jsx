@@ -31,7 +31,8 @@ export default function CartDetail(
   }) {
 
   const handleDeleteUsuario = async (id) => {
-    const response = await fetch(`http://127.0.0.1:8000/api/equipo-usuario/${id}/`, {
+    const base_url = import.meta.env.VITE_BASE_URL
+    const response = await fetch(`${base_url}/api/equipo-usuario/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ export default function CartDetail(
   }
 
   const handleActiveUsuario = async (id) => {
-    const response = await fetch(`http://127.0.0.1:8000/api/equipo-usuario-update/${id}/`, {
+    const response = await fetch(`${base_url}/api/equipo-usuario-update/${id}/`, {
       method: 'PUT',
       headers: {  
         'Content-Type': 'application/json'
@@ -180,7 +181,7 @@ export default function CartDetail(
           <h1 className='font-bold'>Usuarios Asignados</h1>
 
           <div 
-            className='w-32 h-10 bg-blue-600 hover:bg-blue-400 rounded-md text-white font-semibold'>
+            className='w-40 h-10 bg-[#224871] hover:bg-[#224871c0] rounded-md flex items-center justify-center'>
             <ModalUsuarioEquipo id={id_equipo} refresh={refresh}/>
           </div>
         </div>

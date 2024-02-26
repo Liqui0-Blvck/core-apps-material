@@ -16,7 +16,7 @@ const FooterFormularioRegistroInvento = ({ rows, setRows, handleAgregarItem }) =
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
 
   const options = items &&

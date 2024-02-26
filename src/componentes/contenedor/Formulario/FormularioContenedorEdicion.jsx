@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ESTADOS } from '@/const/constantes'
 import { compresor } from '@/services/compresor_imagen'
 import { IoMdClose } from 'react-icons/io'
 import { Input, Select } from 'antd'
 import { useFormik } from 'formik'
-import AuthContext from '@/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
@@ -13,18 +13,19 @@ import { ContenedorSchema } from '@/services/Validator'
 import toast from 'react-hot-toast'
 
 const FormularioContenedorEdicion = () => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
   const [prevEstado, setPrevEstado] = useState('')
   const [filename, setFilename] = useState('')
   const [imagen, setImagen] = useState(null)
+  const base_url = import.meta.env.VITE_BASE_URL
   const id = urlNumeros(pathname)
   const navigate = useNavigate()
 
   const { data: contenedor } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/contenedor/${id}`
+    `/api/contenedor/${id}`
     )
 
   const formik = useFormik({
@@ -39,16 +40,17 @@ const FormularioContenedorEdicion = () => {
     validationSchema: ContenedorSchema,
     onSubmit: async values => {
       try {
-        if (values.foto instanceof File) {
-          const formData = new FormData();
+        const formData = new FormData();
           formData.append('nombre', values.nombre);
           formData.append('color', values.color);
           formData.append('dimensiones', values.dimensiones);
           formData.append('material', values.material);
           formData.append('estado', values.estado);
-          formData.append('foto', values.foto);
-
-          const response = await fetch(`http://localhost:8000/api/contenedor/${id}/`, {
+          if (values.foto instanceof File) {
+            formData.append('foto', values.foto);
+          }
+          
+          const response = await fetch(`${base_url}/api/contenedor/${id}/`, {
             method: 'PUT',
             headers: {
               'authorization': `Bearer ${authTokens.access}`
@@ -57,40 +59,16 @@ const FormularioContenedorEdicion = () => {
           });
 
           if (response.ok) {  
-            toast.success('Contenedor añadido correctamente!');
+            toast.success('Contenedor modificado correctamente!');
             navigate('/app/contenedores/')
             formik.setValues(formik.initialValues)
             setImagen(null)
             setNombreCategoria('')
           } else {
-            toast.error('Error al añadir el contenedor');
+            toast.error('Error al modificar el contenedor, ¡Vuelve a intentarlo!');
           }
-        } else {
-          const formData = new FormData();
-          formData.append('nombre', values.nombre);
-          formData.append('color', values.color);
-          formData.append('dimensiones', values.dimensiones);
-          formData.append('material', values.material);
-          formData.append('estado', values.estado)
-
-          const response = await fetch(`http://localhost:8000/api/contenedor/${id}/`, {
-            method: 'PUT',
-            headers: {
-              'authorization': `Bearer ${authTokens.access}`
-            },
-            body: formData,
-          });
-
-          if (response.ok) {  
-            console.log("me estoy ejecutando")
-            toast.success('Contenedor actualizado correctamente!');
-            navigate('/app/contenedores')
-          } else {
-            toast.error('Error al añadir el contenedor');
-          }
-        }
       } catch (error) {
-        
+        console.log(error)
       }
     }
   })
@@ -131,7 +109,7 @@ const FormularioContenedorEdicion = () => {
         
         <form className='grid grid-cols-6 items-center gap-10 w-full h-full p-4' onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <div 
-          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
+          className='row-span-2 col-span-2 border-[2px] h-44 border-dashed bg-white border-[#224871] rounded-md p-2 mt-1  flex items-center justify-center cursor-pointer relative z-10'
           onClick={() => document.getElementById('input-field').click()}
         >
           <h1 className='font-semibold text-center'>{filename}</h1>
@@ -159,7 +137,7 @@ const FormularioContenedorEdicion = () => {
                 <IoMdClose 
                   className='absolute text-2xl text-white z-100'
                   onClick={() => {
-                    formik.setFieldValue('foto', null); // Limpiar el valor del campo 'foto'
+                    formik.setFieldValue('foto', null); 
                     setImagen(null);
                   }}
                 />

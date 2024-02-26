@@ -13,12 +13,12 @@ import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { useAuth } from '@/context/AuthContext';
 import { Select } from 'antd';
 
-const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows }) => {
+const FooterFormularioEditableRegistro = ({ formik, rows, setRows }) => {
   const { authTokens, validToken } = useAuth()
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
 
   const options = items &&
@@ -27,8 +27,6 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
         value: item.id,
         label: item.nombre
       }))
-
-
 
 
   const agregarFila = () => {
@@ -78,19 +76,18 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
             <TableBody>
               {rows && rows.map((row, index) => (
                 <TableRow key={index} style={{ background: '#F3F4F6' }}>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" style={{ maxWidth: '300px', minWidth: '300px'}}>
                     <Select
                       showSearch
                       placeholder="Selecciona una item"
                       optionFilterProp="children"
                       className='rounded-md col-span-3 h-10 w-full'
                       onChange={value => {
-                        formik.setFieldValue('item', value),
-                          handleChangeRow(index, "item", value)
+                        formik.setFieldValue('item', value)
                       }}
                       onSearch={onSearch}
                       name='item'
-                      value={items && items.find(item => item.id === 1)?.nombre}
+                      value={items && items.find(item => item.id === row.item)?.nombre}
                       filterOption={filterOption}
                       options={options}
                     />
@@ -102,8 +99,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                       name="unidad_de_compra"
                       className="p-2 border-[1px] border-gray-300 rounded-md w-14"
                       onChange={(e) => {
-                        handleChangeRow(index, "unidad_de_compra", e.target.value)
-                        handleChange(e)
+                        handleChangeRow(row.id, "unidad_de_compra", e.target.value)
                       }
 
                       }
@@ -116,8 +112,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                       name="costo_por_unidad"
                       className="p-2 border-[1px] border-gray-300 rounded-md w-28"
                       onChange={(e) => {
-                        handleChangeRow(index, "costo_por_unidad", e.target.value)
-                        handleChange(e)
+                        handleChangeRow(row.id, "costo_por_unidad", e.target.value)
                       }
 
                       }
@@ -129,8 +124,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                       name="observaciones"
                       className="p-2 border-[1px] border-gray-300 rounded-md"
                       onChange={(e) => {
-                        handleChangeRow(index, "observaciones", e.target.value)
-                        handleChange(e)
+                        handleChangeRow(row.id, "observaciones", e.target.value)
                       }
                       }
                       value={row.observaciones}
@@ -151,7 +145,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
         </TableContainer>
 
         <button type='submit' className='absolute px-4 py-2 right-0 -bottom-20 bg-[#2732FF] rounded-md text-white'>
-          Crear Orden de Compra
+          Guardar Cambios
         </button>
       </form>
     </div>

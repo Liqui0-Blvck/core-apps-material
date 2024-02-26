@@ -14,6 +14,7 @@ const FormularioRegistroInvento = () => {
   const [filename, setFilename] = useState('No hay ninguna foto seleccionada')
   const [imagen, setImagen] = useState(null)
   const navigate = useNavigate()
+  const base_url = import.meta.env.VITE_BASE_URL
   const initialRows = [
     {
       item: 0,
@@ -45,7 +46,7 @@ const FormularioRegistroInvento = () => {
       formData.append('items', itemsJson);
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/inventos/`, {
+        const response = await fetch(`${base_url}/api/inventos/`, {
           method: 'POST',
           body: formData
         });

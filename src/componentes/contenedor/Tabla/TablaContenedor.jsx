@@ -20,6 +20,8 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
+import { format } from '@formkit/tempo';
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -233,13 +235,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaItem({ data, setData, token, loading }) {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+export default function TablaContenedor({ data, setData, token, loading }) {
+  const [order, setOrder] = React.useState('desc');
+  const [orderBy, setOrderBy] = React.useState('fecha_creacion');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -259,7 +262,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   const handleDeleteClick = async () => {
     try {
 
-      const response = await fetch(`http://127.0.0.1:8000/api/contenedores-delete/`, {
+      const response = await fetch(`${base_url}/api/contenedores-delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -403,7 +406,7 @@ export default function TablaItem({ data, setData, token, loading }) {
                         <TableCell className='text-clip overflow-hidden'>{row.nombre}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.dimensiones}</TableCell>
                         <TableCell>{row.dimensiones}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.fecha_creacion}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short'} )}</TableCell>
                       </>
                     )}
                   </TableRow>

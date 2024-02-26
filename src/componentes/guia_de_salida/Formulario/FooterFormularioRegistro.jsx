@@ -19,23 +19,37 @@ import { IoMdClose } from 'react-icons/io'
 import { dataURLtoFile } from '@/services/captureSignature';
 
 
-const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
+const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
   const { authTokens, validToken } = useAuth()
   const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
-  const tipo_objeto = ContentTypes.find(obj => obj.value === tipoSeleccionado)?.path
+  const [tipo_objeto, setTipoObjeto] = useState(null)
   const sigCanvas = useRef()
   const { data: objeto } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/${tipo_objeto}/`
+    `/api/${tipo_objeto}s/`
+  )
+  
+  const { data: items } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    '/api/items/'
   )
 
-  const options = objeto &&
-    objeto.filter(item => !rows.some(rowItem => Number(rowItem.item) === item.id))
-      .map(objeto => ({
-        value: objeto.id,
-        label: objeto.nombre
-      }))
+  const { data: inventos } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    '/api/inventos/'
+  )
+
+  const { data: content_types } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `/api/content-types/`
+  )
+
+  console.log(content_types)
+  
 
   const agregarFila = () => {
     const nuevaFila = { id: rows.length,  object_id: 0, cantidad: 0, content_type: 0, guia_salida: 0 };
@@ -70,13 +84,12 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
     formik.setFieldValue('firma_encargado', signatureFile);
   };
 
-
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
-        <div onClick={handleAgregarItem, agregarFila}
+        <div onClick={agregarFila}
           className='absolute bottom-44 left-20 
-            right-0 w-32 mx-auto'>
+            right-0 w-32 mx-auto cursor-pointer'>
           <FaCirclePlus className='text-3xl' />
         </div>
         <TableContainer component={Paper}>
@@ -92,6 +105,21 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
             <TableBody>
               {rows && rows.map((row, index) => {
                 const limite = objeto && objeto.find(item => item.id === row.item)?.stock_bodega
+                const options = row.content_type === 13 
+                  ? items && items
+                      .filter(item => !rows.some(rowItem => rowItem.object_id === item.id))
+                      .map(item => ({
+                        value: item.id,
+                        label: item.nombre
+                      }))
+                  : row.content_type === 31 
+                    ? inventos && inventos
+                        .filter(invento => !rows.some(rowItem => rowItem.object_id === invento.id))
+                        .map(invento => ({
+                          value: invento.id,
+                          label: invento.nombre
+                        }))
+                    : [];
                 return (
                 <TableRow key={index} style={{ background: '#F3F4F6' }}>
                   <TableCell component="th" scope="row" style={{maxWidth: '250px', minWidth: '250px'}}>
@@ -108,6 +136,7 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
                       name='object_id'
                       filterOption={filterOption}
                       options={options}
+                      disabled={row.content_type === 0 && row.object_id === 0}
                     />
 
                   </TableCell>
@@ -120,29 +149,29 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
                       className="p-2 border-[1px] border-gray-300 rounded-md w-14"
                       onChange={(e) => {
                         handleChangeRow(index, "cantidad", e.target.value)
-                        handleChange(e)
                       }
 
                       }
                       value={row.cantidad}
+                      disabled={row.content_type == 0}
                     />
                   </TableCell>
-                  <TableCell align="" style={{maxWidth: '150px', minWidth: '150px'}}>
+                  <TableCell style={{maxWidth: '150px', minWidth: '150px'}}>
                     <Select
                         showSearch
                         placeholder="Selecciona una Objeto"
                         optionFilterProp="children"
                         className='rounded-md col-span-3 h-10 w-full'
                         onChange={value => {
-                          formik.setFieldValue('content_type', value),
-                            handleChangeRow(index, "content_type", value)
+                          handleChangeRow(index, "content_type", value)
+                          setTipoObjeto()
                         }}
                         onSearch={onSearch}
                         name='content_type'
                         filterOption={filterOption}
-                        options={ContentTypes.map((obj) => ({
-                          value: obj.value,
-                          label: obj.label
+                        options={content_types && content_types.map((obj) => ({
+                          value: obj.id,
+                          label: obj.model
                         }))}
                       />
                   </TableCell>
@@ -160,7 +189,7 @@ const FooterFormularioRegistro = ({ formik, handleChange, rows, setRows, handleA
           </Table>
         </TableContainer>
         
-        <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 rounded-md relative left-[550px] flex flex-col '>
+        <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 rounded-md relative flex flex-col px-2 py-1'>
           <h1 className='text-gray-500'>Firma Encargado:</h1>
           <SignatureCanvas
             penColor="black"

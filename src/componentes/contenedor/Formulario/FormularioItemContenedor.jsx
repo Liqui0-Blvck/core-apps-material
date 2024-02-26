@@ -1,22 +1,22 @@
-import AuthContext from '@/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { Select } from 'antd'
 import { useFormik } from 'formik'
-import React, { useContext } from 'react'
 import toast from 'react-hot-toast'
 
 const FormularioItemContenedor = ({ id, refresh, close }) => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
 
   const { data: contenedor, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/contenedor/${id}`
+    `/api/contenedor/${id}`
   )
 
   const onSearch = (value) => {
@@ -37,7 +37,7 @@ const FormularioItemContenedor = ({ id, refresh, close }) => {
     onSubmit: async (values) => {
       console.log(values)
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/items_contenedor/` ,{
+        const response = await fetch(`${base_url}/api/items_contenedor/` ,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -54,9 +54,8 @@ const FormularioItemContenedor = ({ id, refresh, close }) => {
           refresh(true)
           setRefresh(true)
           close(false)
-          
         } else {
-          console.log("Algo malo ocurrio")
+          console.log("No se ha logrado agregar el item, ¡Vuelve a intentarlo!")
         }
       } catch (error) {
         

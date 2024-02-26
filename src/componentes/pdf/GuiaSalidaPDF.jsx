@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     padding: 10,
+    gap: 10
   },
   head_box: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    height: '300px'
+    height: '90%'
   },
   head_box_1: {
     width: '100%',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     marginTop: '100px',
     border: '0.5px solid #E3E7EA',
     borderRadius: 2,
-    height: '60%',
+    height: '100%',
     width: '100%'
   },
   footer_header: {
@@ -98,11 +99,38 @@ const styles = StyleSheet.create({
   items_box: {
     width: '100%',
     border: '0.5px solid #E3E7EA',
-    height: '30px',
+    height: '40px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  footer_box_signatures: {
+    height: '100px',
+    width: '100%',
+    position: 'absolute',
+    bottom: 10,
+    right: 0,
+    left: 10,
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 50,
+    justifyContent: 'space-between'
+  },
+  signature_box: {
+    border: '1px solid #E3E7EA',
+    borderRadius: 5,
+    width: '300px',
+    padding: '2px 5px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  signature_pic: {
+    width: '60%',
+    height: '100%',
+    objectFit: 'contain',
   }
 })
 
@@ -113,10 +141,8 @@ const GuiaSalidaPDF = () => {
   const { data: guia } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/guia_salida/${id}/`
+    `/api/guia_salida/${id}/`
   )
-
-  console.log(guia)
 
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
@@ -167,44 +193,50 @@ const GuiaSalidaPDF = () => {
             <View style={styles.footer_box}>
               <View style={styles.footer_header}>
                 <View style={{ width: '50%' }}>
-                  <Text style={{ fontSize: '12px', position: 'relative', left: '70px' }}>Item</Text>
+                  <Text style={{ fontSize: '12px', position: 'relative', left: '80px' }}>Item</Text>
                 </View>
                 <View style={{ width: '30%' }}>
                   <Text style={{ fontSize: '12px' }}>Cantidad</Text>
-                </View>
-                <View style={{ width: '30%' }}>
-                  <Text style={{ fontSize: '12px' }}>Costo</Text>
                 </View>
                 <View style={{ width: '30%' }}>
                   <Text style={{ fontSize: '12px' }}>Observación</Text>
                 </View>
               </View>
 
-              <View>
+              <View style={{ height: '100%'}}>
                 {
                   guia && guia.objetos_en_guia.map((obj) => {
+                    console.log(obj)
+                    console.log(obj.articulo.map(objName => objName.nombre))
                     return (
                       <View key={obj.id} style={styles.items_box}>
                         <View style={{ width: '100%', textAlign: 'center', position: 'relative', left: '10px' }}>
-                          <Text style={{ fontSize: '12px' }}>{obj.articulo.map(objeto => objeto.nombre)}</Text>
+                          <Text style={{ fontSize: '12px' }}>{obj.articulo.map(objName => objName.nombre)}</Text>
                         </View>
 
-                        <View style={{ width: '100%', paddingLeft: '80px' }}>
-                          {/* <Text style={{ fontSize: '12px' }}>{item.unidad_de_compra}</Text> */}
-                        </View>
-
-                        <View style={{ width: '100%', paddingLeft: '60px' }}>
-                          {/* <Text style={{ fontSize: '12px' }}>{item.costo_por_unidad}</Text> */}
+                        <View style={{ width: '100%', paddingLeft: '90px' }}>
+                          <Text style={{ fontSize: '12px' }}>{obj.cantidad}</Text>
                         </View>
 
                         <View style={{ width: '100%' }}>
-                          {/* <Text style={{ fontSize: '12px' }}>{item.observaciones}</Text> */}
+                          <Text style={{ fontSize: '12px' }}>{obj.observaciones}</Text>
                         </View>
                       </View>
                     )
                   })
                 }
               </View>
+            </View>
+          </View>
+          <View style={styles.footer_box_signatures}>
+            <View style={styles.signature_box}>
+              <Text style={{ fontSize: '10px'}}>Firma Encargado</Text>
+              <Image source={guia && guia.firma_encargado} style={styles.signature_pic} />
+            </View>
+
+            <View style={styles.signature_box}>
+              <Text style={{ fontSize: '10px'}}>Firma Recepcionista</Text>
+              <Image source={guia && guia.firma_recepcion && guia.firma_recepcion} style={styles.signature_pic} />
             </View>
           </View>
         </Page>

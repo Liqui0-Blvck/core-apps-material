@@ -9,8 +9,7 @@ import FooterFormularioRegistro from './FooterFormularioRegistro'
 
 
 const FormularioGuiaSalida = () => {
-  const { authTokens, validToken, user } = useContext(AuthContext)
-
+  const base_url = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
   const initialRows = [
     {
@@ -24,8 +23,6 @@ const FormularioGuiaSalida = () => {
   const [rows, setRows] = useState(
     initialRows.map((row, index) => ({ ...row, id: index }))
   );
-
-  console.log(rows)
 
   const formik = useFormik({
     initialValues: {
@@ -53,16 +50,16 @@ const FormularioGuiaSalida = () => {
       formData.append('objetos_en_guia', objetoEnGuia)
   
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/guia_salidas/`, {
+        const response = await fetch(`${base_url}/api/guia_salidas/`, {
           method: 'POST',
           body: formData
         });
   
         if (response.ok) {
-          toast.success("Orden de compra creado correctamente!")
+          toast.success("Guia de Salida creada correctamente!")
           navigate('/app/guia-salida/')
         } else {
-          toast.error("No se ha podido crear la orden de compra, ¡vuelve a intentarlo!")
+          toast.error("No se ha podido crear la guia de salida, ¡vuelve a intentarlo!")
           setTimeout(() => {
             toast.error("Debes incluir la firma")
           }, 2000)
@@ -76,7 +73,6 @@ const FormularioGuiaSalida = () => {
   
 
   const handleAgregarItem = () => {
-    // Agregar un nuevo ítem a la lista de ítems
     setRows((prevRows) => [
       ...prevRows,
       {

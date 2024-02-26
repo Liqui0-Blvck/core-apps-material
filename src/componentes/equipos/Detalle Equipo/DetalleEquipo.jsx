@@ -1,41 +1,24 @@
-import { useContext, useMemo, useState,} from 'react'
 import { useLocation } from 'react-router-dom'
 import CartDetail from './CartDetail'
-import AuthContext from '@/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper'
 import { useClient } from '@/context/ClientContext'
+import { format } from '@formkit/tempo'
 
 
 const DetalleEquipo = () => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const { clientInfo } = useClient()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
   const { data: equipo, loading, setRefresh } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/equipo/${id}/?search=${clientInfo.id}`
+    `/api/equipo/${id}/?search=${clientInfo.id}`
     )
 
-  
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false
-      })
-    },
-    []
-  )
-
-  console.log(equipo)
   return (
     <MaxWidthWrapper>
       <div className='my-14'>
@@ -58,8 +41,8 @@ const DetalleEquipo = () => {
               usuarios = {equipo.usuarios}
               token={authTokens}
               refresh={setRefresh}
-              fecha_creacion = {formatearFecha(equipo.fecha_creacion)}
-              fecha_modificacion={formatearFecha(equipo.fecha_modificacion)}
+              fecha_creacion = {format(equipo.fecha_creacion, {date: 'short', time: 'short'})}
+              fecha_modificacion={format(equipo.fecha_modificacion, {date: 'short', time: 'short'})}
               />
           )
         }

@@ -783,6 +783,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -802,7 +803,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   const handleDeleteClick = async () => {
     try {
 
-      const response = await fetch(`http://127.0.0.1:8000/api/equipos-delete/`, {
+      const response = await fetch(`${base_url}/api/equipos-delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -812,7 +813,7 @@ export default function TablaItem({ data, setData, token, loading }) {
       });
 
       if (response.ok){
-        toast.success('Invento eliminado con exito')
+        toast.success(`${selected.length > 1 ? 'Inventos eliminado con exito' : 'Invento eliminado con exito'}`)
       } else {
         toast.error('No se ha podido eliminar')
       }

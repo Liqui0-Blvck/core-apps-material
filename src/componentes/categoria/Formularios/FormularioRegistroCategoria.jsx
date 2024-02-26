@@ -1,17 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext } from 'react'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { CategoriaSchema } from '../../../services/Validator'
-import AuthContext from '@/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { Input } from 'antd'
 
 const { TextArea } = Input
 
 const FormularioRegistroCategoria = ({ modalClose, refresh }) => {
-  const { authTokens, validToken } = useContext(AuthContext)
-  const [categoria, setCategoria] = useState([])
+  const { authTokens, validToken } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
 
   const formik = useFormik({
@@ -21,7 +21,7 @@ const FormularioRegistroCategoria = ({ modalClose, refresh }) => {
     },
     validationSchema: CategoriaSchema,
     onSubmit: async values => {
-      const response = await fetch('http://localhost:8000/api/categoria/', {
+      const response = await fetch(`${base_url}/api/categoria/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,9 +34,10 @@ const FormularioRegistroCategoria = ({ modalClose, refresh }) => {
         toast.success('Categoria agregada con exito!')
         modalClose(false)
         refresh(true)
+        formik.initialValues()
         navigate('/app/categorias')
       } else {
-        toast.error('Error en')
+        toast.error('Error al agregar categoria')
       }
     },
   })

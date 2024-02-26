@@ -22,7 +22,7 @@ const ModalUsuarioEquipo = ({id, refresh}) => {
     <>
       <button 
         onClick={showModal} 
-        className='w-32 h-10 text-white font-semibold bg-blue-600 hover:bg-blue-400 rounded-md'>Agregar Usuario</button>
+        className='font-semibold text-center text-white'>Agregar Usuario</button>
 
       <Modal title="Editar Usuario"
         open={isModalOpen} 

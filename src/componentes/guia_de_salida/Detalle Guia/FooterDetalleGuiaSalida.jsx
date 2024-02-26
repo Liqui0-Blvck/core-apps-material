@@ -19,20 +19,19 @@ import { IoMdClose } from 'react-icons/io'
 import { dataURLtoFile } from '@/services/captureSignature';
 
 
-const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAgregarItem }) => {
+const FooterDetalleGuiaSalida = ({ formik, rows }) => {
   const { authTokens, validToken } = useAuth()
-  const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
-  const sigCanvas = useRef()
+  const [tipoSeleccionado, setTipoSeleccionado] = useState(null)
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/items/'
+    '/api/items/'
   )
 
   const { data: inventos } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/inventos/'
+    '/api/inventos/'
   )
 
   const itemNombre = items &&
@@ -51,7 +50,6 @@ const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAg
 
   const objeto = (content_type) => {
     let obj
-
     if (content_type === 'items') {
       obj = items
     } else if (content_type === 'inventos') {
@@ -62,51 +60,14 @@ const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAg
   }
 
 
-  const agregarFila = () => {
-    const nuevaFila = { id: rows.length, object_id: 0, cantidad: 0, content_type: 0, guia_salida: 0 };
-    setRows((prevRows) => [...prevRows, nuevaFila]);
-  };
-
-  const eliminarFila = (id) => {
-    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-  };
-
-  const handleChangeRow = (id, fieldName, value) => {
-    setTipoSeleccionado(value)
-    setRows((prevRows) =>
-      prevRows.map((row) => (row.id === id ? { ...row, [fieldName]: value } : row))
-    );
-  };
-
-  
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const filterOption = (
-    input,
-    option,
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-
   useEffect(() => {
     if (rows && rows.length > 0) {
-      // Iterar sobre cada fila y obtener el content_type
       const tiposSeleccionados = rows.map(row => row.content_type);
 
       setTipoSeleccionado(tiposSeleccionados[0]);
     }
   }, [rows]);
 
-
-  const handleSaveSignature = () => {
-    const signatureImage = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png');
-
-    const signatureFile = dataURLtoFile(signatureImage, 'firma.png');
-
-    formik.setFieldValue('firma_recepcion', signatureFile);
-  };
-  
   return (
     <div className='py-12 px-3'>
       <form onSubmit={formik.handleSubmit} className='relative'>
@@ -155,12 +116,7 @@ const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAg
                       placeholder="Selecciona una item"
                       optionFilterProp="children"
                       className='rounded-md col-span-3 h-10 w-full'
-                      onChange={value => {
-                          handleChangeRow(row.id, "object_id", value)
-                      }}
-                      onSearch={onSearch}
                       name='object_id'
-                      filterOption={filterOption}
                       value={row.content_type === 13 ? itemSelected?.label : row.content_type === 31 ? inventoSelected?.label : 'Selecciona uno'}
                       options={options}
                       disabled
@@ -174,28 +130,17 @@ const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAg
                         min={0}
                         max={limite}
                         className="p-2 border-[1px] border-gray-300 rounded-md w-14"
-                        onChange={(e) => {
-                          handleChangeRow(row.id, "cantidad", e.target.value)
-                          handleChange(e)
-                        }
-
-                        }
                         value={row.cantidad}
                         disabled
                       />
                     </TableCell>
-                    <TableCell align="" style={{ maxWidth: '150px', minWidth: '150px' }}>
+                    <TableCell style={{ maxWidth: '150px', minWidth: '150px' }}>
                       <Select
                         showSearch
                         placeholder="Selecciona una Objeto"
                         optionFilterProp="children"
                         className='rounded-md col-span-3 h-10 w-full'
-                        onChange={value => {
-                          handleChangeRow(row.id, "content_type", value)
-                        }}
-                        onSearch={onSearch}
                         name='content_type'
-                        filterOption={filterOption}
                         value={row.content_type === 0 ? 'Tipo Objeto' : row.content_type}
                         options={ContentTypes.map((obj) => ({
                           value: obj.value,
@@ -210,7 +155,7 @@ const FooterDetalleGuiaSalida = ({ formik, handleChange, rows, setRows, handleAg
             </TableBody>
           </Table>
         </TableContainer>
-        <div className='flex justify-between'>
+        <div className='flex justify-between lg:flex-row md:flex-col flex-col items-center'>
           <div className='border border-gray-500 h-40 w-96 mt-14 mb-5 relative rounded-md flex flex-col '>
             <h1>Firma Encargado: </h1>
             <img src={formik.values.firma_encargado} alt="" className='w-full h-32'/>

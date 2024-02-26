@@ -123,20 +123,20 @@ const OrdenDeCompraPDF = () => {
   const { data: ordenCompra } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/orden-compra/${id}`
+    `/api/orden-compra/${id}`
   )
 
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
+    `/api/proveedor/${ordenCompra && ordenCompra.proveedor}/sucursales/${ordenCompra && ordenCompra.sucursal}`
   )
 
   const { data: proveedor } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
+    `/api/proveedor/${ordenCompra && ordenCompra.proveedor}`
   )
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
@@ -277,7 +277,7 @@ const OrdenDeCompraPDF = () => {
                 ordenCompra && ordenCompra.items.map((item) => {
                   return (
                     <View key={item.id} style={styles.items_box}>
-                      <View style={{ width: '100%', paddingLeft: '40px', textAlign: 'center' }}>
+                      <View style={{ width: '100%', paddingLeft: '20px', textAlign: 'center' }}>
                         <Text style={{ fontSize: '12px' }}>{item.item_nombre}</Text>
                       </View>
 

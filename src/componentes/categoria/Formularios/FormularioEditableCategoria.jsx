@@ -1,21 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { useFormik } from 'formik'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
 import { CategoriaSchema } from '../../../services/Validator'
-import AuthContext from '@/context/AuthContext'
+import AuthContext, { useAuth } from '@/context/AuthContext'
 import { Input } from 'antd'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 
 const { TextArea } = Input
 
 const FormularioEditableCategoria = ({ modalClose, id, refresh }) => {
-  const { authTokens, validToken } = useContext(AuthContext)
-  const { data, loading } = useAuthenticatedFetch(
+  const { authTokens, validToken } = useAuth()
+  const base_url = import.meta.env.VITE_BASE_URL
+  const { data: categoria } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/categoria/${id}`
+    `/api/categoria/${id}`
   )
 
 
@@ -26,7 +26,7 @@ const FormularioEditableCategoria = ({ modalClose, id, refresh }) => {
     },
     validationSchema: CategoriaSchema,
     onSubmit: async values => {
-      const response = await fetch(`http://localhost:8000/api/categoria/${id}/`, {
+      const response = await fetch(`${base_url}/api/categoria/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -36,11 +36,11 @@ const FormularioEditableCategoria = ({ modalClose, id, refresh }) => {
       })
 
       if (response.ok) {
-        toast.success('Categoria agregada con exito!')
+        toast.success('Categoria modificada con exito!')
         modalClose(false)
         refresh(true)
       } else {
-        toast.error('Error en')
+        toast.error('Error al modificar la categoria')
       }
     }
   })
@@ -48,17 +48,17 @@ const FormularioEditableCategoria = ({ modalClose, id, refresh }) => {
   useEffect(() => {
     let isMounted = true
 
-    if (data && isMounted){
+    if (categoria && isMounted){
       formik.setValues({
-        nombre: data.nombre,
-        descripcion: data.descripcion
+        nombre: categoria.nombre,
+        descripcion: categoria.descripcion
       })
     }
 
     return () => {
       isMounted = false
     }
-  }, [data])
+  }, [categoria])
 
   return (
   <div className='items-center h-full' >

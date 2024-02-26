@@ -18,12 +18,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { Skeleton } from '@mui/material';
 import ModalFormularioCategoria from '../Modal/ModalFormularioCategoria';
-import ModalCategoriaEditable from '../Modal/ModalCategoriaEditable';
 import { IconButton } from '@material-tailwind/react';
+import ModalCategoriaEditable from '../Modal/ModalCategoriaEditable';
+import { format } from '@formkit/tempo'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -215,12 +216,13 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function TablaCategoria({ data, setData, token, loading, setRefresh }) {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [order, setOrder] = React.useState('desc');
+  const [orderBy, setOrderBy] = React.useState('fecha_creacion');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -240,7 +242,7 @@ export default function TablaCategoria({ data, setData, token, loading, setRefre
   const handleDeleteClick = async () => {
     try {
 
-      const response = await fetch(`http://127.0.0.1:8000/api/item-delete/`, {
+      const response = await fetch(`${base_url}/api/categoria-delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -250,7 +252,7 @@ export default function TablaCategoria({ data, setData, token, loading, setRefre
       });
 
       if (response.ok){
-        toast.success('Item eliminado con exito')
+        toast.success(`${selected.length > 1 ? 'Categorias eliminadas con exito' : 'Categoria eliminada con exito'}`)
       } else {
         toast.error('No se ha podido eliminar')
       }
@@ -393,7 +395,7 @@ export default function TablaCategoria({ data, setData, token, loading, setRefre
                         <TableCell>{row.id}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.nombre}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.descripcion}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.fecha_creacion}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>
                       </>
                     )}
                   </TableRow>

@@ -39,7 +39,7 @@ const FormularioRegistroClientes = () => {
       formData.append('correo', values.correo)
       formData.append('tipo_cliente', values.tipo_cliente)
       formData.append('estado_cliente', estado_label)
-      if (values.foto instanceof File){
+      if (values.logo instanceof File){
         formData.append('logo', values.logo);
       }
   
@@ -98,7 +98,7 @@ const FormularioRegistroClientes = () => {
               onChange={async (e) => {
                 
                 if (e.currentTarget.files){
-                  const compresor_result = await compresor(e.currentTarget.files[0], 0.6)
+                  const compresor_result = await compresor(e.currentTarget.files[0], 0.2)
                   if (compresor_result){
                     const file = new File([compresor_result], e.target.files[0].name, { type: 'image/webp'})
                     setImagen(file)

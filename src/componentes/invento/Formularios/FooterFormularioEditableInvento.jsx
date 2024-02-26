@@ -18,7 +18,7 @@ const FooterFormularioEditableInvento = ({ isValid, rows, setRows, handleAgregar
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
 
 
@@ -67,7 +67,7 @@ const FooterFormularioEditableInvento = ({ isValid, rows, setRows, handleAgregar
 
   return (
     <div className='w-full h-full rounded-md'>
-      <div onClick={handleAgregarItem, agregarFila}
+      <div onClick={agregarFila}
         className='absolute -bottom-10 left-20 
             right-0 w-32 mx-auto'>
         <FaCirclePlus className='text-3xl' />

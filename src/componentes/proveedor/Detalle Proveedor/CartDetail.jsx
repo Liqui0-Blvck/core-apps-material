@@ -56,7 +56,7 @@ export default function CartDetail({ fecha_creacion, foto, nombre, comuna, direc
 
                 <div className='h-20 p-2 flex flex-col gap-2 rounded-md'>
                   <h1 className='border-[1px] border-gray-300 rounded-md font-bold pl-2'>Direccion: </h1>
-                  <div className='h-10 rounded-md bg-gray-200 flex items-center justify-center '>
+                  <div className='h-10 rounded-md bg-gray-200 flex items-center justify-center p-2'>
                     <span>{direccion}</span>
                   </div>
                 </div> 

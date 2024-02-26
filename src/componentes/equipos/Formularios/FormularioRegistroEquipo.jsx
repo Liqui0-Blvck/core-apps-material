@@ -12,6 +12,7 @@ import { CANTIDAD_RAM, CAPACIDAD_DISCO, TIPO_DISCO, TIPO_LICENCIA, TIPO_PROCESAD
 const { TextArea } = Input
 
 const FormularioRegistroEquipo = () => {
+  const base_url = import.meta.env.VITE_BASE_URL
   const { authTokens, user } = useAuth()
   const { clientInfo } = useClient()
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ const FormularioRegistroEquipo = () => {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/equipos/', {
+        const response = await fetch(`${base_url}/api/equipos/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -5,6 +5,8 @@ import MaxWidthWrapper from '../../MaxWidthWrapper'
 import AuthContext from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
+import { format } from '@formkit/tempo'
+
 
 
 const ItemDetail = () => {
@@ -15,28 +17,8 @@ const ItemDetail = () => {
   const { data, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/${id}`
+    `/api/item/${id}`
     )
-
-
-  
-  const formatearFecha = useMemo(
-    () => (fecha) => {
-      return new Date(fecha).toLocaleString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false
-      })
-    },
-    []
-  )
-
-  console.log(data)
-
 
   return (
     <MaxWidthWrapper>
@@ -50,12 +32,10 @@ const ItemDetail = () => {
               foto={data.foto} 
               nombre={data.nombre}
               descripcion={data.descripcion}
-              fecha_creacion={formatearFecha(data.fecha_creacion)}
+              fecha_creacion={format(data.fecha_creacion, { date: 'short', time: 'short' })}
               proveedores={data.proveedores}
-              editMode={setEditMode}
-              editable={editMode}
               token={authTokens}
-              fecha_modificacion={formatearFecha(data.fecha_modificacion)}
+              fecha_modificacion={format(data.fecha_modificacion, { date: 'short', time: 'short' })}
               />
           )
         }

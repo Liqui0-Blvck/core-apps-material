@@ -11,19 +11,19 @@ const HeaderFormularioRegistro = ({ formik }) => {
   const { data: proveedores } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/`
+    `/api/proveedor/`
   )
 
   const { data: sucursales } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales`
+    `/api/proveedor/${proveedor}/sucursales`
   )
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/proveedor/${proveedor}/sucursales/${sucursal}`
+    `/api/proveedor/${proveedor}/sucursales/${sucursal}`
   )
 
   const proveedorSeleccionado = proveedores && proveedores.find(pro => pro.id === Number(proveedor))

@@ -21,10 +21,11 @@ const FormularioEditableInvento = () => {
   const { pathname } = useLocation()
   const [isValid, setIsValid] = useState(false)
   const id = urlNumeros(pathname)
+  const base_url = import.meta.env.VITE_BASE_URL
   const { data: invento } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/invento/${id}`
+    `/api/invento/${id}`
   )
 
   console.log(id)
@@ -68,7 +69,7 @@ const FormularioEditableInvento = () => {
       formData.append('items', itemsJson);
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/invento/${id}/`, {
+        const response = await fetch(`${base_url}/api/invento/${id}/`, {
           method: 'PUT',
           body: formData
         });

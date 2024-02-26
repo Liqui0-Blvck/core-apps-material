@@ -20,6 +20,7 @@ import { visuallyHidden } from '@mui/utils';
 import toast from 'react-hot-toast'
 import { Link as Ln } from 'react-router-dom'
 import { Skeleton } from '@mui/material';
+import { format } from '@formkit/tempo';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -237,6 +238,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -256,7 +258,7 @@ export default function TablaItem({ data, setData, token, loading }) {
   const handleDeleteClick = async () => {
     try {
 
-      const response = await fetch(`http://127.0.0.1:8000/api/item-delete/`, {
+      const response = await fetch(`${base_url}/api/item-delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -404,7 +406,7 @@ export default function TablaItem({ data, setData, token, loading }) {
                         <TableCell className='text-clip overflow-hidden'>
                           <p className='relative left-10'>{row.stock_bodega}</p>
                         </TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.fecha_creacion}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>
                       </>
                     )}
                   </TableRow>
