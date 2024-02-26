@@ -14,15 +14,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     padding: 10,
-    // border: '1px solid black'
   },
   head_box: {
     width: '100%',
-    // border: '2px solid black',
     display: 'flex',
     flexDirection: 'column',
-    // gridTemplateRows: 'repeat(2, auto)',
-    height: '300px'
+    height: '300px',
   },
   head_box_1: {
     width: '100%',
@@ -32,7 +29,6 @@ const styles = StyleSheet.create({
   },
   head_box_left: {
     width: '50%',
-    // border: '2px solid black',
     display: 'flex',
     flexDirection: 'column',
     height: '150px',
@@ -43,7 +39,6 @@ const styles = StyleSheet.create({
   },
   head_box_right: {
     width: '50%',
-    // border: '2px solid black',
     display: 'flex',
     flexDirection: 'column',
     height: '150px',
@@ -131,7 +126,6 @@ const OrdenDeCompraPDF = () => {
     `http://127.0.0.1:8000/api/orden-compra/${id}`
   )
 
-  console.log(ordenCompra)
 
   const { data: sucursalSeleccionado } = useAuthenticatedFetch(
     authTokens,
@@ -147,42 +141,42 @@ const OrdenDeCompraPDF = () => {
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
       <Document width="500" height="500">
-      <Page size="A4" style={styles.page}>
-        <View style={styles.head_box}>
-          <View style={styles.head_box_1}>
-            
+        <Page size="A4" style={styles.page}>
+          <View style={styles.head_box}>
+            <View style={styles.head_box_1}>
 
-            <View style={styles.head_box_left}>
-              <View style={{ width: '150px', height: '250px', position: 'relative', top: 0, right: 60}}>
-                <Image source="/img/logosnabbit.jpg" style={styles.logo} />
-              </View>
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Nombre Orden:</Text>
-                <View style={styles.input_text}>
+
+              <View style={styles.head_box_left}>
+                <View style={{ width: '150px', height: '250px', position: 'relative', top: 0, right: 60 }}>
+                  <Image source="/img/logosnabbit.jpg" style={styles.logo} />
+                </View>
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Nombre Orden:</Text>
+                  <View style={styles.input_text}>
                     <Text>{ordenCompra && ordenCompra.nombre}</Text>
+                  </View>
                 </View>
-              </View>
 
-              <View style={styles.input_style}>
-                <Text style={styles.label}>N° cotización:</Text>
-                <View style={styles.input_text}>
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>N° cotización:</Text>
+                  <View style={styles.input_text}>
                     <Text>{ordenCompra && ordenCompra.numero_cotizacion}</Text>
+                  </View>
                 </View>
-              </View>
 
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Proveedor:</Text>
-                <View style={styles.input_text}>
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Proveedor:</Text>
+                  <View style={styles.input_text}>
                     <Text>{ordenCompra && ordenCompra.proveedor_nombre}</Text>
                   </View>
+                </View>
               </View>
-            </View>
 
-            <View style={styles.head_box_right}>
-              <View style={{height: 100 }}>
+              <View style={styles.head_box_right}>
+                <View style={{ height: 100 }}>
 
-              </View>
-              <View style={styles.input_style}>
+                </View>
+                <View style={styles.input_style}>
                   <Text style={styles.label}>N° Orden:</Text>
                   <View style={styles.input_text}>
                     <Text>{ordenCompra && ordenCompra.numero_oc}</Text>
@@ -192,7 +186,7 @@ const OrdenDeCompraPDF = () => {
                 <View style={styles.input_style}>
                   <Text style={styles.label}>Fecha Orden:</Text>
                   <View style={styles.input_text}>
-                    <Text>{ordenCompra && format(ordenCompra.fecha_orden, { date: 'full'}, 'es')}</Text>
+                    <Text>{ordenCompra && format(ordenCompra.fecha_orden, { date: 'full' }, 'es')}</Text>
                   </View>
                 </View>
 
@@ -202,111 +196,111 @@ const OrdenDeCompraPDF = () => {
                     <Text>{ordenCompra && ordenCompra.sucursal_nombre}</Text>
                   </View>
                 </View>
-            </View>
-
-          </View>
-          <View style={styles.head_box_1}>
-            <View style={styles.head_box_left}>
-              <View style={styles.info_bar}>
-                <Text style={{ color: 'white', fontSize: '12px' }}>Proveedor</Text>
               </View>
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Proveedor:</Text>
-                <View style={styles.input_text}>
-                  <Text>{proveedor && proveedor.nombre}</Text>
+
+            </View>
+            <View style={styles.head_box_1}>
+              <View style={styles.head_box_left}>
+                <View style={styles.info_bar}>
+                  <Text style={{ color: 'white', fontSize: '12px' }}>Proveedor</Text>
                 </View>
-              
-              </View>
-
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Contacto:</Text>
-
-                <View style={styles.input_text}>
-                  <Text>{proveedor && proveedor.contacto}</Text>
-                </View>
-              </View>
-
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Correo:</Text>
-                <View style={styles.input_text}>
-                  <Text>{proveedor && proveedor.correo}</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.head_box_right}>
-              <View style={styles.info_bar}>
-                <Text style={{ color: 'white', fontSize: '12px' }}>Sucursal</Text>
-              </View>
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Nombre:</Text>
-                <View style={styles.input_text}>
-                  <Text>{sucursalSeleccionado && sucursalSeleccionado.nombre}</Text>
-                </View>
-              </View>
-
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Dirección:</Text>
-                <View style={styles.input_text}>
-                  <Text>{sucursalSeleccionado && sucursalSeleccionado.direccion}</Text>
-                </View>
-              </View>
-
-              <View style={styles.input_style}>
-                <Text style={styles.label}>Región:</Text>
-                <View style={styles.input_text}>
-                  <Text>{sucursalSeleccionado && sucursalSeleccionado.region_nombre}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.footer_box}>
-          <View style={styles.footer_header}>
-            <View style={{ width: '50%'}}>
-              <Text style={{ fontSize: '12px', textAlign: 'center'}}>Item</Text>
-            </View>
-            <View style={{ width: '30%'}}>
-              <Text style={{ fontSize: '12px'}}>Cantidad</Text>
-            </View>
-            <View style={{ width: '30%'}}>
-              <Text style={{ fontSize: '12px'}}>Costo</Text>
-            </View>
-            <View style={{ width: '30%'}}>
-              <Text style={{ fontSize: '12px'}}>Observación</Text>
-            </View>
-          </View>
-
-          <View>
-            {
-              ordenCompra && ordenCompra.items.map((item) => {
-                return (
-                  <View key={item.id} style={styles.items_box}>
-                    <View style={{ width: '100%', paddingLeft: '80px'}}>
-                      <Text style={{ fontSize: '12px'}}>{item.item_nombre}</Text>
-                    </View>
-
-                    <View style={{ width: '100%', paddingLeft: '80px'}}>
-                      <Text style={{ fontSize: '12px'}}>{item.unidad_de_compra}</Text>
-                    </View>
-
-                    <View style={{ width: '100%', paddingLeft: '60px'}}>
-                      <Text style={{ fontSize: '12px'}}>{item.costo_por_unidad}</Text>
-                    </View>
-
-                    <View style={{ width: '100%'}}>
-                      <Text style={{ fontSize: '12px'}}>{item.observaciones}</Text>
-                    </View>
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Proveedor:</Text>
+                  <View style={styles.input_text}>
+                    <Text>{proveedor && proveedor.nombre}</Text>
                   </View>
-                )
-              })
-            }
+
+                </View>
+
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Contacto:</Text>
+
+                  <View style={styles.input_text}>
+                    <Text>{proveedor && proveedor.contacto}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Correo:</Text>
+                  <View style={styles.input_text}>
+                    <Text>{proveedor && proveedor.correo}</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.head_box_right}>
+                <View style={styles.info_bar}>
+                  <Text style={{ color: 'white', fontSize: '12px' }}>Sucursal</Text>
+                </View>
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Nombre:</Text>
+                  <View style={styles.input_text}>
+                    <Text>{sucursalSeleccionado && sucursalSeleccionado.nombre}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Dirección:</Text>
+                  <View style={styles.input_text}>
+                    <Text>{sucursalSeleccionado && sucursalSeleccionado.direccion}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.input_style}>
+                  <Text style={styles.label}>Región:</Text>
+                  <View style={styles.input_text}>
+                    <Text>{sucursalSeleccionado && sucursalSeleccionado.region_nombre}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
-      </Page>
-    </Document>
-  </PDFViewer>
+
+          <View style={styles.footer_box}>
+            <View style={styles.footer_header}>
+              <View style={{ width: '50%' }}>
+                <Text style={{ fontSize: '12px', position: 'relative', left: '70px' }}>Item</Text>
+              </View>
+              <View style={{ width: '30%' }}>
+                <Text style={{ fontSize: '12px' }}>Cantidad</Text>
+              </View>
+              <View style={{ width: '30%' }}>
+                <Text style={{ fontSize: '12px' }}>Costo</Text>
+              </View>
+              <View style={{ width: '30%' }}>
+                <Text style={{ fontSize: '12px' }}>Observación</Text>
+              </View>
+            </View>
+
+            <View>
+              {
+                ordenCompra && ordenCompra.items.map((item) => {
+                  return (
+                    <View key={item.id} style={styles.items_box}>
+                      <View style={{ width: '100%', paddingLeft: '40px', textAlign: 'center' }}>
+                        <Text style={{ fontSize: '12px' }}>{item.item_nombre}</Text>
+                      </View>
+
+                      <View style={{ width: '100%', paddingLeft: '80px' }}>
+                        <Text style={{ fontSize: '12px' }}>{item.unidad_de_compra}</Text>
+                      </View>
+
+                      <View style={{ width: '100%', paddingLeft: '60px' }}>
+                        <Text style={{ fontSize: '12px' }}>{item.costo_por_unidad}</Text>
+                      </View>
+
+                      <View style={{ width: '100%' }}>
+                        <Text style={{ fontSize: '12px' }}>{item.observaciones}</Text>
+                      </View>
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </View>
+        </Page>
+      </Document>
+    </PDFViewer>
   )
 }
 

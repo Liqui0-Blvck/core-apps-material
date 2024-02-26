@@ -90,7 +90,7 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                       }}
                       onSearch={onSearch}
                       name='item'
-                      value={items.find(item => item.id === 1)?.nombre}
+                      value={items && items.find(item => item.id === 1)?.nombre}
                       filterOption={filterOption}
                       options={options}
                     />
@@ -137,12 +137,12 @@ const FooterFormularioEditableRegistro = ({ formik, handleChange, rows, setRows 
                     />
                   </TableCell>
                   <TableCell align="right">
-                      <button type='button'
-                          onClick={() => eliminarFila(row.id)}
-                          className='border border-red-800 px-4 py-2 rounded-md 
+                    <button type='button'
+                      onClick={() => eliminarFila(row.id)}
+                      className='border border-red-800 px-4 py-2 rounded-md 
                           hover:scale-110 hover:bg-red-700 text-red-800 hover:text-white'>
-                        Eliminar
-                      </button>
+                      Eliminar
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

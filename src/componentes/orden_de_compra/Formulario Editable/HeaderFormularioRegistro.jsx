@@ -16,7 +16,6 @@ const HeaderFormularioRegistro = ({ formik }) => {
     `http://127.0.0.1:8000/api/proveedor/`
   )
 
-  console.log(proveedores)
 
   const { data: sucursales } = useAuthenticatedFetch(
     authTokens,
@@ -46,7 +45,7 @@ const HeaderFormularioRegistro = ({ formik }) => {
   useEffect(() => {
     let isMounted = true
 
-    if (proveedor && sucursal && isMounted){
+    if (proveedor && sucursal && isMounted) {
       setProveedor(formik.values.proveedor)
       setSucursal(formik.values.sucursal)
     }
@@ -56,7 +55,6 @@ const HeaderFormularioRegistro = ({ formik }) => {
     }
   }, [proveedor, sucursal])
 
-  console.log(proveedor)
 
   return (
     <section className='mb-5 overflow-hidden'>
@@ -74,8 +72,8 @@ const HeaderFormularioRegistro = ({ formik }) => {
               type="text"
               name='nombre'
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-6/12 md:w-full w-8/12'
-              onChange={formik.handleChange} 
-              value={formik.values.nombre}/>
+              onChange={formik.handleChange}
+              value={formik.values.nombre} />
           </div>
 
           <div className='row-start-6 w-full md:w-[80%]  flex gap-3 justify-between items-center'>
@@ -84,8 +82,8 @@ const HeaderFormularioRegistro = ({ formik }) => {
               type="text"
               name='numero_cotizacion'
               className='px-2.5 h-10 border-[1px] border-gray-300 rounded-md lg:w-6/12 md:w-full w-8/12'
-              onChange={formik.handleChange} 
-              value={formik.values.numero_cotizacion}/>
+              onChange={formik.handleChange}
+              value={formik.values.numero_cotizacion} />
           </div>
 
           <div className='row-start-7 w-full md:w-[80%] flex lg:gap-3 gap-2 justify-between items-center'>
@@ -118,7 +116,7 @@ const HeaderFormularioRegistro = ({ formik }) => {
               type='date'
               name='fecha_orden'
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md lg:w-6/12 md:w-full w-8/12'
-              onChange={formik.handleChange}/>
+              onChange={formik.handleChange} />
           </div>
 
           <div className='row-start-3 w-full flex gap-3 justify-between items-center'>
@@ -127,8 +125,8 @@ const HeaderFormularioRegistro = ({ formik }) => {
               type="text"
               name='numero_oc'
               className='px-2 h-10 border-[1px] border-gray-300 rounded-md lg:w-6/12 md:w-full w-8/12'
-              onChange={formik.handleChange} 
-              value={formik.values.numero_oc}/>
+              onChange={formik.handleChange}
+              value={formik.values.numero_oc} />
           </div>
 
           <div className='row-start-5 w-full items-center flex gap-3 justify-between '>

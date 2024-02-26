@@ -154,7 +154,8 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
   const { numSelected, handleDeleteClick, selected, handleUpdateClick, data } = props;
-  const datos = data.filter(item => selected.includes(item.id));
+  const datos = data.filter(item => selected.includes(item.id))
+  console.log(datos)
   const [estado, setEstado] = React.useState({
     label: '',
     estado_oc: null,
@@ -209,7 +210,7 @@ function EnhancedTableToolbar(props) {
             <Ln to={`/app/registro-guia-salida`}>
               <div className='w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-[#224871]'>
                 <span className='font-semibold'>Agregar Guia de Salida</span>
-              </div>  
+              </div>
             </Ln>
           )
           : null
@@ -221,7 +222,7 @@ function EnhancedTableToolbar(props) {
             {datos[0].estado_guia_label === 'Aprobada' || datos[0].estado_guia_label === 'Rechazada' || datos[0].estado_guia_label === 'Finalizado' ? (
               datos[0].estado_guia_label === 'Aprobada' && (
                 <>
-                  
+
                 </>
               )
             ) : (
@@ -244,17 +245,25 @@ function EnhancedTableToolbar(props) {
               </>
             )}
 
+            <Tooltip title='Editar'>
+              <Ln to={`/pdf-preview-guia/${selected}`} target='_blank'>
+                <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
+                  PDF
+                </button>
+              </Ln>
+            </Tooltip>
+
             <Ln to={`/app/guia-salida/${selected}`}>
-              <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>  
+              <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
                 Detalles
               </button>
             </Ln>
 
             {
-              datos[0].estado_guia_label === 'Finalizado' 
+              datos[0].estado_guia_label === 'Finalizado'
                 ? null
                 : (
-                  <Ln to={`/app/edicion-guia-salida/${selected}`} state={{ tipo: `${datos[0].estado_guia_label === 'Creada' ? 'Editar' : 'Firmar'}`}}>
+                  <Ln to={`/app/edicion-guia-salida/${selected}`} state={{ tipo: `${datos[0].estado_guia_label === 'Creada' ? 'Editar' : 'Firmar'}` }}>
                     <button type='button' className={`${datos[0].estado_guia_label === 'Creada' ? '' : 'w-48'} bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105`}>
                       {
                         datos[0].estado_guia_label === 'Creada'
@@ -265,8 +274,8 @@ function EnhancedTableToolbar(props) {
                   </Ln>
                 )
             }
-        </div>
-      ) : null}
+          </div>
+        ) : null}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <button type='button' onClick={handleDeleteClick}>
@@ -307,54 +316,54 @@ export default function TablaOrdenDeCompra({ data, setData, token, loading, setR
   };
 
   const handleUpdateClick = async (estado) => {
-  try {
-    const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${selected}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ estado_guia: estado })
-    })
-    if (response.ok) {
-      toast.success("Acción realizada correctamente")
-      setRefresh(true)
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_update/${selected}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ estado_guia: estado })
+      })
+      if (response.ok) {
+        toast.success("Acción realizada correctamente")
+        setRefresh(true)
+      }
+    } catch (error) {
+      console.log("algo mal estas haciendo")
     }
-  } catch (error) {
-    console.log("algo mal estas haciendo")
   }
-}
 
-const handleDeleteClick = async () => {
-  try {
-    console.log("Eliminar elementos seleccionados:", selected);
+  const handleDeleteClick = async () => {
+    try {
+      console.log("Eliminar elementos seleccionados:", selected);
 
-    // Realiza la solicitud de eliminación al servidor
-    const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_delete/`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-        // 'authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ ids: selected })
-    });
+      // Realiza la solicitud de eliminación al servidor
+      const response = await fetch(`http://127.0.0.1:8000/api/guia_salida_delete/`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+          // 'authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ ids: selected })
+      });
 
-    if (response.ok){
-      toast.success('Ordenes eliminadas con exito!')
-    } else {
-      toast.error('No se ha podido eliminar, ¡vuelve a intentarlo!')
+      if (response.ok) {
+        toast.success('Ordenes eliminadas con exito!')
+      } else {
+        toast.error('No se ha podido eliminar, ¡vuelve a intentarlo!')
+      }
+
+      const newData = data.filter(item => !selected.includes(item.id));
+      setData(newData);
+
+      setSelected([]);
+
+    } catch (error) {
+      console.error("Error al eliminar elementos:", error);
+
     }
+  };
 
-    const newData = data.filter(item => !selected.includes(item.id));
-    setData(newData);
-
-    setSelected([]);
-
-  } catch (error) {
-    console.error("Error al eliminar elementos:", error);
-
-  }
-};
-    
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -482,7 +491,7 @@ const handleDeleteClick = async () => {
                         <TableCell align='center' className='text-clip overflow-hidden'>{row.encargado}</TableCell>
                         <TableCell >{row.destinatario}</TableCell>
                         <TableCell className='text-clip overflow-hidden'>{row.estado_guia_label}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, {date: 'short', time: 'short'})}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>
                       </>
                     )}
                   </TableRow>

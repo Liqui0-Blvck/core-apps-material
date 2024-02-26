@@ -55,13 +55,13 @@ export function SignIn() {
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
         <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
-          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
+          <Typography variant="h2" className="font-bold mb-4">Inicia Sesión</Typography>
+          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Ingresa tu nombre de registro y contraseña para ingresar</Typography>
         </div>
         <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={formik.handleSubmit}>
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-              Your email
+              Tu nombre
             </Typography>
             <Input
               size="lg"
@@ -74,7 +74,7 @@ export function SignIn() {
               }}
             />
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-              Password
+              Contraseña
             </Typography>
             <Input
               onChange={formik.handleChange}
@@ -88,31 +88,13 @@ export function SignIn() {
               }}
             />
           </div>
-          <Checkbox
-            label={
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center justify-start font-medium"
-              >
-                I agree the&nbsp;
-                <a
-                  href="#"
-                  className="font-normal text-black transition-colors hover:text-gray-900 underline"
-                >
-                  Terms and Conditions
-                </a>
-              </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-          />
           <Button className="mt-6" fullWidth type="submit"  >
-            Sign In
+            Ingresa
           </Button>
 
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
-            Not registered?
-            <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>
+            Estas registrado?
+            <Link to="/auth/sign-up" className="text-gray-900 ml-1">Crea una cuenta</Link>
           </Typography>
         </form>
 
