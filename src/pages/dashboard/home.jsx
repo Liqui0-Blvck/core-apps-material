@@ -12,13 +12,13 @@ export function Home() {
   const { data: items} = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/items/`
+    `/api/items/`
   )
 
   const { data: ordenes, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/orden-compra/`
+    `/api/orden-compra/`
   )
 
 
@@ -37,7 +37,7 @@ export function Home() {
               <StatisticsCard
                 title='Stock items'
                 icon={<Inventory2RoundedIcon style={{ fontSize: '50px'}}/>}
-                value={items ? items.length: 0}
+                value={items ? items.length : 0}
               />
             )}  
 
@@ -49,7 +49,7 @@ export function Home() {
               <StatisticsCard
                 title='Ordenes Aprobadas'
                 icon={<TextSnippetRoundedIcon style={{ fontSize: '50px'}}/>}
-                value={ordenes_filtered ?  ordenes_filtered.length : 0}
+                value={ordenes_filtered ? ordenes_filtered.length : 0}
               />
             )}
           

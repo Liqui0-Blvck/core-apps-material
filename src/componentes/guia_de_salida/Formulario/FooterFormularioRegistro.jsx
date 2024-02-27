@@ -7,12 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 import { FaCirclePlus } from "react-icons/fa6";
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { useAuth } from '@/context/AuthContext';
 import { Select } from 'antd';
-import { ContentTypes } from '@/const/constantes';
 import SignatureCanvas from "react-signature-canvas";
 import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from 'react-icons/io'
@@ -21,15 +19,8 @@ import { dataURLtoFile } from '@/services/captureSignature';
 
 const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
   const { authTokens, validToken } = useAuth()
-  const [tipoSeleccionado, setTipoSeleccionado] = useState(0)
-  const [tipo_objeto, setTipoObjeto] = useState(null)
+  const [tipo_objeto, setTipoObjeto] = useState(0)
   const sigCanvas = useRef()
-  const { data: objeto } = useAuthenticatedFetch(
-    authTokens,
-    validToken,
-    `/api/${tipo_objeto}s/`
-  )
-  
   const { data: items } = useAuthenticatedFetch(
     authTokens,
     validToken,
@@ -47,9 +38,14 @@ const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
     validToken,
     `/api/content-types/`
   )
+  const tipo_objeto_seleccionado = content_types && content_types.find(ct => ct.id === tipo_objeto)?.app_label
+  const { data: objeto } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    `/api/${tipo_objeto_seleccionado}/`
+  )
 
-  console.log(content_types)
-  
+    
 
   const agregarFila = () => {
     const nuevaFila = { id: rows.length,  object_id: 0, cantidad: 0, content_type: 0, guia_salida: 0 };
@@ -61,7 +57,7 @@ const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
   };
 
   const handleChangeRow = (id, fieldName, value) => {
-    setTipoSeleccionado(value)
+    setTipoObjeto(value)
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === id ? { ...row, [fieldName]: value } : row))
     );
@@ -104,22 +100,24 @@ const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
             </TableHead>
             <TableBody>
               {rows && rows.map((row, index) => {
-                const limite = objeto && objeto.find(item => item.id === row.item)?.stock_bodega
-                const options = row.content_type === 13 
+                const limite = objeto && objeto.find(item => item.id === row.object_id)?.stock_bodega
+                const tipo_seleccionado = content_types && content_types.find(ct => ct.id === row.content_type)?.app_label
+                const options = tipo_seleccionado === 'items'
                   ? items && items
                       .filter(item => !rows.some(rowItem => rowItem.object_id === item.id))
                       .map(item => ({
                         value: item.id,
                         label: item.nombre
                       }))
-                  : row.content_type === 31 
+                  : tipo_seleccionado === 'invento'
                     ? inventos && inventos
                         .filter(invento => !rows.some(rowItem => rowItem.object_id === invento.id))
                         .map(invento => ({
                           value: invento.id,
                           label: invento.nombre
                         }))
-                    : [];
+                    : []
+
                 return (
                 <TableRow key={index} style={{ background: '#F3F4F6' }}>
                   <TableCell component="th" scope="row" style={{maxWidth: '250px', minWidth: '250px'}}>
@@ -164,7 +162,7 @@ const FooterFormularioRegistro = ({ formik, rows, setRows }) => {
                         className='rounded-md col-span-3 h-10 w-full'
                         onChange={value => {
                           handleChangeRow(index, "content_type", value)
-                          setTipoObjeto()
+                          setTipoObjeto(value)
                         }}
                         onSearch={onSearch}
                         name='content_type'

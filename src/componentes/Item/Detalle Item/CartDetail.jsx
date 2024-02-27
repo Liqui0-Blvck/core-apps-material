@@ -1,15 +1,13 @@
-import { ComponenteSchema } from '@/services/Validator';
-import { compresor } from '@/services/compresor_imagen';
+
 import Card from '@mui/joy/Card'
 import CardContent from '@mui/joy/CardContent';
-import { useFormik } from 'formik';
-import { useContext, useMemo, useState } from 'react';
-import { IoMdClose } from 'react-icons/io';
-import { Input, Timeline } from 'antd'
-import AuthContext, { useAuth } from '@/context/AuthContext';
+import { useState } from 'react';
+import { Input } from 'antd'
+import { useAuth } from '@/context/AuthContext';
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import { Link, useLocation } from 'react-router-dom';
 import { urlNumeros } from '@/services/url_number';
+import { format } from '@formkit/tempo';
 
 const { TextArea } = Input
 
@@ -156,7 +154,7 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                         <div className="flex flex-col items-center relative">
                           <div className="h-12 w-full bg-green-600 rounded-md flex items-center justify-center px-2 z-20">
                             <span className="text-center font-semibold text-white">
-                              {formatearFecha(historia.history_date, 'long')}
+                              {format(historia.history_date, {date: 'full' }, 'es' )}
                             </span>
                           </div>
                           <div className="w-2 bg-gray-400 absolute h-full rounded-md top-10" />
@@ -170,7 +168,7 @@ export default function CartDetail({ fecha_creacion, fecha_modificacion, foto, n
                                     <h3 className="font-semibold text-md text-ellipsis">{nombre}</h3>
                                   </div>
                                   <div className="col-start-5 flex justify-end px-5 items-center gap-3">
-                                    <span className="text-sm text-gray-500"><i className="fas fa-clock mr-1"></i>{formatearFecha2(historiaMismo.history_date, {hour: 'numeric', minute: 'numeric', second: 'numeric'})}</span>
+                                    <span className="text-sm text-gray-500"><i className="fas fa-clock mr-1"></i>{format(historiaMismo.history_date, {date: 'short'})}</span>
                                   </div>
                                   <div className="row-start-2 col-span-5 border-t border-gray-400" />
                                 </div>

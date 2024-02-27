@@ -144,6 +144,7 @@ const GuiaSalidaPDF = () => {
     `/api/guia_salida/${id}/`
   )
 
+  console.log(guia)
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
       <Document width="500" height="500">
@@ -205,13 +206,11 @@ const GuiaSalidaPDF = () => {
 
               <View style={{ height: '100%'}}>
                 {
-                  guia && guia.objetos_en_guia.map((obj) => {
-                    console.log(obj)
-                    console.log(obj.articulo.map(objName => objName.nombre))
+                  guia && guia.elementos.map((obj) => {
                     return (
                       <View key={obj.id} style={styles.items_box}>
                         <View style={{ width: '100%', textAlign: 'center', position: 'relative', left: '10px' }}>
-                          <Text style={{ fontSize: '12px' }}>{obj.articulo.map(objName => objName.nombre)}</Text>
+                          <Text style={{ fontSize: '12px' }}>{obj.elemento.map(objName => objName.nombre)}</Text>
                         </View>
 
                         <View style={{ width: '100%', paddingLeft: '90px' }}>

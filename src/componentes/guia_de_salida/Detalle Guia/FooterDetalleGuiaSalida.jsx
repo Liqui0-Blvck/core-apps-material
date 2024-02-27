@@ -33,26 +33,19 @@ const FooterDetalleGuiaSalida = ({ formik, rows }) => {
     validToken,
     '/api/inventos/'
   )
+  
+  const { data: content_types } = useAuthenticatedFetch(
+    authTokens,
+    validToken,
+    '/api/content-types/'
+  )
 
-  const itemNombre = items &&
-    items.filter(item => rows.some(rowItem => Number(rowItem.object_id) === item.id))
-      .map(item => ({
-        value: item.id,
-        label: item.nombre
-      }))
-
-  const inventoNombre = inventos &&
-    inventos.filter(item => rows.some(rowItem => Number(rowItem.object_id) === item.id))
-      .map(item => ({
-        value: item.id,
-        label: item.nombre
-      }))
 
   const objeto = (content_type) => {
     let obj
     if (content_type === 'items') {
       obj = items
-    } else if (content_type === 'inventos') {
+    } else if (content_type === 'invento') {
       obj = inventos
     }
 
@@ -82,23 +75,17 @@ const FooterDetalleGuiaSalida = ({ formik, rows }) => {
             </TableHead>
             <TableBody sx={{ position: 'relative'}}>
               {rows && rows.map((row, index) => {
-                const tipo_objeto = ContentTypes.find(obj => obj.value === row.content_type)?.path;
-                const limite = objeto(tipo_objeto) && objeto(tipo_objeto).find(obj => obj.id === row.object_id)?.stock_bodega;
+                const tipo_seleccionado = content_types && content_types.find(ct => ct.id === row.content_type)?.app_label
+                const limite = objeto(tipo_seleccionado) && objeto(tipo_seleccionado).find(obj => obj.id === row.object_id)?.stock_bodega;
 
-                const inventoSelected = inventoNombre && inventoNombre
-                  .find(inventoName => inventos.some(invento => invento.id === inventoName.value && row.object_id === invento.id))
-
-                const itemSelected = itemNombre && itemNombre
-                  .find(itemName => items.some(item => item.id === itemName.value && row.object_id === item.id))
-
-                const options = row.content_type === 13 
+                const options = tipo_seleccionado === 'items' 
                   ? items && items
                       .filter(item => !rows.some(rowItem => rowItem.object_id === item.id))
                       .map(item => ({
                         value: item.id,
                         label: item.nombre
                       }))
-                  : row.content_type === 31 
+                  : tipo_seleccionado === 'invento' 
                     ? inventos && inventos
                         .filter(invento => !rows.some(rowItem => rowItem.object_id === invento.id))
                         .map(invento => ({
@@ -117,7 +104,7 @@ const FooterDetalleGuiaSalida = ({ formik, rows }) => {
                       optionFilterProp="children"
                       className='rounded-md col-span-3 h-10 w-full'
                       name='object_id'
-                      value={row.content_type === 13 ? itemSelected?.label : row.content_type === 31 ? inventoSelected?.label : 'Selecciona uno'}
+                      value={row.elemento && row.elemento.find(el => el.id === row.object_id)?.nombre}
                       options={options}
                       disabled
                     />

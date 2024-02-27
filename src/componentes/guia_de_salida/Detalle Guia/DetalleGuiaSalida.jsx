@@ -61,7 +61,7 @@ const DetalleGuiaSalida = () => {
         firma_recepcion: guia_salida.firma_recepcion
       })
 
-      setRows(guia_salida.objetos_en_guia)
+      setRows(guia_salida.elementos)
     }
   }, [guia_salida])
   

@@ -101,7 +101,7 @@ const FormularioEditableGuiaSalida = () => {
         firma_encargado: guia_salida.firma_encargado
       })
 
-      setRows(guia_salida.objetos_en_guia)
+      setRows(guia_salida.elementos)
     }
   }, [guia_salida])
   

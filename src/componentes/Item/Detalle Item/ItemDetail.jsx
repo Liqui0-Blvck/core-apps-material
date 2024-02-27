@@ -1,8 +1,7 @@
-import { useContext, useMemo, useState,} from 'react'
 import { useLocation } from 'react-router-dom'
 import CartDetail from './CartDetail'
 import MaxWidthWrapper from '../../MaxWidthWrapper'
-import AuthContext from '@/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { urlNumeros } from '@/services/url_number'
 import { format } from '@formkit/tempo'
@@ -10,10 +9,9 @@ import { format } from '@formkit/tempo'
 
 
 const ItemDetail = () => {
-  const { authTokens, validToken } = useContext(AuthContext)
+  const { authTokens, validToken } = useAuth()
   const { pathname } = useLocation()
   const id = urlNumeros(pathname)
-  const [editMode, setEditMode] = useState(false)
   const { data, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
