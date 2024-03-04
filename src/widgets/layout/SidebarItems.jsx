@@ -9,7 +9,8 @@ const SidebarItem = ({ obj, open, handleClick, renderNestedList, index }) => {
     <React.Fragment key={obj.name}>
       <ListItemButton onClick={() => handleClick(obj.name)}>
         {
-          obj.name === 'Registros'
+          obj.name === 'Registros' &&
+          obj.name === 'Listas'
             ? <ListItemText primary={obj.name} className='rounded-sm'/>
             : (
               <Link to={obj.path} className='w-full'>

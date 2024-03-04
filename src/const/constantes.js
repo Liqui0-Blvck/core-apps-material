@@ -90,3 +90,11 @@ export const ESTADO_CLIENTE = [
   {value: 1 , label: 'Activo'},
   {value: 2 , label: 'Inactivo'},
 ]
+
+
+export const TIPOS_OPERARIO = [
+  { values: 'seleccion', label: 'Operario de Selección'},
+  { values: 'colosos', label: 'Operario Colosos'},
+  { values: 'gruero', label: 'Operario Gruero'},
+  { values: 'embalaje', label: 'Operario Embalaje'},
+]
