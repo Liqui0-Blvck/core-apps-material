@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { Input, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
 import { useFormik } from 'formik';
+import { ComponenteSchema } from '@/services/Validator'
 import { useAuth } from '@/context/AuthContext';
-import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch';
 import MaxWidthWrapper from '@/componentes/MaxWidthWrapper';
-import { ComponenteSchema } from '@/services/Validator';
 import toast from 'react-hot-toast';
 import { ESTADO_CLIENTE, TIPO_CLIENTE } from '@/const/constantes';
 
@@ -18,6 +18,7 @@ const FormularioRegistroClientes = () => {
   const [imagen, setImagen] = useState(null)
   const { authTokens, validToken } = useAuth()
   const navigate = useNavigate()
+  const base_url = import.meta.env.VITE_BASE_URL
   
   const formik = useFormik({
     initialValues: {
@@ -44,7 +45,7 @@ const FormularioRegistroClientes = () => {
       }
   
       try {
-        const response = await fetch('http://localhost:8000/api/clientes/', {
+        const response = await fetch(`${base_url}/api/clientes/`, {
           method: 'POST',
           headers: {
             'authorization': `Bearer ${authTokens.access}`

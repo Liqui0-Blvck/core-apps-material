@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 export function SignUp() {
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const navigate = useNavigate()
 
@@ -23,7 +24,7 @@ export function SignUp() {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/auth/registro/', {
+        const response = await fetch(`${base_url}/auth/registro/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

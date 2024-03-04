@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { ListItemButton, ListItemText } from '@mui/material'
 import { Link } from 'react-router-dom'
 

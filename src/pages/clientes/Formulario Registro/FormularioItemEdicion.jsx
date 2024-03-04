@@ -19,17 +19,18 @@ const FormularioEdicion = () => {
   const [filename, setFilename] = useState('No hay imagen seleccionada')
   const [imagen, setImagen] = useState(null)
   const id = urlNumeros(pathname)
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const { data: categoria, loading } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    'http://127.0.0.1:8000/api/categoria/'
+    '/api/categoria/'
     )
 
   const { data: item } = useAuthenticatedFetch(
     authTokens,
     validToken,
-    `http://127.0.0.1:8000/api/item/${id}`
+    `/api/item/${id}`
     )
 
   const navigate = useNavigate()
@@ -52,7 +53,7 @@ const FormularioEdicion = () => {
             formData.append('foto', values.foto);
         
             try {
-              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
+              const response = await fetch(`${base_url}/api/item/${id}/`, {
                 method: 'PUT',
                 headers: {
                   'authorization': `Bearer ${authTokens.access}`
@@ -77,7 +78,7 @@ const FormularioEdicion = () => {
             formData.append('categoria', values.categoria)
         
             try {
-              const response = await fetch(`http://localhost:8000/api/item/${id}/`, {
+              const response = await fetch(`${base_url}/api/item/${id}/`, {
                 method: 'PUT',
                 headers: {
                   'authorization': `Bearer ${authTokens.access}`

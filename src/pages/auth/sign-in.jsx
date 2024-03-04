@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 
 export function SignIn() {
   const [clicked, setClicked] = useState(false)
+  const base_url = import.meta.env.VITE_BASE_URL
   const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export function SignIn() {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/auth/token/', {
+        const response = await fetch(`${base_url}/auth/token/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

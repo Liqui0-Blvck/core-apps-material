@@ -27,7 +27,6 @@ import {
 } from "@/context";
 import AccountMenu from "@/widgets/layout/AccountMenu";
 import { useEffect, useState } from "react";
-import ModalSearchItem from "@/componentes/Item/Modal/ModalSearchItem";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -102,7 +101,6 @@ export function DashboardNavbar() {
         </div>
         <div className="flex items-center">
           <div className="mr-auto md:mr-4 md:w-56">
-            <ModalSearchItem />
           </div>
           <IconButton
             variant="text"

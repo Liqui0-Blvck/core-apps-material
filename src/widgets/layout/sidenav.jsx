@@ -1,27 +1,16 @@
-import PropTypes, { object } from "prop-types";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Link, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  ListItem,
-  Typography,
-} from "@material-tailwind/react";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import { ArrowBack } from "@mui/icons-material";
-import { LISTA_MENU, LISTA_MENU_BODEGA, LISTA_MENU_CLIENTE, LISTA_MENU_GESTION } from "@/routes";
+import { LISTA_MENU } from "@/routes";
 import SidebarItem from "@/widgets/layout/SidebarItems";
 import { useClient } from "@/context/ClientContext";
+import { IconButton } from "@material-tailwind/react";
 
 
 export function Sidenav() {
@@ -29,38 +18,11 @@ export function Sidenav() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(true);
   const [rotate, setRotate] = useState(false)
-  const [mainMenu, setMainMenu] = useState({
-    bodegaSnabbit: false,
-    gestionClientes: false
-  });
-
-  const handleClickClient = () => {
-    if (clientInfo){
-      setClient(null)
-      navigate('/app/home')
-    }
-  }
 
   const handleClick = (name) => {
     setOpen((prevOpen) => ({ ...prevOpen, [name]: !prevOpen[name] }));
     setRotate((prev) => !prev);
-    setMainMenu((prevMainMenu) => ({
-      ...prevMainMenu,
-      bodegaSnabbit: name === 'Bodega Snabbit' ? !prevMainMenu.bodegaSnabbit : prevMainMenu.bodegaSnabbit,
-      gestionClientes: name === 'Gestion Clientes' ? !prevMainMenu.gestionClientes : prevMainMenu.gestionClientes,
-      [name.toLowerCase()]: !prevMainMenu[name.toLowerCase()]
-    }));
   };
-
-  useEffect(() => {
-    let isMounted = true
-    if (clientInfo && isMounted){
-      setMainMenu({bodegaSnabbit: false, gestionClientes: false})
-    }
-    return() => {
-      isMounted = false
-    }
-  }, [clientInfo])
 
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
@@ -98,7 +60,7 @@ export function Sidenav() {
         className={`relative`}
       >
         <Link to="/app/home" className="py-6 px-8 text-center flex" onClick={() => setOpenSidenav(dispatch, false)}>
-          <img src="/img/logosnabbit.gif" alt="logo snabbit consultores" className='w-full h-full object-contain'/>
+          {/* <img src="/img/logosnabbit.gif" alt="logo snabbit consultores" className='w-full h-full object-contain'/> */}
         </Link>
         <IconButton
           variant="text"
@@ -119,30 +81,15 @@ export function Sidenav() {
           subheader={
             <ListSubheader component="div" id="nested-list-subheader" className="flex w-full justify-between items-center">
               <p>Accesos {clientInfo && clientInfo.nombre}</p>
-              {(mainMenu.bodegaSnabbit || mainMenu.gestionClientes || clientInfo) && (
-                <ArrowBack
-                  className="animate-pulse cursor-pointer"
-                  onClick={() => {
-                    setMainMenu({ bodegaSnabbit: false, gestionClientes: false })
-                    handleClickClient()
-                  }}
-                />
-              )}
             </ListSubheader>
 
           }
         >
-          {(
-              mainMenu.bodegaSnabbit ? LISTA_MENU_BODEGA :
-              mainMenu.gestionClientes ? LISTA_MENU_GESTION :
-              clientInfo ? LISTA_MENU_CLIENTE :
-              LISTA_MENU
-            ).map((obj, index) => {
+          {LISTA_MENU.map((obj, index) => {
             return (
               <SidebarItem
                 key={index}
-                obj={obj} 
-                mainMenu={mainMenu}
+                obj={obj}
                 open={open}
                 handleClick={handleClick}
                 renderNestedList={renderNestedList}/>
