@@ -1,22 +1,18 @@
-import AuthContext from "@/context/AuthContext";
-import { LoginSchema } from "@/services/Validator";
+import { useAuth } from "@/context/AuthContext";
 import {
-  Card,
   Input,
-  Checkbox,
   Button,
   Typography,
 } from "@material-tailwind/react";
 import { useFormik } from "formik/dist";
-import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAuthenticatedFetch } from "@/hooks/useAuthenticatedFetch";
 
 
 export function SignIn() {
-  const [clicked, setClicked] = useState(false)
   const base_url = import.meta.env.VITE_BASE_URL
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser } = useAuth()
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -26,7 +22,7 @@ export function SignIn() {
     },
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`${base_url}/auth/token/`, {
+        const response = await fetch(`${base_url}/api/token/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -89,12 +85,21 @@ export function SignIn() {
               }}
             />
           </div>
-          <Button className="mt-6" fullWidth type="submit"  >
+          
+          <Typography variant="paragraph" className=" text-sm text-center text-blue-gray-500 font-medium mt-2">
+            ¿Se te olvido la contraseña?
+            <Link to="/auth/recuperar-cuenta" className="text-gray-900 ml-1">Recuperar cuenta</Link>
+          </Typography>
+
+
+          <Button className="mt-4" fullWidth type="submit"  >
             Ingresa
           </Button>
 
+          
+
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
-            Estas registrado?
+            ¿Estas registrado?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Crea una cuenta</Link>
           </Typography>
         </form>

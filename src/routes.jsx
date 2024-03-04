@@ -6,17 +6,53 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Notifications } from "@/pages/dashboard";
-import { SignIn, SignUp } from "@/pages/auth";
+import { RecuperarCuenta, SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
 
+export const Directions = {
+  'Registros': (children) => (
+    <>
+      {children.map((subitem) => (
+        <AccordionSubItem
+          key={subitem.id}
+          name={subitem.name}
+          path={subitem.path}
+          className={open ? 'bg-blue-gray-700' : ''}
+        />
+      ))}
+    </>
+  ),
+}
+
 export const LISTA_MENU = [
   {
-    name: 'Opcion 1',
-    path: ''
+    name: 'Registros',
+    children: [
+      {
+        name: 'Registro Clientes',
+        path: '/app/registro-clientes'
+      },
+      {
+        name: 'Registro Camiones',
+        path: '/app/registro-camiones'
+      },
+      {
+        name: 'Registro Choferes',
+        path: '/app/registro-choferes'
+      },
+      {
+        name: 'Registro Comercializadores',
+        path: '/app/registro-comercializadores'
+      },
+      {
+        name: 'Registro Operarios',
+        path: '/app/registro-operarios'
+      }
+    ]  
   },
   {
     name: 'Opcion 2',
@@ -55,16 +91,19 @@ export const routes = [
     layout: "auth",
     pages: [
       {
-        icon: <ServerStackIcon {...icon} />,
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
       },
       {
-        icon: <RectangleStackIcon {...icon} />,
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        name: "recuperar cuenta",
+        path: "/recuperar-cuenta",
+        element: <RecuperarCuenta />,
       },
     ],
   }

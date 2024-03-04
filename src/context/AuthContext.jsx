@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [authTokens, setAuthTokens] = useState(() => authTokenLocalStorage)
   const [user, setUser] = useState(()=> userLocalStorage)
   const [loading, setLoading] = useState(false)
+  const base_url = import.meta.env.VITE_BASE_URL
 
   const loginUser = async (response) => {
       const data = await response.json()
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
 
   const validToken = async (token) => {
-    const response = await fetch('http://127.0.0.1:8000/auth/token/verify/', {
+    const response = await fetch(`${base_url}/api/token/verify/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateToken = async () => {
 
-      const response = await fetch('http://127.0.0.1:8000/auth/token/refresh/', {
+      const response = await fetch(`${base_url}/api/token/refresh/`, {
         method:'POST',
         headers:{
             'Content-Type':'application/json'

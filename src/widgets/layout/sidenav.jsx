@@ -4,13 +4,14 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
 import React, { useState } from "react";
 
+
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import { LISTA_MENU } from "@/routes";
 import SidebarItem from "@/widgets/layout/SidebarItems";
 import { useClient } from "@/context/ClientContext";
-import { IconButton } from "@material-tailwind/react";
+import { IconButton, ListItem, } from "@material-tailwind/react";
 
 
 export function Sidenav() {
@@ -36,16 +37,18 @@ export function Sidenav() {
 
   const renderNestedList = (children, index) => (
     <List disablePadding className="m-2" key={index}>
-      {children.map((child) => (
-        <ListItem key={child.id} disablePadding className="ml-5 w-[90%] mb-2 bg-gray-50" onClick={() => {
-          setOpenSidenav(dispatch, false)
-          setOpen(false)
-        }}>
-          <Link to={child.path} className='w-full h-full shadow-none'>
-            <ListItemText primary={child.name} />
-          </Link>
-        </ListItem>
-      ))}
+      {children.map((child) => {
+        return (
+          <ListItem key={child.id} disablePadding className="ml-3 w-[90%] my-2 bg-gray-50" onClick={() => {
+            setOpenSidenav(dispatch, false)
+            setOpen(false)
+          }}>
+            <Link to={child.path} className='w-full h-full shadow-none'>
+              <ListItemText primary={child.name} />
+            </Link>
+          </ListItem>
+        )
+      })}
     </List> 
   );
 
@@ -54,7 +57,7 @@ export function Sidenav() {
     <aside
       className={`${sidenavTypes[sidenavType]} ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-scroll overflow-hidden`}
+      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-64 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-scroll overflow-hidden`}
     >
       <div
         className={`relative`}

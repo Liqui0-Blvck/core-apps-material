@@ -3,8 +3,10 @@ import { StatisticsCard } from "@/widgets/cards";
 import { Skeleton } from "@mui/material";
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import TextSnippetRoundedIcon from '@mui/icons-material/TextSnippetRounded';
+import { useState } from "react";
 
 export function Home() {
+  const [loading, setLoading] = useState(false)
 
   return (
     <div className="mt-14">
