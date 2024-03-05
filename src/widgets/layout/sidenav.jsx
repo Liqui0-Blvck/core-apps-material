@@ -13,6 +13,7 @@ import SidebarItem from "@/widgets/layout/SidebarItems";
 import { useClient } from "@/context/ClientContext";
 import { IconButton, ListItem, } from "@material-tailwind/react";
 import Cookies from "js-cookie";
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
 
 
 export function Sidenav() {
@@ -22,6 +23,7 @@ export function Sidenav() {
     const openCookie = Cookies.get('open');
     return openCookie ? JSON.parse(openCookie) : {};
   });
+  const [isOpen, setIsOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState(Cookies.get('selectedItem') || null);
   const [rotate, setRotate] = useState(false)
 
@@ -31,6 +33,7 @@ export function Sidenav() {
     setOpen((prevOpen) => ({ ...prevOpen, [name]: !prevOpen[name] }));
     setSelectedItem(name); // Actualiza el elemento seleccionado
     setRotate((prev) => !prev);
+    setIsOpen((prev) => !prev)
 
     // Guardar el estado actualizado en las cookies
     Cookies.set('open', JSON.stringify({ ...open, [name]: !open[name] }));
@@ -55,10 +58,12 @@ export function Sidenav() {
             setOpenSidenav(dispatch, false)
 
           }}>
+            
             <Link to={child.path} className='w-full h-full shadow-none'>
               <ListItemText primary={child.name} />
             </Link>
           </ListItem>
+          
         )
       })}
     </List>
@@ -69,7 +74,7 @@ export function Sidenav() {
     <aside
       className={`${sidenavTypes[sidenavType]} ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-scroll overflow-hidden`}
+      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-52 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-scroll overflow-hidden`}
     >
       <div
         className={`relative`}
@@ -106,6 +111,7 @@ export function Sidenav() {
                 key={index}
                 obj={obj}
                 open={open}
+                isOpen={isOpen}
                 handleClick={handleClick}
                 renderNestedList={renderNestedList}/>
             )

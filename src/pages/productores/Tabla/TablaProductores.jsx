@@ -58,28 +58,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'ID',
-  },
-  {
-    id: 'patente',
+    id: 'rut',
     numeric: false,
     disablePadding: false,
-    label: 'Patente',
-  },
+    label: 'Rut',
+  },  
   {
-    id: 'observaciones',
+    id: 'nombre',
     numeric: false,
     disablePadding: false,
-    label: 'Observaciones',
+    label: 'Nombre',
   },
   {
-    id: 'acoplado',
-    numeric: true,
+    id: 'email',
+    numeric: false,
     disablePadding: false,
-    label: 'Acoplado',
+    label: 'Email',
+  },
+  {
+    id: 'telefono',
+    numeric: false,
+    disablePadding: false,
+    label: 'Telefono',
+  },
+  {
+    id: 'numero_contrato',
+    numeric: false,
+    disablePadding: false,
+    label: 'N° Contrato',
+  },
+  {
+    id: 'direccion',
+    numeric: false,
+    disablePadding: false,
+    label: 'Dirección',
   },
   {
     id: 'fecha_creacion',
@@ -156,15 +168,14 @@ function EnhancedTableToolbar(props) {
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 }
       }}
-      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''} overflow-x-scroll md:overflow-hidden`}
+      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''} overflow-x-scroll py-1`}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%',}}
+          sx={{ flex: '1 1 100%' }}
           color="inherit"
           variant="subtitle1"
           component="div"
-          className=' font-semibold'
         >
           {numSelected} Seleccionado{numSelected > 1 ? 's' : ''}
         </Typography>
@@ -175,7 +186,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Camiones
+          Productores
         </Typography>
       )}
       
@@ -183,9 +194,9 @@ function EnhancedTableToolbar(props) {
         numSelected === 0
           ? (
 
-              <Ln to={`/app/registro-camiones`}>
-                <div className='w-36 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-[#224871]'>
-                  <span className='font-semibold'>Tengo que ser un modal</span>
+              <Ln to={`/app/registro-productores`}>
+                <div className='w-34 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
+                  <span className='font-semibold'>Agregar Productores</span>
                 </div>
               </Ln>
 
@@ -198,14 +209,14 @@ function EnhancedTableToolbar(props) {
           ? (
             <> 
               <Tooltip title='Detalle'>
-                <Ln to={`/app/item/${selected}`}>
+                <Ln to={`/app/productores/${selected}`}>
                   <button type='button' className='bg-[#224871] hover:bg-[#224871c0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
                     Detalles
                   </button>
                 </Ln>
               </Tooltip>
               <Tooltip title='Editar'>
-                <Ln to={`/app/edicion-item/${selected}`}>
+                <Ln to={`/app/edicion-productores/${selected}`}>
                   <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
                     Editar
                   </button>
@@ -233,7 +244,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaCamiones({ data, setData, token, loading }) {
+export default function TablaProductores({ data, setData, token, loading }) {
   const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('fecha_creacion');
   const [selected, setSelected] = React.useState([]);
@@ -339,23 +350,27 @@ export default function TablaCamiones({ data, setData, token, loading }) {
           <Table
             sx={{ minWidth: 750, 
             '& thead th:nth-child(1)': {
-              width: '30px',
+              width: '20px',
             },
             '& thead th:nth-child(2)': {
-              textAlign: 'center',
-              width: '30px',
+              textAlign: 'left',
+              width: '12%',
             },
             '& tr > *:nth-child(3)': { 
             textAlign: 'left',
-            width: '22%'
+            width: '12%'
             },
             '& tr > *:nth-child(4)': { 
               textAlign: 'left',
-              width: '50%'
+              width: '12%'
             },
             '& tr > *:nth-child(5)': { 
               textAlign: 'left',
-              width: '20px'
+              width: '12%'
+            },
+            '& tr > *:nth-child(6)': { 
+              textAlign: 'left',
+              width: '13%'
             },
             '& tfoot > td': {
               width: '100%'
@@ -396,17 +411,18 @@ export default function TablaCamiones({ data, setData, token, loading }) {
                       />
                     </TableCell>
                     {loading ? (
-                      <TableCell colSpan="5">
+                      <TableCell colSpan="6">
                         <Skeleton className='w-full'/>
                       </TableCell>
                     ) : (
                       <>
-                        <TableCell>{row.id}</TableCell>
-                        <TableCell className='text-center text-clip overflow-hidden'>{row.patente}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.observaciones}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>
-                          <p className='relative left-10'>{row.acoplado ? 'Si' : 'No'}</p>
-                        </TableCell>
+                        <TableCell>{row.rut_productor}</TableCell>
+                        <TableCell className='text-center text-clip overflow-hidden'>{row.nombre}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{row.email}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{row.telefono}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'><p className='relative left-7'>{row.numero_contrato}</p></TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{row.direccion}</TableCell>
+
                         <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>
                       </>
                     )}
@@ -419,7 +435,7 @@ export default function TablaCamiones({ data, setData, token, loading }) {
                     height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={7} />
                 </TableRow>
               )}
             </TableBody>

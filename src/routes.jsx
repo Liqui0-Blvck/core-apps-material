@@ -14,6 +14,9 @@ import FormularioRegistroChoferes from "./pages/choferes/Formularios Registro/Fo
 import FormularioRegistroOperarios from "./pages/operarios/FormulariosRegistro/Formularios Registro/FormularioRegistroChoferes";
 import ListaOperarios from "./pages/operarios/ListaOperarios";
 import ListaClientes from "./pages/clientes/ListaCliente";
+import ListaProductores from "./pages/productores/ListaProductores";
+import FormularioRegistroProductores from "./pages/productores/Formulario Registro/FormularioRegistroProductores";
+import ListaGuiaRecepcion from "./pages/guia recepcion/ListaGuiaRecepcion";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -33,7 +36,7 @@ export const Directions = {
       ))}
     </>
   ),
-  'Listas': (children) => (
+  'Recepción MP': (children) => (
     <>
       {children.map((subitem) => (
         <AccordionSubItem
@@ -44,7 +47,7 @@ export const Directions = {
         />
       ))}
     </>
-  ),
+  )
 }
 
 export const LISTA_MENU = [
@@ -52,29 +55,12 @@ export const LISTA_MENU = [
     name: 'Registros',
     children: [
       {
-        name: 'Registro Clientes',
-        path: '/app/registro-clientes'
-      },
-      {
-        name: 'Registro Conductor',
-        path: '/app/registro-conductor'
-      },
-      {
-        name: 'Registro Comercializadores',
-        path: '/app/registro-comercializadores'
-      },
-      {
-        name: 'Registro Operarios',
-        path: '/app/registro-operarios'
-      }
-    ]  
-  },
-  {
-    name: 'Listas',
-    children: [
-      {
         name: 'Clientes',
         path: '/app/lista-clientes'
+      },
+      {
+        name: 'Productores',
+        path: '/app/lista-productores'
       },
       {
         name: 'Camiones',
@@ -91,9 +77,17 @@ export const LISTA_MENU = [
       {
         name: 'Operarios',
         path: '/app/lista-operarios'
+      } 
+    ]  
+  },
+  {
+    name: 'Recepción MP',
+    children: [
+      {
+        name: 'Guias Recepción',
+        path: '/app/lista-guias-recepcion'
       }
-    ],
-
+    ]
   }
 ]
 
@@ -168,6 +162,29 @@ export const routes = [
         path: '/lista-operarios',
         element: <ListaOperarios />
       },
+
+      // REGISTROS PRODUCTORES
+      {
+        name: 'Registro de Productores',
+        path: '/registro-productores',
+        element: <FormularioRegistroProductores />
+      },
+      {
+        name: 'Lista Productores',
+        path: '/lista-productores',
+        element: <ListaProductores />
+      },
+
+      // REGISTROS GUIA DE RECEPCIÓN
+      {
+        name: 'Registro Guia de Recepción',
+        path: '/registro-guias-recepcion',
+      },
+      {
+        name: 'Lista Guia de Recepción',
+        path: '/lista-guias-recepcion',
+        element: <ListaGuiaRecepcion />
+      }
     ],
   },
   {
