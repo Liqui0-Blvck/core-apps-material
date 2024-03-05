@@ -162,7 +162,7 @@ function EnhancedTableToolbar(props) {
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 }
       }}
-      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''}`}
+      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''} overflow-x-scroll py-1`}
     >
       {numSelected > 0 ? (
         <Typography
@@ -189,7 +189,7 @@ function EnhancedTableToolbar(props) {
           ? (
 
               <Ln to={`/app/registro-operarios`}>
-                <div className='w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-[#224871]'>
+                <div className='w-34 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
                   <span className='font-semibold'>Agregar Operario</span>
                 </div>
               </Ln>

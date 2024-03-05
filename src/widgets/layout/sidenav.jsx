@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 import ListSubheader from '@mui/material/ListSubheader';
@@ -12,24 +12,36 @@ import { LISTA_MENU } from "@/routes";
 import SidebarItem from "@/widgets/layout/SidebarItems";
 import { useClient } from "@/context/ClientContext";
 import { IconButton, ListItem, } from "@material-tailwind/react";
+import Cookies from "js-cookie";
 
 
 export function Sidenav() {
   const { clientInfo, setClient, removeClient } = useClient()
   const navigate = useNavigate()
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => {
+    const openCookie = Cookies.get('open');
+    return openCookie ? JSON.parse(openCookie) : {};
+  });
+  const [selectedItem, setSelectedItem] = useState(Cookies.get('selectedItem') || null);
   const [rotate, setRotate] = useState(false)
+
+  console.log(open)
 
   const handleClick = (name) => {
     setOpen((prevOpen) => ({ ...prevOpen, [name]: !prevOpen[name] }));
+    setSelectedItem(name); // Actualiza el elemento seleccionado
     setRotate((prev) => !prev);
+
+    // Guardar el estado actualizado en las cookies
+    Cookies.set('open', JSON.stringify({ ...open, [name]: !open[name] }));
+    Cookies.set('selectedItem', name);
   };
 
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",
-    white: "bg-white shadow-sm",
+    white: "bg-white shadow-sm",  
     transparent: "bg-transparent",
   };
 
@@ -41,7 +53,7 @@ export function Sidenav() {
         return (
           <ListItem key={child.id} disablePadding className="ml-3 w-[90%] my-2 bg-gray-50" onClick={() => {
             setOpenSidenav(dispatch, false)
-            setOpen(false)
+
           }}>
             <Link to={child.path} className='w-full h-full shadow-none'>
               <ListItemText primary={child.name} />
@@ -49,7 +61,7 @@ export function Sidenav() {
           </ListItem>
         )
       })}
-    </List> 
+    </List>
   );
 
 

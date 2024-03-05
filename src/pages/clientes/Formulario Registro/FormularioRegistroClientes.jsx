@@ -17,6 +17,7 @@ const FormularioRegistroClientes = () => {
       <form onSubmit={formik.handleSubmit}>
 
         
+        
 
         <button>
           Registrar Cliente

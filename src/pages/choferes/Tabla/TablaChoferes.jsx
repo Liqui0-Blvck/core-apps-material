@@ -156,7 +156,7 @@ function EnhancedTableToolbar(props) {
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 }
       }}
-      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''}`}
+      className={`${numSelected > 0 ? 'bg-[#f4f7fc]' : ''} py-1 overflow-x-scroll `}
     >
       {numSelected > 0 ? (
         <Typography
@@ -183,7 +183,7 @@ function EnhancedTableToolbar(props) {
           ? (
 
               <Ln to={`/app/registro-conductor`}>
-                <div className='w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-[#224871]'>
+                <div className='w-30 md:w-48 lg:w-52 p-0.5 md:p-1.5 lg:p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
                   <span className='font-semibold'>Agregar Conductor</span>
                 </div>
               </Ln>

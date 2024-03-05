@@ -13,6 +13,7 @@ import ListaChoferes from "./pages/choferes/ListaChoferes";
 import FormularioRegistroChoferes from "./pages/choferes/Formularios Registro/FormularioRegistroChoferes";
 import FormularioRegistroOperarios from "./pages/operarios/FormulariosRegistro/Formularios Registro/FormularioRegistroChoferes";
 import ListaOperarios from "./pages/operarios/ListaOperarios";
+import ListaClientes from "./pages/clientes/ListaCliente";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -125,6 +126,11 @@ export const routes = [
         name: 'Registro Clientes',
         path: '/registro-clientes',
         // element: <FormularioRegistroClientes />
+      },
+      {
+        name: 'Lista Clientes',
+        path: '/lista-clientes',
+        element: <ListaClientes />
       },
 
       // REGISTRO CAMIONES
