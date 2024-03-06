@@ -17,6 +17,9 @@ import ListaClientes from "./pages/clientes/ListaCliente";
 import ListaProductores from "./pages/productores/ListaProductores";
 import FormularioRegistroProductores from "./pages/productores/Formulario Registro/FormularioRegistroProductores";
 import ListaGuiaRecepcion from "./pages/guia recepcion/ListaGuiaRecepcion";
+import FormularioRegistroGuiaRecepcion from "./pages/guia recepcion/Formulario Registro/FormularioRegistroGuiaRecepcion";
+import FormularioRegistroComercializador from "./pages/comercializador/Formulario Registro/FormularioRegistroComercializador";
+import ListaComercializadores from "./pages/comercializador/ListaComercializadores";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -179,11 +182,24 @@ export const routes = [
       {
         name: 'Registro Guia de Recepción',
         path: '/registro-guias-recepcion',
+        element: <FormularioRegistroGuiaRecepcion />
       },
       {
         name: 'Lista Guia de Recepción',
         path: '/lista-guias-recepcion',
         element: <ListaGuiaRecepcion />
+      },
+
+      // REGISTRO COMERCIALIZADORES
+      {
+        name: 'Registro Comercializadores',
+        path: '/registro-comercializadores',
+        element: <FormularioRegistroComercializador />
+      },
+      {
+        name: 'Lista Comercializadores',
+        path: '/lista-comercializadores',
+        element: <ListaComercializadores />
       }
     ],
   },

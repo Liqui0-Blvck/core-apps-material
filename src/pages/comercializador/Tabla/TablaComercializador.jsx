@@ -55,49 +55,42 @@ function stableSort(array, comparator) {
 }
 
 
-
 const headCells = [
   {
-    id: 'numero_guia_productor',
+    id: 'rut',
     numeric: false,
     disablePadding: false,
-    label: 'N° Guia Productor',
+    label: 'Rut',
+  },  
+  {
+    id: 'nombre',
+    numeric: false,
+    disablePadding: false,
+    label: 'Nombre',
   },
   {
-    id: 'camion',
+    id: 'email',
     numeric: false,
     disablePadding: false,
-    label: 'Camión',
+    label: 'Email',
   },
   {
-    id: 'camionero',
+    id: 'telefono',
     numeric: false,
     disablePadding: false,
-    label: 'Conductor ',
+    label: 'Telefono',
   },
   {
-    id: 'comercializador',
+    id: 'numero_contrato',
     numeric: false,
     disablePadding: false,
-    label: 'Comercializador',
+    label: 'N° Contrato',
   },
   {
-    id: 'lotesrecepcionmp',
+    id: 'direccion',
     numeric: false,
     disablePadding: false,
-    label: 'Lotes',
-  },
-  {
-    id: 'mezclavariedades',
-    numeric: false,
-    disablePadding: false,
-    label: 'Variedades',
-  },
-  {
-    id: 'estado_recepcion',
-    numeric: false,
-    disablePadding: false,
-    label: 'Estado',
+    label: 'Dirección',
   },
   {
     id: 'fecha_creacion',
@@ -192,7 +185,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Guia de Recepción
+          Comercializadores
         </Typography>
       )}
       
@@ -200,9 +193,9 @@ function EnhancedTableToolbar(props) {
         numSelected === 0
           ? (
 
-              <Ln to={`/app/registro-guias-recepcion`}>
+              <Ln to={`/app/registro-comercializadores`}>
                 <div className='w-34 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
-                  <span className='font-semibold'>Crear Guia Recepción</span>
+                  <span className='font-semibold'>Agregar Comercializadores</span>
                 </div>
               </Ln>
 
@@ -215,14 +208,14 @@ function EnhancedTableToolbar(props) {
           ? (
             <> 
               <Tooltip title='Detalle'>
-                <Ln to={`/app/guia-recepcion/${selected}`}>
+                <Ln to={`/app/productores/${selected}`}>
                   <button type='button' className='bg-[#224871] hover:bg-[#224871c0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
                     Detalles
                   </button>
                 </Ln>
               </Tooltip>
               <Tooltip title='Editar'>
-                <Ln to={`/app/edicion-guia-recepcion/${selected}`}>
+                <Ln to={`/app/edicion-productores/${selected}`}>
                   <button type='button' className='bg-[#224871] hover:bg-[#224871b0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
                     Editar
                   </button>
@@ -250,7 +243,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaGuiaRecepcion({ data, setData, token, loading }) {
+export default function TablaComercializador({ data, setData, token, loading }) {
   const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('fecha_creacion');
   const [selected, setSelected] = React.useState([]);
@@ -359,24 +352,24 @@ export default function TablaGuiaRecepcion({ data, setData, token, loading }) {
               width: '20px',
             },
             '& thead th:nth-child(2)': {
-              textAlign: 'center',
-              width: '10%',
+              textAlign: 'left',
+              width: '12%',
             },
             '& tr > *:nth-child(3)': { 
             textAlign: 'left',
-            width: '10%'
+            width: '12%'
             },
             '& tr > *:nth-child(4)': { 
               textAlign: 'left',
-              width: '15%'
+              width: '12%'
             },
             '& tr > *:nth-child(5)': { 
               textAlign: 'left',
-              width: '15%'
+              width: '12%'
             },
             '& tr > *:nth-child(6)': { 
               textAlign: 'left',
-              width: '10%'
+              width: '13%'
             },
             '& tfoot > td': {
               width: '100%'
@@ -422,19 +415,13 @@ export default function TablaGuiaRecepcion({ data, setData, token, loading }) {
                       </TableCell>
                     ) : (
                       <>
-                        <TableCell className='text-center'>
-                          <p className='relative left-5'>{row.numero_guia_productor}</p>
-                        </TableCell>
-                        <TableCell className='text-center text-clip overflow-hidden'>{row.camion}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.camionero}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>{row.comercializador}</TableCell>
-                        <TableCell className='text-clip overflow-hidden'>
-                          <p className='relative left-4'>{row.lotesrecepcionmp.length}</p>
-                        </TableCell>
-                        <TableCell className='text-clip overflow-hidden'>
-                          <p className='relative left-5'>{row.mezcla_variedades ? 'Si' : 'No'}</p>
-                        </TableCell>
-                        <TableCell className='text-clip overflow-hidden truncate'>{row.estado_recepcion}</TableCell>
+                        <TableCell>{row.rut_productor}</TableCell>
+                        <TableCell className='text-center text-clip overflow-hidden'>{row.nombre}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{row.email}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'>{row.telefono}</TableCell>
+                        <TableCell className='text-clip overflow-hidden'><p className='relative left-7'>{row.numero_contrato}</p></TableCell>
+                        <TableCell className='text-clip overflow-hidden truncate'>{row.direccion}</TableCell>
+
                         <TableCell className='text-clip overflow-hidden'>{format(row.fecha_creacion, { date: 'short', time: 'short' })}</TableCell>
                       </>
                     )}
