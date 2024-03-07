@@ -62,7 +62,7 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'Rut',
-  },  
+  },
   {
     id: 'nombre',
     numeric: false,
@@ -189,25 +189,25 @@ function EnhancedTableToolbar(props) {
           Productores
         </Typography>
       )}
-      
+
       {
         numSelected === 0
           ? (
 
-              <Ln to={`/app/registro-productores`}>
-                <div className='w-34 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
-                  <span className='font-semibold'>Agregar Productores</span>
-                </div>
-              </Ln>
+            <Ln to={`/app/registro-productores`}>
+              <div className='w-34 md:w-48 lg:w-52 p-1.5 border border-[#224871] rounded-md bg-[#f4f7fc] hover:bg-[#224871] hover:text-white transition-all ease-in flex items-center justify-center text-center text-[#224871]'>
+                <span className='font-semibold'>Agregar Productores</span>
+              </div>
+            </Ln>
 
-            )
+          )
           : null
       }
 
       {
-        numSelected <= 1 && numSelected > 0 
+        numSelected <= 1 && numSelected > 0
           ? (
-            <> 
+            <>
               <Tooltip title='Detalle'>
                 <Ln to={`/app/productores/${selected}`}>
                   <button type='button' className='bg-[#224871] hover:bg-[#224871c0] px-5 py-1.5 rounded-md text-white hover:scale-105'>
@@ -222,9 +222,9 @@ function EnhancedTableToolbar(props) {
                   </button>
                 </Ln>
               </Tooltip>
-              
+
             </>
-            )
+          )
           : null
       }
 
@@ -234,7 +234,7 @@ function EnhancedTableToolbar(props) {
             Eliminar
           </button>
         </Tooltip>
-      ) : null 
+      ) : null
       }
     </Toolbar>
   );
@@ -279,7 +279,7 @@ export default function TablaProductores({ data, setData, token, loading }) {
         body: JSON.stringify({ ids: selected }),
       });
 
-      if (response.ok){
+      if (response.ok) {
         toast.success('Item eliminado con exito')
       } else {
         toast.error('No se ha podido eliminar')
@@ -289,7 +289,7 @@ export default function TablaProductores({ data, setData, token, loading }) {
       setData(newData);
 
       setSelected([]);
-  
+
     } catch (error) {
       console.error("Error al eliminar elementos:", error);
 
@@ -345,36 +345,38 @@ export default function TablaProductores({ data, setData, token, loading }) {
         <EnhancedTableToolbar
           numSelected={selected.length}
           handleDeleteClick={handleDeleteClick}
-          selected={selected}/>
+          selected={selected} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750, 
-            '& thead th:nth-child(1)': {
-              width: '20px',
-            },
-            '& thead th:nth-child(2)': {
-              textAlign: 'left',
-              width: '12%',
-            },
-            '& tr > *:nth-child(3)': { 
-            textAlign: 'left',
-            width: '12%'
-            },
-            '& tr > *:nth-child(4)': { 
-              textAlign: 'left',
-              width: '12%'
-            },
-            '& tr > *:nth-child(5)': { 
-              textAlign: 'left',
-              width: '12%'
-            },
-            '& tr > *:nth-child(6)': { 
-              textAlign: 'left',
-              width: '13%'
-            },
-            '& tfoot > td': {
-              width: '100%'
-            }}}
+            sx={{
+              minWidth: 750,
+              '& thead th:nth-child(1)': {
+                width: '20px',
+              },
+              '& thead th:nth-child(2)': {
+                textAlign: 'left',
+                width: '12%',
+              },
+              '& tr > *:nth-child(3)': {
+                textAlign: 'left',
+                width: '12%'
+              },
+              '& tr > *:nth-child(4)': {
+                textAlign: 'left',
+                width: '12%'
+              },
+              '& tr > *:nth-child(5)': {
+                textAlign: 'left',
+                width: '12%'
+              },
+              '& tr > *:nth-child(6)': {
+                textAlign: 'left',
+                width: '13%'
+              },
+              '& tfoot > td': {
+                width: '100%'
+              }
+            }}
             aria-labelledby="tableTitle"
           >
             <EnhancedTableHead
@@ -411,8 +413,8 @@ export default function TablaProductores({ data, setData, token, loading }) {
                       />
                     </TableCell>
                     {loading ? (
-                      <TableCell colSpan="6">
-                        <Skeleton className='w-full'/>
+                      <TableCell colSpan="7">
+                        <Skeleton className='w-full' />
                       </TableCell>
                     ) : (
                       <>

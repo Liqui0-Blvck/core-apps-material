@@ -9,11 +9,11 @@ export const ESTADOS = [
 
 
 export const ESTADO_OC = [
-  {value: 1, label: 'Creada'},
-  {value: 2, label: 'Aprobada'},
-  {value: 3, label: 'Rechazada'},
-  {value: 4, label: 'Pendiente'},
-  {value: 5, label: 'Procesada'},
+  { value: 1, label: 'Creada' },
+  { value: 2, label: 'Aprobada' },
+  { value: 3, label: 'Rechazada' },
+  { value: 4, label: 'Pendiente' },
+  { value: 5, label: 'Procesada' },
 
 ]
 
@@ -60,7 +60,7 @@ export const DEPARTAMENTO = [
   'Dirección Nacional',
   'Interárea',
 ]
-  
+
 export const TIPO_DISCO = [
   'Sin especificar',
   'Disco Duro',
@@ -76,25 +76,30 @@ export const CAPACIDAD_DISCO = [
 ]
 
 export const ContentTypes = [
-  {value: 13, label: 'Item', path: 'items'},
-  {value: 31, label: 'Invento', path: 'inventos'}
+  { value: 13, label: 'Item', path: 'items' },
+  { value: 31, label: 'Invento', path: 'inventos' }
 ]
 
 
 export const TIPO_CLIENTE = [
-  {value: 1 , label: 'Empresa'},
-  {value: 2 , label: 'Fundacion'},
+  { value: 1, label: 'Empresa' },
+  { value: 2, label: 'Fundacion' },
 ]
 
 export const ESTADO_CLIENTE = [
-  {value: 1 , label: 'Activo'},
-  {value: 2 , label: 'Inactivo'},
+  { value: 1, label: 'Activo' },
+  { value: 2, label: 'Inactivo' },
 ]
 
 
 export const TIPOS_OPERARIO = [
-  { values: 'seleccion', label: 'Operario de Selección'},
-  { values: 'colosos', label: 'Operario Colosos'},
-  { values: 'gruero', label: 'Operario Gruero'},
-  { values: 'embalaje', label: 'Operario Embalaje'},
+  { values: 'seleccion', label: 'Operario de Selección' },
+  { values: 'colosos', label: 'Operario Colosos' },
+  { values: 'gruero', label: 'Operario Gruero' },
+  { values: 'embalaje', label: 'Operario Embalaje' },
+]
+
+export const TIPO_ACOPLADO = [
+  { values: true, label: 'Con Acoplado' },
+  { values: false, label: 'Sin Acoplado' },
 ]

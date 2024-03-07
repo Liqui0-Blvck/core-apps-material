@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+
 
 export const useAuthenticatedFetch = (token, validate, url) => {
   const [loading, setLoading] = useState(true)
@@ -8,7 +10,7 @@ export const useAuthenticatedFetch = (token, validate, url) => {
   const [refresh, setRefresh] = useState(false)
   const navigate = useNavigate()
   const base_url = import.meta.env.VITE_BASE_URL
-  
+
   useEffect(() => {
     let isMounted = true
 
@@ -16,11 +18,11 @@ export const useAuthenticatedFetch = (token, validate, url) => {
       try {
         setLoading(true)
 
-        if (!isMounted) return 
+        if (!isMounted) return
 
         const isValid = validate(token)
-        
-        if (!isValid){
+
+        if (!isValid) {
           navigate('/auth/sign-in')
         } else {
           const response = await fetch((base_url + url), {
@@ -30,8 +32,8 @@ export const useAuthenticatedFetch = (token, validate, url) => {
               'authorization': `Bearer ${token.access}`
             }
           })
-          
-          if (response.ok){
+
+          if (response.ok) {
             const data = await response.json()
             setData(data)
           } else if (response.status === 401) {
@@ -68,5 +70,39 @@ export const useAuthenticatedFetch = (token, validate, url) => {
     data,
     setData,
     setRefresh
+  }
+}
+
+export const useAuthenticatePost = () => {
+  const base_url = import.meta.env.VITE_BASE_URL
+  const navigate = useNavigate()
+
+
+  const usePostPutDelete = async (token, validate, url, body, request, url_to, modal) => {
+    const isValid = validate(token)
+    if (!isValid) {
+      navigate('/app/home/')
+    } else {
+      const res = await fetch((base_url + url), {
+        method: request,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token.access}`
+        },
+        body: body
+      })
+
+      if (res.ok) {
+        toast.success("El operario fue registrado exitosamente!!")
+        navigate(url_to)
+        modal ? modal : null
+      } else {
+        toast.error("No se pudo registrar el camión volver a intentar")
+      }
+    }
+  }
+
+  return {
+    usePostPutDelete
   }
 }

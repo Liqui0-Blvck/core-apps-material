@@ -16,16 +16,15 @@ const ListaGuiaRecepcion = () => {
 
   return (
     <MaxWidthWrapper>
-        <div className='flex justify-center mt-10 relative'>
-          {
-            guia_recepcion 
-              ? (
-              <TablaGuiaRecepcion data={guia_recepcion} setData={setData} token={authTokens.access} loading={loading}/>
-              ) 
-              : <TableLoader className='w-full absolute top-10 right-0 bottom-0'/>
-            
-          }
-        </div>
+      <div className='flex justify-center mt-10'>
+        {
+          guia_recepcion
+            ? (
+              <TablaGuiaRecepcion data={guia_recepcion} setData={setData} token={authTokens.access} loading={loading} />
+            )
+            : <TableLoader className='mt-10 w-full h-full flex flex-' />
+        }
+      </div>
     </MaxWidthWrapper>
   )
 }

@@ -14,16 +14,16 @@ const ListaClientes = () => {
 
   return (
     <MaxWidthWrapper>
-        <div className='flex justify-center mt-10 relative'>
-          {
-            clientes 
-              ? (
-              <TablaClientes data={clientes} setData={setData} token={authTokens.access} loading={loading}/>
-              ) 
-              : <TableLoader className='w-full h-96 absolute -top-5 md:top-0 md:left-0 md:right-0 md:bottom-0'/>
-            
-          }
-        </div>
+      <div className='flex w-full justify-center mt-10'>
+        {
+          clientes
+            ? (
+              <TablaClientes data={clientes} setData={setData} token={authTokens.access} loading={loading} />
+            )
+            : <TableLoader className='mt-10 w-full h-full flex flex-' />
+
+        }
+      </div>
     </MaxWidthWrapper>
   )
 }

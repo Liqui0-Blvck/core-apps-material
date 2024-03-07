@@ -6,14 +6,12 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { TIPOS_OPERARIO } from '@/const/constantes'
 import { useAuth } from '@/context/AuthContext'
-import { useAuthenticatedFetch } from '@/hooks/useAuthenticatedFetch'
+import { useAuthenticatedFetch, useAuthenticatePost } from '@/hooks/useAuthenticatedFetch'
 
-const FormularioRegistroProductores  = () => {
+const FormularioRegistroProductores = () => {
   const { authTokens, validToken } = useAuth()
-  const base_url = import.meta.env.VITE_BASE_URL
-  const navigate = useNavigate()
+  const { usePostPutDelete } = useAuthenticatePost()
 
-  
   const formik = useFormik({
     initialValues: {
       rut_productor: "",
@@ -30,22 +28,13 @@ const FormularioRegistroProductores  = () => {
     },
     onSubmit: async (values) => {
       try {
-        const res = await fetch(`${base_url}/api/productores/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...values
-          })
-        })
-        if (res.ok) {
-          toast.success("El operario fue registrado exitosamente!!")
-          navigate('/app/lista-operarios')
-
-        } else {
-          toast.error("No se pudo registrar el camión volver a intentar")
-        }
+        usePostPutDelete(
+          authTokens,
+          validToken,
+          '/api/productores/',
+          JSON.stringify({ ...values }),
+          'POST'
+        )
       } catch (error) {
         console.log(error)
       }
@@ -83,12 +72,12 @@ const FormularioRegistroProductores  = () => {
 
   return (
     <MaxWidthWrapper>
-      <form 
+      <form
         onSubmit={formik.handleSubmit}
         className='flex flex-col 
           md:grid md:grid-cols-6 gap-x-6 gap-y-8 mt-10 
           relative p-4 border border-gray-200 rounded-md'
-        >
+      >
         <div className='md:col-span-2 md:flex-col items-center'>
           <label htmlFor="rut_productor">Rut Productor: </label>
           <Input
@@ -102,7 +91,7 @@ const FormularioRegistroProductores  = () => {
         <div className='md:col-span-2 md:col-start-3 md:flex-col items-center'>
           <label htmlFor="nombre">Nombre: </label>
           <Input
-            type='text' 
+            type='text'
             name='nombre'
             onChange={formik.handleChange}
             className='py-3'
@@ -111,7 +100,7 @@ const FormularioRegistroProductores  = () => {
 
         <div className='md:col-span-2 md:col-start-5 md:flex-col items-center'>
           <label htmlFor="email">Correo: </label>
-          <Input 
+          <Input
             type='email'
             name='email'
             onChange={formik.handleChange}
@@ -126,7 +115,7 @@ const FormularioRegistroProductores  = () => {
             placeholder="Selecciona una región"
             optionFilterProp="children"
             className='rounded-md mt-1 col-span-3 h-11 w-full'
-            onChange={value => formik.setFieldValue('region', value) }
+            onChange={value => formik.setFieldValue('region', value)}
             onSearch={onSearch}
             name='region'
             filterOption={filterOption}
@@ -134,7 +123,7 @@ const FormularioRegistroProductores  = () => {
               value: region.region_id,
               label: region.region_nombre
             }))}
-            />
+          />
         </div>
 
         <div className='md:col-span-2  md:row-start-2 md:col-start-3 md:flex-col items-center'>
@@ -144,7 +133,7 @@ const FormularioRegistroProductores  = () => {
             placeholder="Selecciona una tipo de operario"
             optionFilterProp="children"
             className='rounded-md mt-1 col-span-3 h-11 w-full'
-            onChange={value => formik.setFieldValue('provincia', value) }
+            onChange={value => formik.setFieldValue('provincia', value)}
             onSearch={onSearch}
             name='provincia'
             filterOption={filterOption}
@@ -152,7 +141,7 @@ const FormularioRegistroProductores  = () => {
               value: prov.provincia_id,
               label: prov.provincia_nombre
             }))}
-            />
+          />
         </div>
 
         <div className='md:col-span-2 md:row-start-2 md:col-start-5 md:flex-col items-center'>
@@ -162,7 +151,7 @@ const FormularioRegistroProductores  = () => {
             placeholder="Selecciona una comuna"
             optionFilterProp="children"
             className='rounded-md mt-1 col-span-3 h-11 w-full'
-            onChange={value => formik.setFieldValue('comuna', value) }
+            onChange={value => formik.setFieldValue('comuna', value)}
             onSearch={onSearch}
             name='comuna'
             filterOption={filterOption}
@@ -170,36 +159,36 @@ const FormularioRegistroProductores  = () => {
               value: comu.comuna_id,
               label: comu.comuna_nombre
             }))}
-            />
+          />
         </div>
-        
+
         <div className='md:col-span-2 md:row-start-3  md:flex-col items-center'>
           <label htmlFor="direccion">Dirección: </label>
-          <Input 
+          <Input
             type='text'
             name='direccion'
             onChange={formik.handleChange}
             className='py-3'
           />
         </div>
-        
+
 
         <div className='md:col-span-2 md:row-start-3 md:col-start-3 md:flex-col items-center'>
           <label htmlFor="telefono">Telefono Fijo: </label>
           <Input
-            type='text' 
+            type='text'
             name='telefono'
             onChange={formik.handleChange}
             className='py-3'
           />
         </div>
 
-        
+
 
         <div className='md:col-span-2 md:row-start-3 md:col-start-5 md:flex-col items-center'>
           <label htmlFor="movil">Telefono Celular: </label>
           <Input
-            type='text' 
+            type='text'
             name='movil'
             onChange={formik.handleChange}
             className='py-3'
@@ -209,7 +198,7 @@ const FormularioRegistroProductores  = () => {
         <div className='md:col-span-2 md:row-start-4 md:flex-col items-center'>
           <label htmlFor="pagina_web">Página Web: </label>
           <Input
-            type='text' 
+            type='text'
             name='pagina_web'
             onChange={formik.handleChange}
             className='py-3'
@@ -219,7 +208,7 @@ const FormularioRegistroProductores  = () => {
         <div className='md:col-span-2 md:row-start-4 md:col-start-3 md:flex-col items-center'>
           <label htmlFor="numero_contrato">N° Contrato: </label>
           <Input
-            type='text' 
+            type='text'
             name='numero_contrato'
             onChange={formik.handleChange}
             className='py-3'
